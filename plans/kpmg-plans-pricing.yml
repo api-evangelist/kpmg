@@ -1,0 +1,131 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: KPMG
+providerId: kpmg
+created: '2026-05-23'
+modified: '2026-05-23'
+reconciled: false
+tags:
+  - Consulting
+  - Audit
+  - Tax
+  - Legal
+  - Advisory
+  - Professional Services
+  - Big Four
+description: >-
+  KPMG is a Big Four professional services organization. It does not
+  publish a public developer API or corporate developer portal at the
+  network level; commercial engagements are priced as audit, assurance,
+  tax, legal, advisory, ESG, or AI engagement contracts negotiated
+  bilaterally through the relevant member firm. KPMG's research outputs
+  (KPMG Insights, US Technology Survey Report, Global Third-Party Risk
+  Management Survey, M&A Deal Market Study, Fit for Pillar Two,
+  Opportunity (In)sight newsletter, KPMG Australia Business Insights
+  podcast) are made available free of charge to readers. The only
+  product-priced public API surface inside the KPMG brand is KPMG
+  Origins (Australian regulated-waste tracking), which is sold to
+  industry participants under a separate Australian-jurisdiction
+  commercial agreement and not metered through public per-call pricing.
+notes: >-
+  No public developer API at the network level — placeholder for the
+  network. KPMG Origins is a separate product offering with its own
+  commercial agreement; it does not publish public per-call pricing.
+sources:
+  - https://kpmg.com/
+  - https://kpmg.com/xx/en/what-we-do.html
+  - https://kpmg.com/xx/en/our-insights.html
+  - https://kpmg.com/us/en/subscription.html
+  - https://kpmgorigins.com/
+plans:
+  - id: kpmg-engagement
+    name: Member-Firm Professional Services Engagement
+    type: enterprise
+    description: >-
+      KPMG sells audit, assurance, tax, legal, advisory, ESG, and AI
+      services through bilateral engagement contracts negotiated with
+      the relevant KPMG member firm. There is no public API plan;
+      pricing is set per engagement on a time-and-materials, fixed-fee,
+      or managed-services-subscription basis.
+    entries:
+      - label: Engagement contract
+        name: engagement_contract
+        type: subscription
+        metric: contract
+        limit: -1
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: contact KPMG member firm account team
+        userMultiplied: false
+    elements:
+      - name: Audit & Assurance engagements
+      - name: Tax engagements (including Pillar Two)
+      - name: Legal engagements
+      - name: Advisory engagements
+      - name: ESG engagements
+      - name: AI engagements (Jumpstart, Strategy, Trust, Workforce, Technology)
+      - name: Managed-services engagements
+      - name: No public developer API
+
+  - id: kpmg-insights
+    name: KPMG Insights Research Access
+    type: free
+    description: >-
+      Free reader access to KPMG Insights research, including the
+      KPMG US Technology Survey Report, the KPMG Global Third-Party
+      Risk Management Survey, the KPMG M&A Deal Market Study, Fit for
+      Pillar Two, AI Governance Principles for Boards, and the rest
+      of the KPMG Insights catalog. Personalization and newsletter
+      subscriptions are available through the US Subscription Center,
+      including the Opportunity (In)sight monthly newsletter, and via
+      KPMG Australia's Business Insights podcast feed.
+    entries:
+      - label: Public research access
+        name: insights_access
+        type: free
+        metric: report
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: 0
+        userMultiplied: false
+    elements:
+      - name: KPMG Insights articles and reports
+      - name: US Subscription Center newsletters
+      - name: Opportunity (In)sight monthly newsletter
+      - name: KPMG Australia Business Insights podcast
+      - name: KPMG member-firm RSS feeds (per-page)
+
+  - id: kpmg-origins
+    name: KPMG Origins (IWTS) — Operator / Software-Provider Plan
+    type: enterprise
+    description: >-
+      KPMG Origins is a separately commercialized waste-tracking
+      platform implementing the NSW Integrated Waste Tracking System
+      (IWTS) and other Australian jurisdictions. Operators and
+      software providers access the Movements and Registries REST APIs
+      with API-key authentication generated inside the operator
+      account. Commercial terms are set under the KPMG Origins
+      product agreement; no public per-call pricing is published.
+    entries:
+      - label: Operator / software-provider contract
+        name: origins_contract
+        type: subscription
+        metric: contract
+        limit: -1
+        timeFrame: year
+        geo: AU
+        unit: 1
+        price: contact KPMG Origins
+        userMultiplied: false
+    elements:
+      - name: Movements API (production + sandbox)
+      - name: Registries API (production + sandbox)
+      - name: API-key authentication (operator-generated)
+      - name: NSW operational; Queensland and other jurisdictions in scope
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

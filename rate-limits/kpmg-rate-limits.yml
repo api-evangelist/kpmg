@@ -1,0 +1,59 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: KPMG
+providerId: kpmg
+created: '2026-05-23'
+modified: '2026-05-23'
+reconciled: false
+tags:
+  - Consulting
+  - Professional Services
+  - Big Four
+  - Rate Limiting
+description: >-
+  KPMG does not publish a public developer API at the corporate
+  network level, so no public network-wide rate limits exist.
+  Throughput and SLAs on any KPMG-built API inside a client
+  engagement, a managed-services arrangement, or an AI Technology
+  deployment are negotiated bilaterally and owned by the client or
+  engagement contract. KPMG Origins (the Australian IWTS platform)
+  is the only KPMG-branded public API; its production and sandbox
+  REST surfaces use API-key authentication, but no public per-key
+  rate-limit numbers are documented on the help center pages
+  surveyed. Limits are governed by the operator / software-provider
+  agreement.
+notes: >-
+  No network-level public developer API — placeholder. KPMG Origins
+  rate limits are not publicly documented and are governed by the
+  product agreement.
+sources:
+  - https://kpmg.com/
+  - https://help.kpmgorigins.com/en/articles/1850-integrating-with-origins
+  - https://help.kpmgorigins.com/en/articles/36081-api-versioning
+responseCodes:
+  throttled: 429
+limits:
+  - name: No public rate limits (network-level)
+    scope: account
+    metric: not_applicable
+    limit: not applicable
+  - name: KPMG Origins (operator-agreement governed)
+    scope: api_key
+    metric: not_disclosed
+    limit: not publicly disclosed
+policies:
+  - name: Engagement-defined
+    description: >-
+      Throughput, concurrency, and SLAs on any KPMG-built API inside
+      a client engagement are defined in the engagement contract or
+      managed-services agreement, not by a public developer-portal
+      policy.
+  - name: Origins product-defined
+    description: >-
+      KPMG Origins per-key throughput, quotas, and SLAs are governed
+      by the operator / software-provider agreement; the public help
+      center does not document numeric per-key limits.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

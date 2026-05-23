@@ -1,0 +1,77 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "kpmg": "https://api-evangelist.com/vocab/kpmg#",
+    "schema": "https://schema.org/",
+    "org": "http://www.w3.org/ns/org#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "Organization": "schema:Organization",
+    "MemberFirm": "kpmg:MemberFirm",
+    "ServiceLine": "kpmg:ServiceLine",
+    "Capability": "kpmg:Capability",
+    "Industry": "schema:Industry",
+    "Sector": "kpmg:Sector",
+    "Solution": "kpmg:Solution",
+    "Alliance": "kpmg:Alliance",
+    "Framework": "kpmg:Framework",
+    "TrustPillar": "kpmg:TrustPillar",
+    "ResearchReport": "schema:Report",
+    "ReportSeries": "kpmg:ReportSeries",
+    "Newsletter": "schema:NewsArticle",
+    "Podcast": "schema:PodcastSeries",
+    "Webcast": "schema:BroadcastEvent",
+    "Facility": "schema:Place",
+    "Product": "schema:Product",
+    "API": "kpmg:API",
+    "Person": "schema:Person",
+
+    "id": "@id",
+    "type": "@type",
+
+    "name": "schema:name",
+    "description": "schema:description",
+    "url": "schema:url",
+    "logo": "schema:logo",
+    "founded": {
+      "@id": "schema:foundingDate",
+      "@type": "xsd:date"
+    },
+    "headquarters": "schema:address",
+    "country": "schema:addressCountry",
+    "region": "kpmg:region",
+    "employees": "schema:numberOfEmployees",
+
+    "parentOrganization": "schema:parentOrganization",
+    "memberOf": "org:memberOf",
+    "subOrganization": "schema:subOrganization",
+    "hasUnit": "org:hasUnit",
+    "serviceLine": "kpmg:serviceLine",
+    "capability": "kpmg:capability",
+    "industry": "kpmg:industry",
+    "sector": "kpmg:sector",
+    "solution": "kpmg:solution",
+
+    "framework": "kpmg:framework",
+    "trustPillar": "kpmg:trustPillar",
+    "alliancePartner": "kpmg:alliancePartner",
+    "technologyStack": "kpmg:technologyStack",
+
+    "published": {
+      "@id": "schema:datePublished",
+      "@type": "xsd:date"
+    },
+    "author": "schema:author",
+    "publisher": "schema:publisher",
+    "topic": "schema:about",
+    "series": "kpmg:series",
+    "audience": "schema:audience",
+
+    "broader": "skos:broader",
+    "narrower": "skos:narrower",
+    "related": "skos:related",
+    "prefLabel": "skos:prefLabel",
+    "altLabel": "skos:altLabel"
+  }
+}

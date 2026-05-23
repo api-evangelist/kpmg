@@ -1,0 +1,101 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: KPMG
+providerId: kpmg
+created: '2026-05-23'
+modified: '2026-05-23'
+reconciled: false
+tags:
+  - Consulting
+  - Professional Services
+  - Big Four
+  - FinOps
+  - FOCUS
+description: >-
+  KPMG has no public developer API at the network level and no
+  metered billing surface for a KPMG-branded developer product.
+  Costs flow through audit, assurance, tax, legal, advisory, ESG, or
+  AI engagement contracts and appear on client books as
+  professional-services spend, not as a metered API invoice. KPMG
+  itself runs FinOps and cloud financial-management practices for
+  clients on hyperscaler spend, but does not consume FinOps for its
+  own corporate offerings. KPMG Origins, the one product-priced
+  KPMG-branded API surface, bills under its operator /
+  software-provider agreement and not through a public per-call
+  meter.
+notes: >-
+  No public developer API — placeholder. KPMG FinOps is an advisory
+  offering, not a billed KPMG product. KPMG Origins billing is
+  product-agreement-based, not metered.
+sources:
+  - https://kpmg.com/
+  - https://kpmg.com/xx/en/what-we-do.html
+  - https://kpmgorigins.com/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: KPMG International Limited
+serviceCategory: Professional Services
+billingModel:
+  pricingCategory: Contract
+  billingFrequency: Per-Invoice
+  billingCurrency: USD
+  chargeCategories:
+    - Purchase
+focusColumns:
+  ServiceName: KPMG Engagement
+  ServiceCategory: Professional Services
+  ProviderName: KPMG
+  PublisherName: KPMG International Limited
+  InvoiceIssuerName: KPMG Member Firm
+  BillingCurrency: USD
+meters:
+  - name: engagement_contract
+    description: >-
+      Master engagement contract — not a metered unit; costs flow
+      through time-and-materials, fixed-fee, or
+      managed-services-subscription invoicing from the relevant KPMG
+      member firm.
+    unit: contract
+    aggregation: count
+    dimensions:
+      - client
+      - member_firm
+      - service_line
+  - name: origins_contract
+    description: >-
+      KPMG Origins operator / software-provider contract — billed
+      under the product agreement, not metered through a public
+      per-call meter.
+    unit: contract
+    aggregation: count
+    dimensions:
+      - operator
+      - jurisdiction
+principles:
+  - name: Visibility
+    description: >-
+      Track KPMG cost as professional-services spend on the client
+      GL, not as a metered API line.
+  - name: Allocation
+    description: >-
+      Allocate engagement cost to the sponsoring business unit;
+      pass-through hyperscaler costs incurred during a KPMG
+      managed-services arrangement should be allocated through the
+      underlying cloud bill rather than the KPMG invoice.
+  - name: Optimization
+    description: >-
+      Optimize by aligning engagement scope with the FinOps practices
+      KPMG itself promotes to clients for hyperscaler workloads,
+      ensuring scope-creep does not erode engagement value.
+  - name: Accountability
+    description: >-
+      Engagement sponsor on the client side and the KPMG engagement
+      partner share accountability for cost and value delivered.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

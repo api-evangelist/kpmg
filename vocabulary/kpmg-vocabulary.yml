@@ -1,0 +1,337 @@
+vocabulary:
+  name: KPMG Vocabulary
+  description: >-
+    Domain vocabulary for KPMG, the Big Four professional services
+    organization. Covers KPMG's network structure (KPMG International
+    Limited, member firms), service lines, capability solutions, the
+    KPMG Trusted AI framework and its ten pillars, industry verticals,
+    the KPMG Insights research-publishing surface, alliance partners,
+    and the KPMG Lakehouse innovation campus. Also models the one
+    publicly discoverable KPMG-branded REST API surface — KPMG Origins
+    (Australian Integrated Waste Tracking System).
+  version: '1.0'
+  created: '2026-05-23'
+  modified: '2026-05-23'
+
+organizational-concepts:
+  - term: KPMG International Limited
+    definition: >-
+      The private English company limited by guarantee that coordinates
+      the global KPMG network. KPMG International does not itself
+      provide services to clients; individual member firms are separate
+      legal entities.
+    aliases:
+      - KPMG International
+      - KPMG Global
+    related:
+      - Member Firm
+      - Network
+
+  - term: Member Firm
+    definition: >-
+      A legally separate and independent legal entity affiliated with
+      KPMG International Limited that delivers services to clients
+      under the KPMG brand in its national jurisdiction. No single
+      member firm has authority to obligate KPMG International or other
+      member firms regarding third parties.
+    related:
+      - KPMG International Limited
+      - Network
+
+  - term: Network
+    definition: >-
+      The global KPMG network of independent member firms — more than
+      276,000 partners and employees operating in 138 countries and
+      territories — coordinated under common branding, methodologies,
+      and quality standards by KPMG International Limited.
+    related:
+      - Member Firm
+      - KPMG International Limited
+
+  - term: Service Line
+    definition: >-
+      One of KPMG's six primary delivery surfaces under which client
+      work is organized — Audit & Assurance, Tax, Legal, Advisory, ESG,
+      and AI.
+    related:
+      - Capability
+      - Industry
+
+  - term: Capability
+    definition: >-
+      A subject-matter delivery capability inside a service line
+      (for example, Cyber inside Advisory, or AI Workforce inside the
+      AI service line).
+    related:
+      - Service Line
+      - Solution
+
+  - term: Industry
+    definition: >-
+      A vertical market KPMG serves. KPMG is structured around six
+      industries — Consumer, Retail & Leisure; Energy, Natural
+      Resources & Chemicals; Financial Services; Healthcare;
+      Government & Public Sector; and Private Enterprise.
+    related:
+      - Sector
+      - Service Line
+
+service-lines:
+  - term: Audit & Assurance
+    definition: >-
+      KPMG's audit-and-assurance service line, providing objective
+      assurance over data on which investors rely, alongside broader
+      assurance services and IT/data-analytics-based audit work.
+    related:
+      - Service Line
+
+  - term: Tax
+    definition: >-
+      KPMG's tax service line, covering corporate tax, indirect tax,
+      international tax, transfer pricing, and tax technology, with
+      strong recent focus on OECD Pillar Two implementation.
+    related:
+      - Service Line
+      - Pillar Two
+
+  - term: Legal
+    definition: >-
+      KPMG's legal service line, providing legal advisory and managed
+      legal services across the KPMG member-firm network.
+    related:
+      - Service Line
+
+  - term: Advisory
+    definition: >-
+      KPMG's management-and-technology advisory service line, covering
+      risk, regulation, deal advisory, strategy, customer, technology,
+      and operations transformation.
+    related:
+      - Service Line
+
+  - term: ESG
+    definition: >-
+      KPMG's environmental, social, and governance service line,
+      covering sustainability reporting, climate strategy, and
+      regulated sustainability disclosure.
+    related:
+      - Service Line
+      - KPMG Origins
+
+  - term: AI
+    definition: >-
+      KPMG's AI service line, anchored by the Trusted AI framework and
+      five AI solutions (Jumpstart, Strategy, Trust, Workforce,
+      Technology), built around alliances with Microsoft, Oracle,
+      Salesforce, SAP, ServiceNow, and Workday.
+    related:
+      - Service Line
+      - KPMG Trusted AI
+      - Alliance Partner
+
+frameworks-and-solutions:
+  - term: KPMG Trusted AI
+    definition: >-
+      KPMG's strategic approach and framework to designing, building,
+      deploying and using AI strategies and solutions in a responsible
+      and ethical manner so the firm can accelerate value with
+      confidence. Built on ten trust pillars.
+    related:
+      - Trust Pillar
+      - AI
+
+  - term: Trust Pillar
+    definition: >-
+      One of the ten pillars of KPMG's Trusted AI framework —
+      Reliability, Security, Safety, Privacy, Sustainability,
+      Explainability, Integrity, Transparency, Fairness, and
+      Accountability.
+    related:
+      - KPMG Trusted AI
+
+  - term: KPMG AI Jumpstart
+    definition: >-
+      Packaged KPMG offering to accelerate enterprise AI adoption
+      with a structured starting point for clients new to scaled AI.
+    related:
+      - AI
+      - Solution
+
+  - term: KPMG AI Strategy
+    definition: >-
+      KPMG's AI strategy advisory offering — defining business cases,
+      operating models, and roadmaps for enterprise AI.
+    related:
+      - AI
+      - Solution
+
+  - term: KPMG AI Trust
+    definition: >-
+      The AI Trust offering operationalizes the Trusted AI framework
+      with assurance, governance, and risk-management services for
+      AI systems in production.
+    related:
+      - AI
+      - KPMG Trusted AI
+
+  - term: KPMG AI Workforce
+    definition: >-
+      KPMG's workforce-augmentation and reskilling offering for
+      clients embedding AI in their operating model, plus the firm's
+      own internal AI-upskilling programs.
+    related:
+      - AI
+      - KPMG Lakehouse
+
+  - term: KPMG AI Technology
+    definition: >-
+      The AI Technology offering covers platform, MLOps, data, and
+      engineering work needed to deploy AI safely at enterprise scale.
+    related:
+      - AI
+      - Alliance Partner
+
+alliances-and-facilities:
+  - term: Alliance Partner
+    definition: >-
+      A strategic technology partner with whom KPMG co-delivers
+      implementation, integration, and managed-service offerings.
+      Includes Microsoft, Oracle, Salesforce, SAP, ServiceNow, and
+      Workday, with collaboration noted with the World Economic
+      Forum.
+    related:
+      - AI
+      - Advisory
+
+  - term: KPMG Lakehouse
+    definition: >-
+      KPMG's USD 450 million state-of-the-art learning and innovation
+      center at Lake Nona, Orlando (9301 Lake Nona Blvd, Orlando, FL
+      32827). Functions as the firm's cultural home and a major hub
+      for training a new generation of professionals to navigate
+      generative AI, with client innovation sessions in Gen AI, ESG,
+      and talent strategy.
+    related:
+      - AI
+      - KPMG AI Workforce
+
+research-surface:
+  - term: KPMG Insights
+    definition: >-
+      KPMG's research-publishing surface, organized across topic
+      categories including AI and Technology, ESG, Operations, Risk
+      and Regulation, Transformation, Value Creation, Workforce,
+      Public Policy & Regulatory Change, Business Transformation,
+      Audit & Assurance, Tax, Advisory, Sustainability, and
+      Transactions.
+    related:
+      - Report Series
+      - US Subscription Center
+
+  - term: Report Series
+    definition: >-
+      A recurring branded KPMG research publication. Examples include
+      the KPMG US Technology Survey Report, the KPMG Global
+      Third-Party Risk Management Survey, the KPMG M&A Deal Market
+      Study, the Fit for Pillar Two series, and the AI Governance
+      Principles for Boards series.
+    related:
+      - KPMG Insights
+
+  - term: Pillar Two
+    definition: >-
+      The OECD Pillar Two global minimum tax framework. KPMG
+      publishes the Fit for Pillar Two series guiding multinational
+      enterprises through Pillar Two compliance and operating-model
+      changes.
+    related:
+      - Tax
+      - Report Series
+
+  - term: AI Governance Principles for Boards
+    definition: >-
+      KPMG's published guidance for corporate boards on overseeing
+      enterprise AI deployment and governance — sitting at the
+      intersection of KPMG's AI and Risk and Regulation insight
+      tracks.
+    related:
+      - KPMG Trusted AI
+      - Report Series
+
+  - term: US Subscription Center
+    definition: >-
+      KPMG US's reader-distribution surface for newsletters —
+      including the Opportunity (In)sight monthly newsletter
+      providing data-driven C-suite perspectives.
+    related:
+      - KPMG Insights
+      - Newsletter
+
+  - term: Opportunity (In)sight
+    definition: >-
+      KPMG US's monthly newsletter providing unique and data-driven
+      perspectives on the most pressing C-suite issues.
+    related:
+      - Newsletter
+      - US Subscription Center
+
+  - term: KPMG Australia Business Insights Podcast
+    definition: >-
+      KPMG Australia's podcast feed covering business insights for
+      startups, family businesses, scaling companies, and
+      not-for-profit organizations, distributed via Blubrry RSS.
+    related:
+      - Podcast
+      - KPMG Insights
+
+  - term: RSS
+    definition: >-
+      Per-page RSS feeds offered across KPMG member-firm content
+      pages, surfaced via orange RSS icons. KPMG does not publish a
+      single consolidated network-wide RSS index; users discover
+      feeds page-by-page through the in-page icons.
+    related:
+      - KPMG Insights
+
+api-surface:
+  - term: Public Developer API
+    definition: >-
+      KPMG does not publish a public developer API or corporate
+      developer portal at the network level. There is no enumerable
+      public GitHub organization at `github.com/kpmg`. APIs KPMG
+      builds inside client engagements are client- or partner-branded
+      and live outside the KPMG developer surface.
+    related:
+      - KPMG Origins
+
+  - term: KPMG Origins
+    definition: >-
+      A digital platform from KPMG that enables waste operators to
+      track and report on hazardous and regulated waste. Implements
+      the NSW Integrated Waste Tracking System (IWTS) and is the
+      single discoverable public REST API surface inside the KPMG
+      brand. Exposes Movements and Registries REST APIs over Swagger
+      with API-key authentication; supports Australian state-level
+      regulatory waste reporting and is in scope for nationally
+      consistent adoption.
+    related:
+      - Public Developer API
+      - ESG
+
+  - term: Movements API
+    definition: >-
+      KPMG Origins REST API for submitting and querying waste
+      movement records. Base URL `https://app.kpmgorigins.com/client-api/`,
+      sandbox at `https://sandbox.app.kpmgorigins.com/client-api/`,
+      Swagger UI documentation, API-key authentication.
+    related:
+      - KPMG Origins
+
+  - term: Registries API
+    definition: >-
+      KPMG Origins REST API for managing Organisations and Locations
+      entities. Base URL `https://app.kpmgorigins.com/cr/client-api/`,
+      sandbox at `https://sandbox.app.kpmgorigins.com/cr/client-api/`,
+      Swagger UI documentation, API-key authentication.
+    related:
+      - KPMG Origins
