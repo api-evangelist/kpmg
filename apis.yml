@@ -173,6 +173,8 @@ common:
     url: https://kpmg.com/xx/en/careers.html
   - type: PressRoom
     url: https://kpmg.com/xx/en/about/press-releases.html
+  - type: LLMsTxt
+    url: https://kpmg.com/llms.txt
 properties:
   - type: JSONLD
     url: https://raw.githubusercontent.com/api-evangelist/kpmg/refs/heads/main/json-ld/kpmg-context.jsonld
