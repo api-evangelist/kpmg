@@ -1,0 +1,100 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "KPMG Origins APIs",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Movements",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Movements API v4 Swagger document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.kpmgorigins.com/client-api/v4/swagger.json"
+          },
+          "docs": "Movements API v4 Swagger document"
+        },
+        {
+          "info": {
+            "name": "Movements API v3 Swagger document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.kpmgorigins.com/client-api/v3/swagger.json"
+          },
+          "docs": "Movements API v3 Swagger document"
+        },
+        {
+          "info": {
+            "name": "Movements API v2 Swagger document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.kpmgorigins.com/client-api/v2/swagger.json"
+          },
+          "docs": "Movements API v2 Swagger document"
+        },
+        {
+          "info": {
+            "name": "Movements API Swagger UI",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.kpmgorigins.com/client-api/swagger/"
+          },
+          "docs": "Movements API Swagger UI"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Registries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Registries API v1 Swagger document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.kpmgorigins.com/cr/client-api/v1/swagger.json"
+          },
+          "docs": "Registries API v1 Swagger document"
+        },
+        {
+          "info": {
+            "name": "Registries API Swagger UI",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.kpmgorigins.com/cr/client-api/swagger/"
+          },
+          "docs": "Registries API Swagger UI"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

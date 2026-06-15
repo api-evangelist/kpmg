@@ -1,14 +1,34 @@
 # KPMG (kpmg)
 
-KPMG is one of the Big Four professional services organizations, operating through a global network of independent member firms affiliated with KPMG International Limited — a private English company limited by guarantee that itself does not provide services to clients. The network spans more than 276,000 partners and employees across 138 countries and territories. KPMG organizes delivery across six service lines (Audit & Assurance, Tax, Legal, Advisory, ESG, and AI) and serves six industries. AI is a first-class service line built on the **KPMG Trusted AI framework**, anchored at the firm's USD 450 million **KPMG Lakehouse** learning-and-innovation campus in Lake Nona, Orlando. KPMG does not publish a public developer API or corporate developer portal at the network level; the single discoverable KPMG-branded public REST API is **KPMG Origins**, the Australian Integrated Waste Tracking System (IWTS).
+KPMG is one of the Big Four professional services organizations, operating through a global network of independent member firms affiliated with KPMG International Limited, a private English company limited by guarantee that itself does not provide services to clients. The network spans more than 276,000 partners and employees across 138 countries and territories. KPMG organizes delivery across six service lines — Audit & Assurance, Tax, Legal, Advisory, ESG, and AI — and serves six industries: Consumer / Retail / Leisure; Energy, Natural Resources & Chemicals; Financial Services; Healthcare; Government & Public Sector; and Private Enterprise. AI is a first-class service line built on the KPMG Trusted AI framework — a ten-pillar approach covering Reliability, Security, Safety, Privacy, Sustainability, Explainability, Integrity, Transparency, Fairness, and Accountability — and packaged through five AI solutions: KPMG AI Jumpstart, AI Strategy, AI Trust, AI Workforce, and AI Technology. Alliances anchoring the AI delivery surface include Microsoft, Oracle, Salesforce, SAP, ServiceNow, and Workday, with collaboration noted with the World Economic Forum. KPMG Lakehouse, the firm's USD 450 million learning-and-innovation campus in Lake Nona, Orlando, is the cultural and AI-upskilling hub for the US firm and a venue for client innovation sessions in generative AI, ESG, and talent strategy. Insights is KPMG's research-publishing surface, organized across topic categories including AI and Technology, ESG, Operations, Risk and Regulation, Transformation, Value Creation, Workforce, Public Policy & Regulatory Change, Business Transformation, Audit & Assurance, Tax, Advisory, Sustainability, and Transactions, with flagship series such as the KPMG US Technology Survey Report, the KPMG Global Third-Party Risk Management Survey, the KPMG M&A Deal Market Study, Fit for Pillar Two, and AI Governance Principles for Boards. KPMG does not publish a public developer API or corporate developer portal at the network level; the firm has no enumerable public GitHub organization at `github.com/kpmg`. The one meaningful public API surface inside the KPMG brand is KPMG Origins (`kpmgorigins.com`) — an Australian regulated-waste tracking platform (initially the NSW Integrated Waste Tracking System / IWTS, with Queensland and other jurisdictions in scope) that exposes two REST APIs (Movements + Registries) over Swagger with API-key authentication, intended for integration with waste-operator software rather than as a general-purpose KPMG developer surface. Distribution to readers and client stakeholders flows through the Insights site, the US Subscription Center (Opportunity (In)sight monthly newsletter), KPMG Australia's Business Insights podcast, and per-page RSS feeds offered on individual KPMG member-firm pages.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/kpmg/refs/heads/main/apis.yml)
-
-**Run:** [Capabilities Using Naftiko](https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=kpmg-api-evangelist&utm_content=repo)
+**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/kpmg/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/kpmg/refs/heads/main/apis.yml)
 
 ## Tags
 
-Consulting, Audit, Tax, Legal, Professional Services, Big Four, Advisory, AI, Trusted AI, ESG, Sustainability, Risk, Regulation, Cybersecurity, Strategy, Technology, Workforce, Research, Insights, Industry Analysis, Transformation, Pillar Two, Waste Tracking
+- Consulting
+- Audit
+- Tax
+- Legal
+- Professional Services
+- Big Four
+- Advisory
+- AI
+- Trusted AI
+- ESG
+- Sustainability
+- Risk
+- Regulation
+- Cybersecurity
+- Strategy
+- Technology
+- Workforce
+- Research
+- Insights
+- Industry Analysis
+- Transformation
+- Pillar Two
+- Waste Tracking
 
 ## Timestamps
 
@@ -17,135 +37,60 @@ Consulting, Audit, Tax, Legal, Professional Services, Big Four, Advisory, AI, Tr
 
 ## APIs
 
-KPMG does not publish a public developer API or corporate developer portal at the network level. There is no enumerable public GitHub organization at `github.com/kpmg`. APIs KPMG builds inside client engagements are client- or partner-branded and live outside the KPMG developer surface.
+### KPMG Origins (IWTS)
 
-The one publicly discoverable KPMG-branded REST API is:
+KPMG Origins is the public-facing platform implementing the NSW Integrated Waste Tracking System (IWTS) and is the single discoverable public REST API surface inside the KPMG brand. It exposes two APIs — Movements (waste-movement reporting) and Registries (organisations and locations) — over Swagger, with API-key authentication generated by operators in their account settings. The system supports waste reporting automation and regulatory reporting for industry participants and software providers integrating waste data from their existing tooling, with the explicit goal of eliminating double-entry of regulatory data. NSW is currently operational with Queensland and additional Australian jurisdictions in scope.
 
-| API | Description | Auth | Surface |
-|---|---|---|---|
-| **KPMG Origins (IWTS)** — Movements | Submit / query waste-movement records for the NSW Integrated Waste Tracking System (and other Australian jurisdictions). | API key (operator-generated) | Swagger UI: production `app.kpmgorigins.com/client-api/swagger/`, sandbox `sandbox.app.kpmgorigins.com/client-api/swagger/` |
-| **KPMG Origins (IWTS)** — Registries | Manage Organisations and Locations entities used by the Movements API. | API key (operator-generated) | Swagger UI: production `app.kpmgorigins.com/cr/client-api/swagger/`, sandbox `sandbox.app.kpmgorigins.com/cr/client-api/swagger/` |
+- **Human URL:** [https://help.kpmgorigins.com/en/articles/1850-integrating-with-origins](https://help.kpmgorigins.com/en/articles/1850-integrating-with-origins)
+- **Base URL:** `https://app.kpmgorigins.com/client-api/`
 
-## Service Lines
+#### Tags
 
-| Service Line | Notes |
-|---|---|
-| Audit & Assurance | "Objective assurance over data on which investors rely." |
-| Tax | Corporate tax, indirect tax, international tax, transfer pricing, tax technology; flagship Fit for Pillar Two series. |
-| Legal | Legal advisory and managed legal services across the network. |
-| Advisory | Management and technology consulting — risk, regulation, deal advisory, strategy, customer, technology, operations. |
-| ESG | Sustainability reporting, climate strategy, regulated sustainability disclosure (anchors the KPMG Origins product). |
-| AI | Trusted-AI-anchored service line with five solutions (Jumpstart, Strategy, Trust, Workforce, Technology). |
+- Waste Tracking
+- Sustainability
+- ESG
+- Regulatory Reporting
+- Australia
 
-## Industries Served
+#### Properties
 
-| Industry |
-|---|
-| Consumer, Retail & Leisure |
-| Energy, Natural Resources & Chemicals |
-| Financial Services |
-| Healthcare |
-| Government & Public Sector |
-| Private Enterprise |
-
-## KPMG Trusted AI Framework
-
-"KPMG Trusted AI is our strategic approach and framework to designing, building, deploying and using AI strategies and solutions in a responsible and ethical manner so we can accelerate value with confidence."
-
-The framework is built on **ten trust pillars**:
-
-| # | Pillar | Description |
-|---|---|---|
-| 1 | Reliability | Consistent operation at intended precision. |
-| 2 | Security | Safeguarding against threats and adverse events. |
-| 3 | Safety | Protecting people, businesses, and property from harm. |
-| 4 | Privacy | Compliance with data protection regulations. |
-| 5 | Sustainability | Energy efficiency and emissions reduction. |
-| 6 | Explainability | Clear reasoning for AI conclusions. |
-| 7 | Integrity | Data quality and regulatory compliance. |
-| 8 | Transparency | Stakeholder disclosure throughout AI lifecycle. |
-| 9 | Fairness | Reducing bias against individuals and groups. |
-| 10 | Accountability | Human oversight across the lifecycle. |
-
-### KPMG AI Solutions
-
-- **KPMG AI Jumpstart** — packaged starting point for enterprise AI adoption
-- **KPMG AI Strategy** — business cases, operating models, roadmaps
-- **KPMG AI Trust** — assurance, governance, and risk management for AI in production (operationalizes Trusted AI)
-- **KPMG AI Workforce** — workforce augmentation and reskilling
-- **KPMG AI Technology** — platform, MLOps, data, and engineering delivery
-
-### Alliances
-
-**Microsoft, Oracle, Salesforce, SAP, ServiceNow, Workday**, with collaboration noted with the **World Economic Forum**.
-
-## KPMG Lakehouse
-
-KPMG's USD 450 million **state-of-the-art learning and innovation center** at **9301 Lake Nona Blvd, Orlando, FL 32827**. Designed as "KPMG on its best day," an innovative campus where professionals "spark curiosity, inspire one another, and explore the future." It is the firm's cultural home and a major hub for training a new generation of professionals to navigate generative AI as a core component of professional service. Used for client innovation sessions across Generative AI, ESG, and Talent and Culture strategy.
-
-## KPMG Insights (Research Surface)
-
-"Fresh insights are essential to strategic thinking and business innovation."
-
-**Topic categories:** AI and Technology, ESG, Operations, Risk and Regulation, Transformation, Value Creation, Workforce, Public Policy & Regulatory Change, Business Transformation, Audit & Assurance, Tax Services, Advisory Services, Sustainability, Technology & Data, Transactions.
-
-**Flagship reports / series observed:**
-
-| Series / Report | Notes |
-|---|---|
-| KPMG 2026 US Technology Survey Report | Annual US enterprise technology survey. |
-| KPMG 2026 M&A Deal Market Study | Annual deal-market study. |
-| KPMG Global Third-Party Risk Management Survey | Annual global TPRM survey. |
-| Fit for Pillar Two | Multi-part Tax series on OECD Pillar Two implementation. |
-| AI Governance Principles for Boards | Board-level AI oversight guidance. |
-| Banking transformation: The new agenda | Featured Insights piece on banking transformation. |
-| Trust, attitudes and use of artificial intelligence: A global study 2025 | Global AI trust study. |
-| Global tech report 2026 | Annual global tech research. |
-
-**Distribution surfaces:** the KPMG Insights site (global + US), the **US Subscription Center** (newsletters including **Opportunity (In)sight** — KPMG US's monthly C-suite newsletter), KPMG Australia's **Business Insights podcast** (Blubrry RSS feed), and per-page RSS feeds across member-firm pages (KPMG does not publish a single consolidated network-wide RSS index; users discover feeds page-by-page via orange RSS icons).
-
-## KPMG Origins (Public API Footnote)
-
-KPMG Origins is "a digital tool that enables waste operators to track and report on hazardous and regulated waste," implementing the NSW Integrated Waste Tracking System (IWTS). It is the single discoverable KPMG-branded public REST API surface. NSW is operational; Queensland and additional Australian jurisdictions are in scope for nationally consistent adoption.
-
-- **Help center:** https://help.kpmgorigins.com/en/
-- **Integration guide:** https://help.kpmgorigins.com/en/articles/1850-integrating-with-origins
-- **API versioning:** https://help.kpmgorigins.com/en/articles/36081-api-versioning
-- **Auth model:** API keys generated by operators in account settings (not OAuth)
+- [Documentation](https://help.kpmgorigins.com/en/articles/1850-integrating-with-origins)
+- [Swagger U I](https://app.kpmgorigins.com/client-api/swagger/)
+- [Swagger U I](https://sandbox.app.kpmgorigins.com/client-api/swagger/)
+- [Swagger U I](https://app.kpmgorigins.com/cr/client-api/swagger/)
+- [Swagger U I](https://sandbox.app.kpmgorigins.com/cr/client-api/swagger/)
+- [Authentication](https://help.kpmgorigins.com/en/articles/1850-integrating-with-origins)
+- [Help Center](https://help.kpmgorigins.com/en/)
+- [Versioning](https://help.kpmgorigins.com/en/articles/36081-api-versioning)
+- [Postman Collection](collections/kpmg.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/kpmg.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
 ## Common Properties
 
 - [Website](https://kpmg.com/)
-- [About — KPMG Global Organization](https://kpmg.com/xx/en/about.html)
-- [What We Do (Services)](https://kpmg.com/xx/en/what-we-do.html)
-- [KPMG Insights (Global)](https://kpmg.com/xx/en/our-insights.html)
-- [KPMG Insights and Resources (US)](https://kpmg.com/us/en/insights-and-resources.html)
-- [KPMG AI Services](https://kpmg.com/xx/en/what-we-do/services/ai/ai-services.html)
-- [KPMG Trusted AI Framework](https://kpmg.com/xx/en/what-we-do/services/ai/trusted-ai-framework.html)
-- [KPMG AI Trust (US)](https://kpmg.com/us/en/capabilities-services/ai/trusted-ai.html)
-- [KPMG Lakehouse](https://kpmg.com/us/en/capabilities-services/kpmg-innovation-services/lakehouse.html)
-- [US Subscription Center](https://kpmg.com/us/en/subscription.html)
-- [KPMG Account / Newsletter Registration](https://kpmg.com/xx/en/account/register.html)
-- [How to use KPMG RSS feeds](https://kpmg.com/us/en/home/misc/how-to-use-rss-feeds.html)
-- [KPMG Careers — All RSS feeds (Talent-Soft)](https://kpmg-career.talent-soft.com/job/all-rss-feeds.aspx)
-- [KPMG Australia Business Insights Podcast (Blubrry RSS)](https://feeds.blubrry.com/feeds/kpmg_au_bi.xml)
-- [KPMG Origins (product site)](https://kpmgorigins.com/)
+- [About](https://kpmg.com/xx/en/about.html)
+- [Services](https://kpmg.com/xx/en/what-we-do.html)
+- [Knowledge Center](https://kpmg.com/xx/en/our-insights.html)
+- [Knowledge Center](https://kpmg.com/us/en/insights-and-resources.html)
+- [Hub](https://kpmg.com/xx/en/what-we-do/services/ai/ai-services.html)
+- [Framework](https://kpmg.com/xx/en/what-we-do/services/ai/trusted-ai-framework.html)
+- [Service](https://kpmg.com/us/en/capabilities-services/ai/trusted-ai.html)
+- [Facility](https://kpmg.com/us/en/capabilities-services/kpmg-innovation-services/lakehouse.html)
+- [Newsletter](https://kpmg.com/us/en/subscription.html)
+- [Registration](https://kpmg.com/xx/en/account/register.html)
+- [Help](https://kpmg.com/us/en/home/misc/how-to-use-rss-feeds.html)
+- [R S S](https://kpmg-career.talent-soft.com/job/all-rss-feeds.aspx)
+- [Podcast](https://feeds.blubrry.com/feeds/kpmg_au_bi.xml)
+- [Product](https://kpmgorigins.com/)
 - [LinkedIn](https://www.linkedin.com/company/kpmg)
-- [X / Twitter](https://x.com/KPMG)
+- [X (Twitter)](https://x.com/KPMG)
 - [YouTube](https://www.youtube.com/user/KPMG)
 - [Client Stories](https://kpmg.com/xx/en/client-stories.html)
 - [Careers](https://kpmg.com/xx/en/careers.html)
-
-## Generated Artifacts
-
-- [JSON-LD context](json-ld/kpmg-context.jsonld)
-- [Vocabulary](vocabulary/kpmg-vocabulary.yml)
-- [Plans](plans/kpmg-plans-pricing.yml)
-- [Rate limits](rate-limits/kpmg-rate-limits.yml)
-- [FinOps](finops/kpmg-finops.yml)
+- [Press Room](https://kpmg.com/xx/en/about/press-releases.html)
+- [L L Ms Txt](https://kpmg.com/llms.txt)
 
 ## Maintainers
 
 **FN:** Kin Lane
-
 **Email:** kin@apievangelist.com
