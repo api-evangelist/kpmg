@@ -43,7 +43,7 @@ description: >-
   Business Insights podcast, and per-page RSS feeds offered on individual
   KPMG member-firm pages.
 kind: company
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - Consulting
   - Audit
