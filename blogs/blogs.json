@@ -7,8 +7,15 @@
       "title": "",
       "saved": 0,
       "method": "none"
+    },
+    {
+      "source": "https://kpmg-career.talent-soft.com/handlers/offerRss.ashx?LCID=2057",
+      "feed_url": "https://kpmg-career.talent-soft.com/handlers/offerRss.ashx?LCID=2057",
+      "title": "",
+      "saved": 9,
+      "method": "feed"
     }
   ],
-  "post_count": 0,
-  "fetched": "2026-06-14T20:42:17Z"
+  "post_count": 9,
+  "fetched": "2026-06-27T12:03:07Z"
 }

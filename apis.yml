@@ -137,7 +137,7 @@ common:
   - type: Framework
     name: KPMG Trusted AI Framework
     url: https://kpmg.com/xx/en/what-we-do/services/ai/trusted-ai-framework.html
-  - type: Service
+  - type: Services
     name: KPMG AI Trust (US)
     url: https://kpmg.com/us/en/capabilities-services/ai/trusted-ai.html
   - type: Facility
@@ -173,7 +173,7 @@ common:
     url: https://kpmg.com/xx/en/careers.html
   - type: PressRoom
     url: https://kpmg.com/xx/en/about/press-releases.html
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://kpmg.com/llms.txt
 properties:
   - type: JSONLD
