@@ -1,0 +1,20 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/kpmg-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: ApiKeyAuth
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: |-
+    Operator-generated API access key from KPMG Origins account
+    settings. The integration guide describes the key as required
+    for all calls to the client-api surface; see
+    https://help.kpmgorigins.com/en/articles/1850-integrating-with-origins
+  sources:
+  - openapi/kpmg-openapi.yml

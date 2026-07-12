@@ -117,6 +117,10 @@ apis:
       - type: Versioning
         url: https://help.kpmgorigins.com/en/articles/36081-api-versioning
 common:
+  - type: DomainSecurity
+    url: security/kpmg-domain-security.yml
+  - type: Authentication
+    url: authentication/kpmg-authentication.yml
   - type: Website
     url: https://kpmg.com/
   - type: About
