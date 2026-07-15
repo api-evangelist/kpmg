@@ -117,6 +117,8 @@ apis:
       - type: Versioning
         url: https://help.kpmgorigins.com/en/articles/36081-api-versioning
 common:
+  - type: AgenticAccess
+    url: agentic-access/kpmg-agentic-access.yml
   - type: DomainSecurity
     url: security/kpmg-domain-security.yml
   - type: Authentication
