@@ -1,0 +1,66 @@
+openapi: 3.1.0
+info:
+  title: KPMG Origins APIs Discovery Registries API
+  version: '1.0'
+  description: "KPMG Origins is the public-facing platform implementing the NSW\nIntegrated Waste Tracking System (IWTS) and is the single discoverable\npublic REST API surface inside the KPMG brand. It exposes two API\nfamilies:\n\n  * Movements API   - waste-movement reporting (Swagger v1, v2, v3, v4)\n  * Registries API  - organisations and locations (Swagger v1)\n\nA representative subset of endpoints from each family is included\nhere. Authentication uses an operator-generated API access key,\ndocumented at the integration guide URL below.\n"
+  contact:
+    name: Kin Lane
+    email: kin@apievangelist.com
+    url: https://apievangelist.com
+  license:
+    name: Documentation reference only
+    url: https://help.kpmgorigins.com/en/articles/1850-integrating-with-origins
+servers:
+- url: https://app.kpmgorigins.com
+  description: Production
+- url: https://sandbox.app.kpmgorigins.com
+  description: Sandbox
+security:
+- ApiKeyAuth: []
+tags:
+- name: Registries
+paths:
+  /cr/client-api/v1/swagger.json:
+    get:
+      summary: Registries API v1 Swagger document
+      operationId: registriesV1Swagger
+      tags:
+      - Registries
+      responses:
+        '200':
+          description: Registries API v1 Swagger 2.0 document
+          content:
+            application/json:
+              schema:
+                type: object
+  /cr/client-api/swagger/:
+    get:
+      summary: Registries API Swagger UI
+      operationId: registriesSwaggerUi
+      tags:
+      - Registries
+      responses:
+        '200':
+          description: Swagger UI HTML
+          content:
+            text/html:
+              schema:
+                type: string
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Operator-generated API access key from KPMG Origins account
+
+        settings. The integration guide describes the key as required
+
+        for all calls to the client-api surface; see
+
+        https://help.kpmgorigins.com/en/articles/1850-integrating-with-origins
+
+        '
+externalDocs:
+  description: KPMG Origins integration guide
+  url: https://help.kpmgorigins.com/en/articles/1850-integrating-with-origins
