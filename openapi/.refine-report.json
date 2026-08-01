@@ -1,0 +1,18 @@
+{
+  "provider": "kpmg",
+  "sources": [
+    "kpmg-discovery-api-openapi.yml",
+    "kpmg-movements-api-openapi.yml",
+    "kpmg-registries-api-openapi.yml"
+  ],
+  "outputs": [
+    "kpmg-discovery-api-openapi.yml",
+    "kpmg-movements-api-openapi.yml",
+    "kpmg-registries-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
