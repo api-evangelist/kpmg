@@ -1,0 +1,527 @@
+{
+  "item": [
+    {
+      "id": "4dc58a5f-5f3e-41ee-b973-0d8563a61770",
+      "name": "Discovery",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "75aa854d-d070-49c4-bfa1-118382303140",
+          "name": "Movements API v4 Swagger document",
+          "request": {
+            "name": "Movements API v4 Swagger document",
+            "description": {},
+            "url": {
+              "path": [
+                "client-api",
+                "v4",
+                "swagger.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c9f0c90f-cfe1-4d4b-b17e-1351395c2991",
+              "name": "Movements API v4 Swagger 2.0 document",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "client-api",
+                    "v4",
+                    "swagger.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dbb1c618-4e7f-4555-ac63-2862aef47d00",
+          "name": "Movements API v3 Swagger document",
+          "request": {
+            "name": "Movements API v3 Swagger document",
+            "description": {},
+            "url": {
+              "path": [
+                "client-api",
+                "v3",
+                "swagger.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b0e025f8-cf6d-49cf-97a6-801d68cb085e",
+              "name": "Movements API v3 Swagger 2.0 document",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "client-api",
+                    "v3",
+                    "swagger.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1a4d9425-ca41-4295-b6a0-9196c370a492",
+          "name": "Movements API v2 Swagger document",
+          "request": {
+            "name": "Movements API v2 Swagger document",
+            "description": {},
+            "url": {
+              "path": [
+                "client-api",
+                "v2",
+                "swagger.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e2d1e008-b46e-430f-8cf9-ffb5caab87bf",
+              "name": "Movements API v2 Swagger 2.0 document",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "client-api",
+                    "v2",
+                    "swagger.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0f9f764a-1944-4e63-8f25-801b13a67507",
+          "name": "Registries API v1 Swagger document",
+          "request": {
+            "name": "Registries API v1 Swagger document",
+            "description": {},
+            "url": {
+              "path": [
+                "cr",
+                "client-api",
+                "v1",
+                "swagger.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2887d4a3-bc1b-4e04-a62e-947189b3ca09",
+              "name": "Registries API v1 Swagger 2.0 document",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cr",
+                    "client-api",
+                    "v1",
+                    "swagger.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "061343a0-7860-467e-aaae-997f004cbbad",
+          "name": "Movements API Swagger UI",
+          "request": {
+            "name": "Movements API Swagger UI",
+            "description": {},
+            "url": {
+              "path": [
+                "client-api",
+                "swagger",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/html"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "51304eae-ef60-4a25-971a-b110293e697c",
+              "name": "Swagger UI HTML",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "client-api",
+                    "swagger",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/html"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/html"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c6b59d7c-cc2c-481f-86da-44d0086d0d0e",
+          "name": "Registries API Swagger UI",
+          "request": {
+            "name": "Registries API Swagger UI",
+            "description": {},
+            "url": {
+              "path": [
+                "cr",
+                "client-api",
+                "swagger",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/html"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "76e7180e-1057-41e9-9481-2428d77d0b83",
+              "name": "Swagger UI HTML",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cr",
+                    "client-api",
+                    "swagger",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/html"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/html"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://app.kpmgorigins.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "781e0ad0-211f-48d8-87fd-223cd624a30d",
+    "name": "KPMG Origins APIs Discovery API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "KPMG Origins is the public-facing platform implementing the NSW\nIntegrated Waste Tracking System (IWTS) and is the single discoverable\npublic REST API surface inside the KPMG brand. It exposes two API\nfamilies:\n\n  * Movements API   - waste-movement reporting (Swagger v1, v2, v3, v4)\n  * Registries API  - organisations and locations (Swagger v1)\n\nA representative subset of endpoints from each family is included\nhere. Authentication uses an operator-generated API access key,\ndocumented at the integration guide URL below.\n\n\nContact Support:\n Name: Kin Lane\n Email: kin@apievangelist.com",
+      "type": "text/plain"
+    }
+  }
+}

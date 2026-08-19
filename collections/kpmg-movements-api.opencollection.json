@@ -1,0 +1,70 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "KPMG Origins APIs Discovery Movements API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Movements",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Movements API v4 Swagger document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.kpmgorigins.com/client-api/v4/swagger.json"
+          },
+          "docs": "Movements API v4 Swagger document"
+        },
+        {
+          "info": {
+            "name": "Movements API v3 Swagger document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.kpmgorigins.com/client-api/v3/swagger.json"
+          },
+          "docs": "Movements API v3 Swagger document"
+        },
+        {
+          "info": {
+            "name": "Movements API v2 Swagger document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.kpmgorigins.com/client-api/v2/swagger.json"
+          },
+          "docs": "Movements API v2 Swagger document"
+        },
+        {
+          "info": {
+            "name": "Movements API Swagger UI",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.kpmgorigins.com/client-api/swagger/"
+          },
+          "docs": "Movements API Swagger UI"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

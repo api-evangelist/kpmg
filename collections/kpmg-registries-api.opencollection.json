@@ -1,0 +1,48 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "KPMG Origins APIs Discovery Registries API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Registries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Registries API v1 Swagger document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.kpmgorigins.com/cr/client-api/v1/swagger.json"
+          },
+          "docs": "Registries API v1 Swagger document"
+        },
+        {
+          "info": {
+            "name": "Registries API Swagger UI",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.kpmgorigins.com/cr/client-api/swagger/"
+          },
+          "docs": "Registries API Swagger UI"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

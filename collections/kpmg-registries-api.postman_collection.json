@@ -1,0 +1,211 @@
+{
+  "item": [
+    {
+      "id": "948f2d2f-0551-49b4-be3d-df32c72a756b",
+      "name": "Registries",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "03d0af02-7b8b-4ad8-a4c4-4209f7cc4e7e",
+          "name": "Registries API v1 Swagger document",
+          "request": {
+            "name": "Registries API v1 Swagger document",
+            "description": {},
+            "url": {
+              "path": [
+                "cr",
+                "client-api",
+                "v1",
+                "swagger.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5ad4781d-964e-400f-aac1-bd9abb2eec62",
+              "name": "Registries API v1 Swagger 2.0 document",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cr",
+                    "client-api",
+                    "v1",
+                    "swagger.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7ce08a34-5861-4969-933a-5d8d14b281b0",
+          "name": "Registries API Swagger UI",
+          "request": {
+            "name": "Registries API Swagger UI",
+            "description": {},
+            "url": {
+              "path": [
+                "cr",
+                "client-api",
+                "swagger",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/html"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a3c3e651-e695-4278-beda-98ac326704fd",
+              "name": "Swagger UI HTML",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cr",
+                    "client-api",
+                    "swagger",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/html"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/html"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://app.kpmgorigins.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "88ee51bb-f0ba-4fa9-90ab-cdbfcb046faa",
+    "name": "KPMG Origins APIs Discovery Registries API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "KPMG Origins is the public-facing platform implementing the NSW\nIntegrated Waste Tracking System (IWTS) and is the single discoverable\npublic REST API surface inside the KPMG brand. It exposes two API\nfamilies:\n\n  * Movements API   - waste-movement reporting (Swagger v1, v2, v3, v4)\n  * Registries API  - organisations and locations (Swagger v1)\n\nA representative subset of endpoints from each family is included\nhere. Authentication uses an operator-generated API access key,\ndocumented at the integration guide URL below.\n\n\nContact Support:\n Name: Kin Lane\n Email: kin@apievangelist.com",
+      "type": "text/plain"
+    }
+  }
+}
