@@ -6,17 +6,16 @@
       "feed_url": "https://kpmg.com/us/en/home/misc/how-to-use-rss-feeds.html",
       "title": "",
       "saved": 0,
-      "method": "none",
-      "error": "parse_failed"
+      "method": "none"
     },
     {
       "source": "https://kpmg-career.talent-soft.com/handlers/offerRss.ashx?LCID=2057",
       "feed_url": "https://kpmg-career.talent-soft.com/handlers/offerRss.ashx?LCID=2057",
       "title": "",
-      "saved": 3,
+      "saved": 0,
       "method": "feed"
     }
   ],
-  "post_count": 78,
-  "fetched": "2026-08-15T12:11:08Z"
+  "post_count": 90,
+  "fetched": "2026-08-22T20:20:02Z"
 }
