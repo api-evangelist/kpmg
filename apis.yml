@@ -150,16 +150,6 @@ apis:
     url: https://help.kpmgorigins.com/en/
   - type: Versioning
     url: https://help.kpmgorigins.com/en/articles/36081-api-versioning
-- aid: kpmg:kpmg-discovery-api
-  name: KPMG Discovery API
-  description: The Discovery API from KPMG — 6 operation(s) for discovery.
-  humanURL: https://help.kpmgorigins.com/en/articles/1850-integrating-with-origins
-  baseURL: https://app.kpmgorigins.com/client-api/
-  tags:
-  - Discovery
-  properties:
-  - type: OpenAPI
-    url: openapi/kpmg-discovery-api-openapi.yml
 - aid: kpmg:kpmg-movements-api
   name: KPMG Movements API
   description: The Movements API from KPMG — 4 operation(s) for movements.
