@@ -1,8 +1,12 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: KPMG Origins APIs Discovery Movements API
+  title: KPMG Origins Movements API
   version: '1.0'
-  description: "KPMG Origins is the public-facing platform implementing the NSW\nIntegrated Waste Tracking System (IWTS) and is the single discoverable\npublic REST API surface inside the KPMG brand. It exposes two API\nfamilies:\n\n  * Movements API   - waste-movement reporting (Swagger v1, v2, v3, v4)\n  * Registries API  - organisations and locations (Swagger v1)\n\nA representative subset of endpoints from each family is included\nhere. Authentication uses an operator-generated API access key,\ndocumented at the integration guide URL below.\n"
+  description: 'KPMG Origins is the public-facing platform implementing the NSW
+
+    Integrated Waste Tracking System (IWTS) and is the single discoverable
+
+    public REST API surface inside the KPMG brand.'
   contact:
     name: Kin Lane
     email: kin@apievangelist.com

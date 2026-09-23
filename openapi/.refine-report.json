@@ -1,18 +1,26 @@
 {
   "provider": "kpmg",
   "sources": [
-    "kpmg-discovery-api-openapi.yml",
-    "kpmg-movements-api-openapi.yml",
-    "kpmg-registries-api-openapi.yml"
+    "_original/kpmg-openapi.yml"
   ],
   "outputs": [
-    "kpmg-discovery-api-openapi.yml",
     "kpmg-movements-api-openapi.yml",
     "kpmg-registries-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "kpmg-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "kpmg-openapi.yml: declared missing tag: Discovery",
+    "kpmg-openapi.yml: declared missing tag: Movements",
+    "kpmg-openapi.yml: declared missing tag: Registries",
+    "kpmg-openapi.yml: multi-axis tagging (3 tags, 2 first tags, 2.00x duplication over 6 operations) \u2014 split on first tag, 6 operations narrowed",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "kpmg-movements-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kpmg-registries-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
