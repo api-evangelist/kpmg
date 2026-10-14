@@ -1,7 +1,10 @@
 generated: '2026-10-13'
 method: searched
 checked:
+- geotab/integrations/geotab-integration-edges.yml
 - https://azuremarketplace.microsoft.com/
+- ukg/integrations/ukg-integration-edges.yml
+- workday/integrations/workday-integration-edges.yml
 marketplace_apps: []
 edges:
 - partner_name: Microsoft Azure Marketplace
@@ -19,3 +22,63 @@ edges:
   seller_name: KPMG Lower Gulf Limited
   detected_by: sweep-cloud-marketplaces.py
   detected: '2026-10-13'
+- partner_name: Geotab (own)
+  partner: geotab
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://marketplace.geotab.com/partner/kpmg-australia/
+  mirror_of: geotab/integrations/geotab-integration-edges.yml
+  apps:
+  - KPMG Australia
+  listing_count: 1
+  detected: '2026-10-14'
+  detected_by: mirror-platform-listings.py
+- partner_name: UKG (own)
+  partner: ukg
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://marketplace.ukg.com/apps/449385/kpmg
+  mirror_of: ukg/integrations/ukg-integration-edges.yml
+  apps:
+  - KPMG
+  listing_count: 1
+  detected: '2026-10-14'
+  detected_by: mirror-platform-listings.py
+  category: Geo-Regions
+- partner_name: Workday (own)
+  partner: workday
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://marketplace.workday.com/apps/864797/kpmg-accounting-center-reclassification
+  mirror_of: workday/integrations/workday-integration-edges.yml
+  apps:
+  - KPMG Accounting Center Reclassification
+  - U.S. Domestic Wage Allocation
+  - KPMG Clinical Competencies
+  - KPMG Currency Rates on Demand
+  listing_count: 4
+  detected: '2026-10-14'
+  detected_by: mirror-platform-listings.py
+  category: Financial Management
+  badges:
+  - Built on Workday
+  - Approved Partner Solution
+source:
+- geotab/integrations/geotab-integration-edges.yml
+- ukg/integrations/ukg-integration-edges.yml
+- workday/integrations/workday-integration-edges.yml

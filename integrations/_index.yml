@@ -15,3 +15,41 @@
   relationship: distribution-channel
   status: not-a-workflow
   arazzo: null
+- slug: kpmg-geotab-own
+  label: Geotab (own)
+  partner: geotab
+  partner_name: Geotab (own)
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.geotab.com/partner/kpmg-australia/
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: kpmg-ukg-own
+  label: UKG (own)
+  partner: ukg
+  partner_name: UKG (own)
+  category: Geo-Regions
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.ukg.com/apps/449385/kpmg
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: kpmg-workday-own
+  label: Workday (own)
+  partner: workday
+  partner_name: Workday (own)
+  category: Financial Management
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.workday.com/apps/864797/kpmg-accounting-center-reclassification
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
