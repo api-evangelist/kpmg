@@ -3,6 +3,7 @@ method: searched
 checked:
 - geotab/integrations/geotab-integration-edges.yml
 - https://azuremarketplace.microsoft.com/
+- monday-com/integrations/monday-com-integration-edges.yml
 - ukg/integrations/ukg-integration-edges.yml
 - workday/integrations/workday-integration-edges.yml
 marketplace_apps: []
@@ -78,6 +79,23 @@ edges:
   badges:
   - Built on Workday
   - Approved Partner Solution
+- partner_name: Monday.com (own)
+  partner: monday-com
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://monday.com/marketplace/listing/10000068
+  mirror_of: monday-com/integrations/monday-com-integration-edges.yml
+  apps:
+  - Azure DevOps Integration App
+  listing_count: 1
+  detected: '2026-10-18'
+  detected_by: mirror-platform-listings.py
+  category: monday.com app
 source:
 - geotab/integrations/geotab-integration-edges.yml
 - ukg/integrations/ukg-integration-edges.yml

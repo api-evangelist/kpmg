@@ -53,3 +53,16 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
+- slug: kpmg-monday-com-own
+  label: Monday.com (own)
+  partner: monday-com
+  partner_name: Monday.com (own)
+  category: monday.com app
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://monday.com/marketplace/listing/10000068
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
