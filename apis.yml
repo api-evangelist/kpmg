@@ -162,26 +162,46 @@ apis:
     url: https://help.kpmgorigins.com/en/
   - type: Versioning
     url: https://help.kpmgorigins.com/en/articles/36081-api-versioning
-- aid: kpmg:kpmg-movements-api
-  name: KPMG Movements API
-  description: The Movements API from KPMG — 4 operation(s) for movements.
+- aid: kpmg:kpmg-locations-api
+  name: KPMG Locations API
+  description: APIs for Locations
   humanURL: https://help.kpmgorigins.com/en/articles/1850-integrating-with-origins
   baseURL: https://app.kpmgorigins.com/client-api/
   tags:
-  - Movements
+  - Locations
   properties:
   - type: OpenAPI
-    url: openapi/kpmg-movements-api-openapi.yml
-- aid: kpmg:kpmg-registries-api
-  name: KPMG Registries API
-  description: The Registries API from KPMG — 2 operation(s) for registries.
+    url: openapi/kpmg-locations-api-openapi.yml
+- aid: kpmg:kpmg-organizations-api
+  name: KPMG Organizations API
+  description: APIs to query Organizations
   humanURL: https://help.kpmgorigins.com/en/articles/1850-integrating-with-origins
   baseURL: https://app.kpmgorigins.com/client-api/
   tags:
-  - Registries
+  - Organizations
   properties:
   - type: OpenAPI
-    url: openapi/kpmg-registries-api-openapi.yml
+    url: openapi/kpmg-organizations-api-openapi.yml
+- aid: kpmg:kpmg-producttemplates-api
+  name: KPMG Product Templates API
+  description: APIs for Product Catalogue/Product Templates/Materials
+  humanURL: https://help.kpmgorigins.com/en/articles/1850-integrating-with-origins
+  baseURL: https://app.kpmgorigins.com/client-api/
+  tags:
+  - ProductTemplates
+  properties:
+  - type: OpenAPI
+    url: openapi/kpmg-producttemplates-api-openapi.yml
+- aid: kpmg:kpmg-token-api
+  name: KPMG Token API
+  description: APIs for Access Token
+  humanURL: https://help.kpmgorigins.com/en/articles/1850-integrating-with-origins
+  baseURL: https://app.kpmgorigins.com/client-api/
+  tags:
+  - Token
+  properties:
+  - type: OpenAPI
+    url: openapi/kpmg-token-api-openapi.yml
 common:
   - type: Plans
     url: plans/kpmg-plans-pricing.yml

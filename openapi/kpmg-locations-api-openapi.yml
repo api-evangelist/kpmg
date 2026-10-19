@@ -1,0 +1,1252 @@
+openapi: 3.2.0
+info:
+  title: KPMG Origins Locations API
+  description: '- How to authenticate
+
+    - Definitions of Key API Endpoints
+
+    - Other Information
+
+
+    KPMG Origins provides customers with access to their data, and data shared with them, through APIs. The APIs allow customers with the ability to create, update and extract available data.
+
+
+    ## How to authenticate
+
+    1) Create API credentials via KPMG Origins UI (NB: only users with the Administrator role can manage API credentials):
+
+    - Login to KPMG Origins
+
+    - Go to Settings page, then API Credentials tab
+
+    - Create API credentials
+
+    - Copy the Client Id and Secret (NB: you will not be able to recover the secret value if lost, however, you can generate a new one)
+
+    2) Exchange API Credentials for a short-lived _access token_
+
+    - Make a POST request to **https://<KPMG Origins hostname>/cr/client-api/v1/token**
+
+    ```
+
+    {
+
+    "clientId": "",
+
+    "secret": ""
+
+    }
+
+    ```
+
+    3) Make authenticated requests to KPMG Origins API:
+
+    - Use the access token value form the token API response as a Bearer token to make requests to the API i.e. set Authorization header like this: `Authorization: Bearer `
+
+    ```
+
+    NB: access token is only valid for a short time, if requests start failing with 401 status code, repeat steps 2) and 3)
+
+    ```
+
+
+    ## Definitions of Key API Endpoints
+
+
+    This section explains key definitions of key data entities and API endpoints
+
+
+    * **Organisation**: the organisation can either be an organisation or an individual.
+
+    - An *organisation* is a participant which usually holds an ABN or ACN, usually an entity participating in commercial activities.
+
+    - An *individual* is a participant who has no ABN or ACN. For example, in Movement, a generator who is a private individual (e.g. residential asbestos pick-up).
+
+
+    This distinction is necessary as it relates to a validation in the ``post organisation`` API.
+
+    * **Location**: locations represent geographical sites which are operated by organisations. Each location possesses a unique location ID to distinguish it from other locations in the system, as well as an organisation / client ID that specifies which organisation operates it.
+
+
+    Please see the details on each individual API to learn more about the specific criteria needed for a successful payload.
+
+
+    ## Other Information
+
+    - The format for Client Id mentioned in the APIs is ``IDType.IDValue``
+
+    - By default, the collection of items returned can include up to 10,000 items, but this can be changed via the ``Limit`` and ``Skip`` parameters.'
+  version: '1.0'
+tags:
+- name: Locations
+  description: APIs for Locations
+paths:
+  /cr/client-api/v1/locations:
+    post:
+      tags:
+      - Locations
+      summary: Create a New Location
+      description: '### Creates a New Location ###
+
+
+        This API allows users to create a new location in the KPMG Origins platform. The User must specify the organisation that is the owner or custodian of the location.
+
+        Field Name | Description | Mandatory | Data Type / Format | Example
+
+        ---|---|---|---|---
+
+        id | The internal identifier of the location that was created by the client. If one is not provided, one will be auto-generated for that location. | | [ID_Type].[ID_Value] | LOC.123456789
+
+        organisationId | The **Organisation / Client ID** of the organisation. The User can provide their own Organisation / Cient ID. In addition, they can creating a location on behalf of another organisation. | Mandatory | [ID_Type].[ID_Value] | ABN.12345678910
+
+        name | The name of the location. | Mandatory | String | Sample Co Sydney Processing Plant
+
+        countryCode | The three digit country code of the location. | Mandatory | String | AUS
+
+        city | The city where the location is situated. | Mandatory | String | Sydney
+
+        address | The address where the location is situated (excluding city, state, and postcode). | Mandatory | String | Unit 5, 78 Avalon Avenue
+
+        postcode | The postcode where the location is situated. | Mandatory | String | 2000
+
+        state | The State where the location is situated. | Mandatory | String | NSW
+
+        longitude | The longitude where the location is situated. | Mandatory | number | -33.865144
+
+        latitude | The latitude where the location is situated. | Mandatory | number | 151.202132
+
+        timezone | The timezone where the location is situated. | Mandatory | String | UTC+10:00: Sydney
+
+        otherIds | Any other alternative internal identifiers of the location. | | [ID_Type].[ID_Value] | SAMPLELOC.123456789
+
+        googlePlaceId | The google place ID of the location. | | String | ChIJgUbEo8cfqokR5lP9_Wh_DaM
+
+        geoData | The geo json data of the location. | | JObject | {"type":"FeatureCollection","features":[{"type":"Feature","properties":{"Producer Name":"Producer 2","Producer Country":"US","Production Place Name":"place 4"},"geometry":{"coordinates":[[[-104.5982275585944,40.0864026500478],[-104.71940938616444,39.88138559039132],[-104.51166910773692,39.805173411506104],[-103.91164152130597,39.8356005398515],[-104.03282334887601,39.97464425984117],[-104.32279415056169,40.083693499590936],[-104.5982275585944,40.0864026500478]]],"type":"Polygon"},"id":0}]}'
+      requestBody:
+        description: Request to Create a New Location Associated with an Organisation.
+        content:
+          application/json-patch+json:
+            schema:
+              title: CreateLocationRequest
+              allOf:
+              - $ref: '#/components/schemas/CreateLocationRequest'
+          application/json:
+            schema:
+              title: CreateLocationRequest
+              allOf:
+              - $ref: '#/components/schemas/CreateLocationRequest'
+          text/json:
+            schema:
+              title: CreateLocationRequest
+              allOf:
+              - $ref: '#/components/schemas/CreateLocationRequest'
+          application/*+json:
+            schema:
+              title: CreateLocationRequest
+              allOf:
+              - $ref: '#/components/schemas/CreateLocationRequest'
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '201':
+          description: New Location Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLocationByIdResponse'
+      security:
+      - Bearer token: []
+      operationId: postCrClientApiV1Locations
+      x-operation-id-source: derived
+    get:
+      tags:
+      - Locations
+      summary: Retrieve Locations Based on the Specified Filter
+      description: '### Retrieve Locations Based on the Specified Filter ###
+
+
+        This API allows users to get a list of all locations based on the specified filters.
+
+
+        The five filters are:
+
+        Field Name | Description | Data Type / Format | Example
+
+        ---|---|---|---
+
+        ids | Search sections of the string of the location ID. | [ID_Type].[ID_Value] | LOC.12
+
+        search | Specifies the string that must appear in the location name in the response. Note that a minimum of 4 characters is required. The API searches through:
+
+        **Name**, **City**, **Country Name** and **Address**
+
+        | String | Sample Co Sydney
+
+        archived | Specifies whether or not the location has been archived. | String | Unarchived
+
+        limit | Specifies the maximum number of items or records that should be included in the response. | Integer(number) | 10
+
+        skip | specifies the offset or starting point from where the API should begin returning the results. It specifies the number of items or records that should be skipped or ignored before returning the requested data, and is useful for navigating to different pages or datasets in the result. | Integer(number) | 0
+
+        useFuzzyMatching | (Optional) use fuzzy matching on Address field, could extended to the fields in future. | Boolean | True/False
+
+        Therefore, a sample request specifying for:
+
+        * 10000 entries in the response, AND
+
+        * with zero skipped entries, AND
+
+        * where the Location ID is "gln.5149730576176", AND
+
+        * where the location is **unarchived**, AND
+
+        * the search term is **sample**
+
+
+        Sample request:
+
+
+        GET locations/query?search=Australia&ids=gln.5149730576176&limit=10000&skip=0;search=sample;archived=UnArchived'
+      parameters:
+      - name: ids
+        in: query
+        description: Filter by Location IDs
+        schema:
+          title: ClientId[]
+          type: array
+          items:
+            title: ClientId
+            type: string
+      - name: search
+        in: query
+        description: The specific string to detect in the location name.
+        schema:
+          title: String
+          type: string
+      - name: archived
+        in: query
+        description: Whether or not this location is archived.
+        schema:
+          title: ArchivedFilter
+          enum:
+          - All
+          - UnArchived
+          - Archived
+          type: string
+      - name: limit
+        in: query
+        description: The number of entries permitted in the response.
+        schema:
+          title: Int32
+          type: integer
+          format: int32
+      - name: skip
+        in: query
+        description: The number of entries to skip in the response.
+        schema:
+          title: Int32
+          type: integer
+          format: int32
+      - name: useFuzzyMatching
+        in: query
+        description: (Optional) Use fuzzy matching on Address field (could be extended to other fields in future).
+        schema:
+          title: Boolean
+          type: boolean
+      - name: include
+        in: query
+        description: Extra data to include in the response.
+        schema:
+          title: ExtraLocationDataToInclude[]
+          type: array
+          items:
+            title: ExtraLocationDataToInclude
+            enum:
+            - GeoData
+            type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: Returns the list of locations based on the provided filter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedCollectionResponse__GetLocationByIdResponse'
+      security:
+      - Bearer token: []
+      operationId: getCrClientApiV1Locations
+      x-operation-id-source: derived
+  /cr/client-api/v1/locations/{clientId}:
+    patch:
+      tags:
+      - Locations
+      summary: Update a Location
+      description: '### Updates an Existing Location ###
+
+
+        This API allows users to update an existing location in the KPMG Origins platform. The user must specify the client id of the location.
+
+        The user can update locations of organisation they are associated with.
+
+        Field Name | Description | Data Type / Format | Example
+
+        ---|---|---|---
+
+        Name | The name of the location. | String | Sample Co Sydney Processing Plant
+
+        CountryCode | The three digit country code of the location. | String | AUS
+
+        City | The city where the location is situated. | String | Sydney
+
+        Address | The address where the location is situated (excluding city, state, and postcode). | String | Unit 5, 78 Avalon Avenue
+
+        Postcode | The postcode where the location is situated. | String | 2000
+
+        State | The State where the location is situated. | String | NSW
+
+        Longitude | The longitude where the location is situated. | number | -33.865144
+
+        Latitude | The latitude where the location is situated. | number | 151.202132
+
+        TimeZone | The timezone where the location is situated. | String | UTC+10:00: Sydney
+
+        OtherIds | Any other alternative internal identifiers of the location. | [ID_Type].[ID_Value] | SAMPLELOC.123456789
+
+        GooglePlaceId | The google place ID of the location. | String | ChIJgUbEo8cfqokR5lP9_Wh_DaM
+
+        Email | The email linked to the location. | String | location@test.kpmgorigins.com
+
+
+        The sample request will be drafted as:
+
+        ```
+
+        [
+
+        {
+
+        "path": "/State",
+
+        "op": "replace",
+
+        "from": "NSW",
+
+        "value": "QLD"
+
+        },
+
+        {
+
+        "path": "/Email",
+
+        "op": "replace",
+
+        "from": "location@test.kpmgorigins.com",
+
+        "value": "location-2@test.kpmgorigins.com"
+
+        }
+
+        ]
+
+        ```'
+      parameters:
+      - name: clientId
+        in: path
+        description: Client id of the location to update
+        required: true
+        schema:
+          title: String
+          type: string
+      requestBody:
+        description: Patch request to update an existing location
+        content:
+          application/json-patch+json:
+            schema:
+              title: Operation[]
+              type: array
+              items:
+                type: object
+            example:
+            - value: Location2
+              path: /Name
+              op: replace
+            - value: 15 James Street
+              path: /Address
+              op: replace
+            - value: Perth
+              path: /City
+              op: replace
+            - value: '6000'
+              path: /Postcode
+              op: replace
+            - value: WA
+              path: /State
+              op: replace
+            - value: '115.857048'
+              path: /Longitude
+              op: replace
+            - value: '-31.953512'
+              path: /Latitude
+              op: replace
+            - value:
+              - SAMPLELOC.123456789
+              path: /OtherIds
+              op: replace
+            - value: Australia/Perth
+              path: /TimeZone
+              op: replace
+            - value: location2@test.kpmgorigins.com
+              path: /Email
+              op: replace
+            - value: location2@test.kpmgorigins.com
+              path: /Email
+              op: replace
+            - value:
+                key: value
+              path: /GeoData
+              op: replace
+            - value: ChIJd8BlQ2n0KysRJdKvz2YxhZQ
+              path: /GooglePlaceId
+              op: replace
+            - value: AU
+              path: /CountryCode
+              op: replace
+          application/json:
+            schema:
+              title: Operation[]
+              type: array
+              items:
+                type: object
+            example:
+            - value: Location2
+              path: /Name
+              op: replace
+            - value: 15 James Street
+              path: /Address
+              op: replace
+            - value: Perth
+              path: /City
+              op: replace
+            - value: '6000'
+              path: /Postcode
+              op: replace
+            - value: WA
+              path: /State
+              op: replace
+            - value: '115.857048'
+              path: /Longitude
+              op: replace
+            - value: '-31.953512'
+              path: /Latitude
+              op: replace
+            - value:
+              - SAMPLELOC.123456789
+              path: /OtherIds
+              op: replace
+            - value: Australia/Perth
+              path: /TimeZone
+              op: replace
+            - value: location2@test.kpmgorigins.com
+              path: /Email
+              op: replace
+            - value: location2@test.kpmgorigins.com
+              path: /Email
+              op: replace
+            - value:
+                key: value
+              path: /GeoData
+              op: replace
+            - value: ChIJd8BlQ2n0KysRJdKvz2YxhZQ
+              path: /GooglePlaceId
+              op: replace
+            - value: AU
+              path: /CountryCode
+              op: replace
+          text/json:
+            schema:
+              title: Operation[]
+              type: array
+              items:
+                type: object
+            example:
+            - value: Location2
+              path: /Name
+              op: replace
+            - value: 15 James Street
+              path: /Address
+              op: replace
+            - value: Perth
+              path: /City
+              op: replace
+            - value: '6000'
+              path: /Postcode
+              op: replace
+            - value: WA
+              path: /State
+              op: replace
+            - value: '115.857048'
+              path: /Longitude
+              op: replace
+            - value: '-31.953512'
+              path: /Latitude
+              op: replace
+            - value:
+              - SAMPLELOC.123456789
+              path: /OtherIds
+              op: replace
+            - value: Australia/Perth
+              path: /TimeZone
+              op: replace
+            - value: location2@test.kpmgorigins.com
+              path: /Email
+              op: replace
+            - value: location2@test.kpmgorigins.com
+              path: /Email
+              op: replace
+            - value:
+                key: value
+              path: /GeoData
+              op: replace
+            - value: ChIJd8BlQ2n0KysRJdKvz2YxhZQ
+              path: /GooglePlaceId
+              op: replace
+            - value: AU
+              path: /CountryCode
+              op: replace
+          application/*+json:
+            schema:
+              title: Operation[]
+              type: array
+              items:
+                type: object
+            example:
+            - value: Location2
+              path: /Name
+              op: replace
+            - value: 15 James Street
+              path: /Address
+              op: replace
+            - value: Perth
+              path: /City
+              op: replace
+            - value: '6000'
+              path: /Postcode
+              op: replace
+            - value: WA
+              path: /State
+              op: replace
+            - value: '115.857048'
+              path: /Longitude
+              op: replace
+            - value: '-31.953512'
+              path: /Latitude
+              op: replace
+            - value:
+              - SAMPLELOC.123456789
+              path: /OtherIds
+              op: replace
+            - value: Australia/Perth
+              path: /TimeZone
+              op: replace
+            - value: location2@test.kpmgorigins.com
+              path: /Email
+              op: replace
+            - value: location2@test.kpmgorigins.com
+              path: /Email
+              op: replace
+            - value:
+                key: value
+              path: /GeoData
+              op: replace
+            - value: ChIJd8BlQ2n0KysRJdKvz2YxhZQ
+              path: /GooglePlaceId
+              op: replace
+            - value: AU
+              path: /CountryCode
+              op: replace
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: Location Updated.
+          content:
+            application/json:
+              schema:
+                title: String
+                type: string
+      security:
+      - Bearer token: []
+      operationId: patchCrClientApiV1LocationsByClientId
+      x-operation-id-source: derived
+  /cr/client-api/v1/locations/{id}:
+    get:
+      tags:
+      - Locations
+      summary: Retrieves a Location by Location ID
+      description: '### Retrieves a Location by a Location ID ###
+
+        This API allows users to search for details on a location by providing the location ID.
+
+
+        The format for location ID is:
+
+
+        [ID_Type].[ID_Value]
+
+
+        For example, the location ID listed below would qualify for the required syntax:
+
+
+        LOC.123456789
+
+
+        Sample request:
+
+
+        GET locations/LOC.123456789'
+      parameters:
+      - name: id
+        in: path
+        description: Location ID.
+        required: true
+        schema:
+          title: ClientId
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: Returns the list of locations based on the provided filter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLocationByIdResponse'
+      security:
+      - Bearer token: []
+      operationId: getCrClientApiV1LocationsById
+      x-operation-id-source: derived
+  /cr/client-api/v1/locations/{id}/images:
+    post:
+      tags:
+      - Locations
+      summary: Upload an image for a location
+      parameters:
+      - name: id
+        in: path
+        description: Location id.
+        required: true
+        schema:
+          title: ClientId
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  title: IEnumerable<IFormFile>
+                  type: array
+                  items:
+                    title: IFormFile
+                    type: string
+                    format: binary
+            encoding:
+              files:
+                style: form
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+      security:
+      - Bearer token: []
+      operationId: postCrClientApiV1LocationsByIdImages
+      x-operation-id-source: derived
+  /cr/client-api/v1/images/locations/{id}/{imageId}:
+    get:
+      tags:
+      - Locations
+      summary: Get image of a location
+      parameters:
+      - name: id
+        in: path
+        description: Location id
+        required: true
+        schema:
+          title: ClientId
+          type: string
+      - name: imageId
+        in: path
+        description: Image id
+        required: true
+        schema:
+          title: Guid
+          type: string
+          format: uuid
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: OK
+      security:
+      - Bearer token: []
+      operationId: getCrClientApiV1ImagesLocationsByIdByImageId
+      x-operation-id-source: derived
+  /cr/client-api/v1/locations/{id}/images/{imageId}:
+    delete:
+      tags:
+      - Locations
+      summary: Delete image of a location
+      parameters:
+      - name: id
+        in: path
+        description: Location id
+        required: true
+        schema:
+          title: ClientId
+          type: string
+      - name: imageId
+        in: path
+        description: Image id
+        required: true
+        schema:
+          title: Guid
+          type: string
+          format: uuid
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: OK
+      security:
+      - Bearer token: []
+      operationId: deleteCrClientApiV1LocationsByIdImagesByImageId
+      x-operation-id-source: derived
+  /cr/client-api/v1/locations/{id}/archive:
+    put:
+      tags:
+      - Locations
+      summary: Archive a location
+      parameters:
+      - name: id
+        in: path
+        description: Location id
+        required: true
+        schema:
+          title: ClientId
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: OK
+      security:
+      - Bearer token: []
+      operationId: putCrClientApiV1LocationsByIdArchive
+      x-operation-id-source: derived
+  /cr/client-api/v1/locations/{id}/unarchive:
+    put:
+      tags:
+      - Locations
+      summary: Unarchive a location
+      parameters:
+      - name: id
+        in: path
+        description: Location id
+        required: true
+        schema:
+          title: ClientId
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: OK
+      security:
+      - Bearer token: []
+      operationId: putCrClientApiV1LocationsByIdUnarchive
+      x-operation-id-source: derived
+components:
+  schemas:
+    ValidationError:
+      title: ValidationError
+      type: object
+      properties:
+        code:
+          title: String
+          type:
+          - string
+          - 'null'
+        target:
+          title: String
+          type:
+          - string
+          - 'null'
+        message:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    CreateLocationRequest:
+      title: CreateLocationRequest
+      type: object
+      properties:
+        organizationId:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+        name:
+          title: String
+          type:
+          - string
+          - 'null'
+        countryCode:
+          title: String
+          type:
+          - string
+          - 'null'
+        city:
+          title: String
+          type:
+          - string
+          - 'null'
+        address:
+          title: String
+          type:
+          - string
+          - 'null'
+        postcode:
+          title: String
+          type:
+          - string
+          - 'null'
+        state:
+          title: String
+          type:
+          - string
+          - 'null'
+        longitude:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        latitude:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        id:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+        otherIds:
+          title: IEnumerable<ClientId>
+          type:
+          - array
+          - 'null'
+          items:
+            title: ClientId
+            type: string
+        timeZone:
+          title: String
+          type:
+          - string
+          - 'null'
+        googlePlaceId:
+          title: String
+          type:
+          - string
+          - 'null'
+        email:
+          title: String
+          type:
+          - string
+          - 'null'
+        geoData:
+          title: JObject
+      additionalProperties: false
+    ServerFaultErrorResponse:
+      title: ServerFaultErrorResponse
+      allOf:
+      - $ref: '#/components/schemas/ErrorResponse__ServerFaultErrorDetails'
+      - type: object
+        additionalProperties: false
+    PagedCollectionResponse__GetLocationByIdResponse:
+      title: PagedCollection<GetLocationByIdResponse>
+      type: object
+      properties:
+        total:
+          title: Int32
+          type: integer
+          format: int32
+        items:
+          title: GetLocationByIdResponse[]
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/GetLocationByIdResponse'
+      additionalProperties: false
+    ErrorDetails:
+      title: ErrorDetails
+      type: object
+      properties:
+        code:
+          title: String
+          type:
+          - string
+          - 'null'
+        message:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    UploadedFile:
+      title: UploadedFile
+      type: object
+      properties:
+        id:
+          title: Guid
+          type: string
+          format: uuid
+        url:
+          title: String
+          type:
+          - string
+          - 'null'
+        mimeType:
+          title: String
+          type:
+          - string
+          - 'null'
+        fileName:
+          title: String
+          type:
+          - string
+          - 'null'
+        updatedAtUtc:
+          title: DateTime
+          type: string
+          format: date-time
+      additionalProperties: false
+    ErrorResponse__ValidationErrorDetails:
+      title: ErrorResponse<ValidationErrorDetails>
+      type: object
+      properties:
+        error:
+          title: ValidationErrorDetails
+          allOf:
+          - $ref: '#/components/schemas/ValidationErrorDetails'
+        debugDetail:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ServerFaultErrorDetails:
+      title: ServerFaultErrorDetails
+      allOf:
+      - $ref: '#/components/schemas/ErrorDetails'
+      - type: object
+        additionalProperties: false
+    ErrorResponse__ServerFaultErrorDetails:
+      title: ErrorResponse<ServerFaultErrorDetails>
+      type: object
+      properties:
+        error:
+          title: ServerFaultErrorDetails
+          allOf:
+          - $ref: '#/components/schemas/ServerFaultErrorDetails'
+        debugDetail:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ValidationErrorDetails:
+      title: ValidationErrorDetails
+      allOf:
+      - $ref: '#/components/schemas/ErrorDetails'
+      - type: object
+        properties:
+          details:
+            title: IEnumerable<ValidationError>
+            type:
+            - array
+            - 'null'
+            items:
+              $ref: '#/components/schemas/ValidationError'
+        additionalProperties: false
+    Permissioned__Nullable__Guid:
+      title: Permissioned<Nullable<Guid>>
+      type: object
+      properties:
+        hasAccess:
+          title: Boolean
+          type: boolean
+          readOnly: true
+        value:
+          title: Nullable<Guid>
+          type:
+          - string
+          - 'null'
+          format: uuid
+          readOnly: true
+      additionalProperties: false
+    GetLocationByIdResponse:
+      title: GetLocationByIdResponse
+      type: object
+      properties:
+        id:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+          example: LOC.123456789
+        latestVersionId:
+          title: Guid
+          type: string
+          format: uuid
+          example: 2cc142fb-ffca-4e87-8196-4f2bb9e24e14
+        organizationId:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+          example: ABN.12345678910
+        organizationName:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Sample Co
+        name:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Sample Co Sydney Processing Plant
+        countryCode:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: AUS
+        city:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Sydney
+        address:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Unit 5, 78 Avalon Avenue
+        postcode:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: '2000'
+        state:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: NSW
+        longitude:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+          example: -33.865143
+        latitude:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+          example: 151.20213
+        otherIds:
+          title: IEnumerable<ClientId>
+          type:
+          - array
+          - 'null'
+          items:
+            title: ClientId
+            type: string
+          example: '["SAMPLELOC.123456789"]'
+        images:
+          title: IEnumerable<UploadedFile>
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/UploadedFile'
+        isArchived:
+          title: Boolean
+          type: boolean
+          example: false
+        timeZone:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: 'UTC+10:00: Sydney'
+        email:
+          title: String
+          type:
+          - string
+          - 'null'
+        createdByOrganizationId:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+        organizationClientIds:
+          title: ClientId[]
+          type:
+          - array
+          - 'null'
+          items:
+            title: ClientId
+            type: string
+        googlePlaceId:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Unique PlaceId from Google (optional)
+        geoDataId:
+          title: Permissioned<Nullable<Guid>>
+          allOf:
+          - $ref: '#/components/schemas/Permissioned__Nullable__Guid'
+        geoData:
+          title: Permissioned<JObject>
+          allOf:
+          - $ref: '#/components/schemas/Permissioned__JObject'
+      additionalProperties: false
+    Permissioned__JObject:
+      title: Permissioned<JObject>
+      type: object
+      properties:
+        hasAccess:
+          title: Boolean
+          type: boolean
+          readOnly: true
+        value:
+          title: JObject
+          readOnly: true
+      additionalProperties: false
+    ValidationErrorResponse:
+      title: ValidationErrorResponse
+      allOf:
+      - $ref: '#/components/schemas/ErrorResponse__ValidationErrorDetails'
+      - type: object
+        additionalProperties: false
+  securitySchemes:
+    Bearer_token:
+      type: apiKey
+      description: 'Please enter: "Bearer YOUTOKEN"'
+      name: Authorization
+      in: header

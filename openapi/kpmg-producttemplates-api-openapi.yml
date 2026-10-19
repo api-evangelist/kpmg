@@ -1,0 +1,2130 @@
+openapi: 3.2.0
+info:
+  title: KPMG Origins Product Templates API
+  description: '- How to authenticate
+
+    - Definitions of Key API Endpoints
+
+    - Other Information
+
+
+    KPMG Origins provides customers with access to their data, and data shared with them, through APIs. The APIs allow customers with the ability to create, update and extract available data.
+
+
+    ## How to authenticate
+
+    1) Create API credentials via KPMG Origins UI (NB: only users with the Administrator role can manage API credentials):
+
+    - Login to KPMG Origins
+
+    - Go to Settings page, then API Credentials tab
+
+    - Create API credentials
+
+    - Copy the Client Id and Secret (NB: you will not be able to recover the secret value if lost, however, you can generate a new one)
+
+    2) Exchange API Credentials for a short-lived _access token_
+
+    - Make a POST request to **https://<KPMG Origins hostname>/cr/client-api/v1/token**
+
+    ```
+
+    {
+
+    "clientId": "",
+
+    "secret": ""
+
+    }
+
+    ```
+
+    3) Make authenticated requests to KPMG Origins API:
+
+    - Use the access token value form the token API response as a Bearer token to make requests to the API i.e. set Authorization header like this: `Authorization: Bearer `
+
+    ```
+
+    NB: access token is only valid for a short time, if requests start failing with 401 status code, repeat steps 2) and 3)
+
+    ```
+
+
+    ## Definitions of Key API Endpoints
+
+
+    This section explains key definitions of key data entities and API endpoints
+
+
+    * **Organisation**: the organisation can either be an organisation or an individual.
+
+    - An *organisation* is a participant which usually holds an ABN or ACN, usually an entity participating in commercial activities.
+
+    - An *individual* is a participant who has no ABN or ACN. For example, in Movement, a generator who is a private individual (e.g. residential asbestos pick-up).
+
+
+    This distinction is necessary as it relates to a validation in the ``post organisation`` API.
+
+    * **Location**: locations represent geographical sites which are operated by organisations. Each location possesses a unique location ID to distinguish it from other locations in the system, as well as an organisation / client ID that specifies which organisation operates it.
+
+
+    Please see the details on each individual API to learn more about the specific criteria needed for a successful payload.
+
+
+    ## Other Information
+
+    - The format for Client Id mentioned in the APIs is ``IDType.IDValue``
+
+    - By default, the collection of items returned can include up to 10,000 items, but this can be changed via the ``Limit`` and ``Skip`` parameters.'
+  version: '1.0'
+tags:
+- name: ProductTemplates
+  description: APIs for Product Catalogue/Product Templates/Materials
+paths:
+  /cr/client-api/v1/product-templates:
+    post:
+      tags:
+      - ProductTemplates
+      summary: Creates a Product Template / SKU / Material
+      description: '### Creates a Product Template / SKU / Material ###
+
+
+        This API allows creating a new product template.
+
+
+        Key details are:
+
+
+        Field Name | Description | Mandatory | Data Type / Format | Example
+
+        ---|---|---|---|---
+
+        Id | The main unique identifier of the product template | Mandatory | [ID_Type].[ID_Value] | SKU.123456789
+
+        OtherIds | Other secondary ID''s | Optional | Array of [ID_Type].[ID_Value] | [ WWCO.12312312, ABC.129929292 ]
+
+        ParentId | The parent product template of this product template. | Optional | [ID_Type].[ID_Value] | SKU.123456789
+
+        Name | The name that describes the product or the function of the product. | Mandatory | String | Water Bottle 200ml
+
+        NameLong | Long name of the product (not in use). | Optional | String | Eco-Friendly Water Bottle 200 ml
+
+        Description | The detailed description of the product. | Optional | String | A reusable, eco-friendly water bottle made from BPA-free materials
+
+        BrandName | The name of the brand of the product. | Optional | String | EcoGoods
+
+        MeasureType | The product template measure type (Fixed or Variable) | Mandatory | Integer | 1 - Fixed 2 - Variable
+
+        CountryCode | The three digit country code of the origin location | Mandatory | String | AUS
+
+        IsPublic | Specify the visibility of the product template | Mandatory | Boolean | True/False
+
+        BrandOwnerId | The unique ID of the brand owner of the product. | Optional | String | ABN.123456789
+
+        ManufacturerId | The unique ID of the manufacturer of the product. | Optional | String | ABN.123456789
+
+        SubBrandName | The subsidiary of the brand name of the product or the sub-brand name. | Optional | String | Company ABC Black Steak
+
+        ProductUses | The description of how the product is or can be used. | Optional | String | Ideal for outdoor activities, gym workouts, and daily hydration
+
+        GS1 Classification | The common classification for grouping products.
+
+
+        Segment: An industry Segmentation or Vertical.
+
+
+        Family: A broad division of a segment.
+
+
+        Class: A group of like categories.
+
+
+        Brick: Categories of like products.
+
+
+        | Optional | Object |Example values:
+
+
+        Segment: Food/Beverage/Tobacco
+
+
+        Family: Beverages
+
+
+        Class: Non Alcoholic Beverages - Ready to Drink
+
+
+        Brick: Packaged Water
+
+
+        ProductAttributes | The detailed attributes of the product (fixed/variable, width, net weight, height, dimension, UoM, etc) | Optional | Object | 15 mm, 15 millimetre, 1L, 1 Litre
+
+        MetadataFields | Additional metadata fields for the product template | Optional | Array |Array of custom metadata fields
+
+        PackagingAndStorage | The product template specifications for packaging and storage (packaging type, temperature) | Optional | Object | Packaging type: Box Temperature: 20 Celsius
+
+        OtherGeneral | The additional general product attributes - warranty description, warranty duration, warranty dates | Optional | Object | 3 years, 7 months, 30 days
+
+        ProductDates | The product dates information (publication date, product lifespan from production time) | Optional | Object | PublicationDate: 01/01/2024'
+      requestBody:
+        description: Request to create a sku.
+        content:
+          application/json-patch+json:
+            schema:
+              title: CreateProductTemplateRequest
+              allOf:
+              - $ref: '#/components/schemas/CreateProductTemplateRequest'
+          application/json:
+            schema:
+              title: CreateProductTemplateRequest
+              allOf:
+              - $ref: '#/components/schemas/CreateProductTemplateRequest'
+          text/json:
+            schema:
+              title: CreateProductTemplateRequest
+              allOf:
+              - $ref: '#/components/schemas/CreateProductTemplateRequest'
+          application/*+json:
+            schema:
+              title: CreateProductTemplateRequest
+              allOf:
+              - $ref: '#/components/schemas/CreateProductTemplateRequest'
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                title: GetProductTemplateByIdResponse
+                oneOf:
+                - $ref: '#/components/schemas/GetProductTemplateByIdResponse'
+                - $ref: '#/components/schemas/ProductTemplateListItem'
+      security:
+      - Bearer token: []
+      operationId: postCrClientApiV1ProductTemplates
+      x-operation-id-source: derived
+    get:
+      tags:
+      - ProductTemplates
+      summary: Retrieve Product Templates/Materials Based on the Specified Filter
+      description: '### Retrieve Product Templates / Material / SKUs Based on the Specified Filter ###
+
+
+        This API allows users to get a list of all product templates, also known as materials, based on the specified filters.
+
+
+        The three filters are:
+
+        Field Name | Description | Data Type / Format | Example
+
+        ---|---|---|---
+
+        archived | Specifies whether the product templates are archived or not. | String | Unarchived
+
+        visibility | Specifies whether the product templates are visible or not. | String | Public
+
+        getMyProductTemplates | Specifies whether to retrieve only the user''s product templates or all the product templates. | Boolean | True
+
+        search | Specifies the string that must appear in the product template/material name in the response. | String | Tyres
+
+        limit | Specifies the maximum number of items or records that should be included in the response. | Integer(number) | 10
+
+        skip | specifies the offset or starting point from where the API should begin returning the results. It specifies the number of items or records that should be skipped or ignored before returning the requested data, and is useful for navigating to different pages or datasets in the result. | Integer(number) | 0
+
+        Therefore, a sample request specifying for:
+
+        * 10 entries in the response, AND
+
+        * with zero skipped entries, AND
+
+        * the search term is **Tyres**
+
+
+        will be written as the following:
+
+
+        GET product-templates?search=Tyres&limit=10&skip=0;'
+      parameters:
+      - name: archived
+        in: query
+        description: Whether the product templates are archived or not.
+        schema:
+          title: ArchivedFilter
+          enum:
+          - All
+          - UnArchived
+          - Archived
+          type: string
+      - name: visibility
+        in: query
+        description: Whether the product templates are visible or not.
+        schema:
+          title: VisibilityFilter
+          enum:
+          - All
+          - Public
+          - Private
+          type: string
+      - name: getMyProductTemplates
+        in: query
+        description: Whether to retrieve only the user's product templates or all the product templates.
+        schema:
+          title: Boolean
+          type: boolean
+      - name: searchTerm
+        in: query
+        description: The specific string to detect in the Product Template/Material name.
+        schema:
+          title: String
+          type: string
+      - name: limit
+        in: query
+        description: The number of entries permitted in the response.
+        schema:
+          title: Int32
+          type: integer
+          format: int32
+          default: 100
+      - name: skip
+        in: query
+        description: The number of entries to skip in the response.
+        schema:
+          title: Int32
+          type: integer
+          format: int32
+          default: 0
+      - name: sortBy
+        in: query
+        schema:
+          title: String
+          type: string
+      - name: sortDirection
+        in: query
+        schema:
+          title: String
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: Returns the list of product templates/materials based on the provided filter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedCollectionResponse__ProductTemplateListItem'
+      security:
+      - Bearer token: []
+      operationId: getCrClientApiV1ProductTemplates
+      x-operation-id-source: derived
+  /cr/client-api/v1/product-templates/{clientId}:
+    patch:
+      tags:
+      - ProductTemplates
+      summary: Update a Product Template using PATCH operation
+      description: '### Update a Product Template / SKU / Material ###
+
+
+        This API allows update product template using JSON PATCH. Few things to note:
+
+        - Only replace operations supported
+
+        - Except the main ID, all properties listed in the **Create** endpoint can be updated.
+
+        - Refer to **Create** endpoint request to see the list of properties.
+
+        - The **MetadataFields** is a list of custom fields. It only supports replace the whole list, not update individual item.
+
+        - The _Type_ should be one of the categories: Description, Classifications, ProductAttributes, PackagingAndStorage, OtherGeneral, ProductDates
+
+        - Dates need to be in format "yyyy-MM-dd"
+
+
+        A sample request will be drafted as:
+
+        ```
+
+        [
+
+        {
+
+        "path": "/Name",
+
+        "op": "replace",
+
+        "value": "New Product Template Name"
+
+        },
+
+        {
+
+        "path": "/OtherGeneral/WarrantyDescription",
+
+        "op": "replace",
+
+        "value": "sample warranty text"
+
+        },
+
+        {
+
+        "value": "2024-01-01",
+
+        "path": "/ProductDates/AvailabilityStartDate",
+
+        "op": "replace"
+
+        },
+
+        {
+
+        "path": "/MetadataFields",
+
+        "op": "replace",
+
+        "value": [
+
+        {
+
+        type: "Description",
+
+        name: "Custom Field 1",
+
+        value: "text value"
+
+        },
+
+        {
+
+        type: "ProductAttributes",
+
+        name: "Custom Field 2",
+
+        NumberValue: 123.50
+
+        },
+
+        ]
+
+
+        }
+
+        ]
+
+        ```'
+      parameters:
+      - name: clientId
+        in: path
+        description: Product Template ID
+        required: true
+        schema:
+          title: String
+          type: string
+      requestBody:
+        description: PATCH payload, only replace operations supported
+        content:
+          application/json-patch+json:
+            schema:
+              title: Operation[]
+              type: array
+              items:
+                type: object
+            example:
+            - value: New name
+              path: /Name
+              op: replace
+            - value: new description
+              path: /OtherGeneral/WarrantyDescription
+              op: replace
+            - value: '2024-01-01'
+              path: /ProductDates/AvailabilityStartDate
+              op: replace
+            - value:
+              - id: null
+                name: Custom Field 1
+                value: text value
+                type: Description
+                numberValue: null
+                dateValue: null
+                uom: null
+              - id: null
+                name: Custom Field 2
+                value: null
+                type: ProductAttributes
+                numberValue: 123.5
+                dateValue: null
+                uom: null
+              path: /MetadataFields
+              op: replace
+          application/json:
+            schema:
+              title: Operation[]
+              type: array
+              items:
+                type: object
+            example:
+            - value: New name
+              path: /Name
+              op: replace
+            - value: new description
+              path: /OtherGeneral/WarrantyDescription
+              op: replace
+            - value: '2024-01-01'
+              path: /ProductDates/AvailabilityStartDate
+              op: replace
+            - value:
+              - id: null
+                name: Custom Field 1
+                value: text value
+                type: Description
+                numberValue: null
+                dateValue: null
+                uom: null
+              - id: null
+                name: Custom Field 2
+                value: null
+                type: ProductAttributes
+                numberValue: 123.5
+                dateValue: null
+                uom: null
+              path: /MetadataFields
+              op: replace
+          text/json:
+            schema:
+              title: Operation[]
+              type: array
+              items:
+                type: object
+            example:
+            - value: New name
+              path: /Name
+              op: replace
+            - value: new description
+              path: /OtherGeneral/WarrantyDescription
+              op: replace
+            - value: '2024-01-01'
+              path: /ProductDates/AvailabilityStartDate
+              op: replace
+            - value:
+              - id: null
+                name: Custom Field 1
+                value: text value
+                type: Description
+                numberValue: null
+                dateValue: null
+                uom: null
+              - id: null
+                name: Custom Field 2
+                value: null
+                type: ProductAttributes
+                numberValue: 123.5
+                dateValue: null
+                uom: null
+              path: /MetadataFields
+              op: replace
+          application/*+json:
+            schema:
+              title: Operation[]
+              type: array
+              items:
+                type: object
+            example:
+            - value: New name
+              path: /Name
+              op: replace
+            - value: new description
+              path: /OtherGeneral/WarrantyDescription
+              op: replace
+            - value: '2024-01-01'
+              path: /ProductDates/AvailabilityStartDate
+              op: replace
+            - value:
+              - id: null
+                name: Custom Field 1
+                value: text value
+                type: Description
+                numberValue: null
+                dateValue: null
+                uom: null
+              - id: null
+                name: Custom Field 2
+                value: null
+                type: ProductAttributes
+                numberValue: 123.5
+                dateValue: null
+                uom: null
+              path: /MetadataFields
+              op: replace
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: String
+                type: string
+      security:
+      - Bearer token: []
+      operationId: patchCrClientApiV1ProductTemplatesByClientId
+      x-operation-id-source: derived
+    get:
+      tags:
+      - ProductTemplates
+      summary: Returns a Product Template by ID
+      parameters:
+      - name: clientId
+        in: path
+        description: Product Template id.
+        required: true
+        schema:
+          title: String
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: The Product Template was successfully retrieved.
+          content:
+            application/json:
+              schema:
+                title: GetProductTemplateByIdResponse
+                oneOf:
+                - $ref: '#/components/schemas/GetProductTemplateByIdResponse'
+                - $ref: '#/components/schemas/ProductTemplateListItem'
+      security:
+      - Bearer token: []
+      operationId: getCrClientApiV1ProductTemplatesByClientId
+      x-operation-id-source: derived
+  /cr/client-api/v1/product-templates/{id}/images:
+    post:
+      tags:
+      - ProductTemplates
+      summary: Upload an image for a product template
+      parameters:
+      - name: id
+        in: path
+        description: Product Template ID
+        required: true
+        schema:
+          title: ClientId
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  title: IEnumerable<IFormFile>
+                  type: array
+                  items:
+                    title: IFormFile
+                    type: string
+                    format: binary
+            encoding:
+              files:
+                style: form
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: OK
+      security:
+      - Bearer token: []
+      operationId: postCrClientApiV1ProductTemplatesByIdImages
+      x-operation-id-source: derived
+    put:
+      tags:
+      - ProductTemplates
+      summary: Update image for a product template
+      parameters:
+      - name: id
+        in: path
+        description: Product Template ID
+        required: true
+        schema:
+          title: ClientId
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  title: IEnumerable<IFormFile>
+                  type: array
+                  items:
+                    title: IFormFile
+                    type: string
+                    format: binary
+            encoding:
+              files:
+                style: form
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: OK
+      security:
+      - Bearer token: []
+      operationId: putCrClientApiV1ProductTemplatesByIdImages
+      x-operation-id-source: derived
+  /cr/client-api/v1/product-templates/{id}/images/{imageId}:
+    get:
+      tags:
+      - ProductTemplates
+      summary: Get image for a Product Template
+      parameters:
+      - name: id
+        in: path
+        description: Product template ID
+        required: true
+        schema:
+          title: ClientId
+          type: string
+      - name: imageId
+        in: path
+        description: Image ID (GUID)
+        required: true
+        schema:
+          title: Guid
+          type: string
+          format: uuid
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+      security:
+      - Bearer token: []
+      operationId: getCrClientApiV1ProductTemplatesByIdImagesByImageId
+      x-operation-id-source: derived
+    delete:
+      tags:
+      - ProductTemplates
+      summary: Delete an image for a Product Template
+      parameters:
+      - name: id
+        in: path
+        description: Product template ID
+        required: true
+        schema:
+          title: ClientId
+          type: string
+      - name: imageId
+        in: path
+        description: Image ID (GUID)
+        required: true
+        schema:
+          title: Guid
+          type: string
+          format: uuid
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: OK
+      security:
+      - Bearer token: []
+      operationId: deleteCrClientApiV1ProductTemplatesByIdImagesByImageId
+      x-operation-id-source: derived
+  /cr/client-api/v1/product-templates/{id}/archive:
+    put:
+      tags:
+      - ProductTemplates
+      summary: Archive a product template
+      parameters:
+      - name: id
+        in: path
+        description: Product Template Id
+        required: true
+        schema:
+          title: String
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: OK
+      security:
+      - Bearer token: []
+      operationId: putCrClientApiV1ProductTemplatesByIdArchive
+      x-operation-id-source: derived
+  /cr/client-api/v1/product-templates/{id}/unarchive:
+    put:
+      tags:
+      - ProductTemplates
+      summary: Unarchive a product template
+      parameters:
+      - name: id
+        in: path
+        description: Product Template Id
+        required: true
+        schema:
+          title: String
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: OK
+      security:
+      - Bearer token: []
+      operationId: putCrClientApiV1ProductTemplatesByIdUnarchive
+      x-operation-id-source: derived
+  /cr/client-api/v1/product-templates/reference-data:
+    get:
+      tags:
+      - ProductTemplates
+      summary: Returns PackagingType, UnitsOfMeasurement and UniclassSystems reference data…
+      description: '### Returns reference data for creating product template ###
+
+        - PackagingType
+
+        - UnitsOfMeasurement
+
+        - UniclassSystems
+
+
+        Sample request:
+
+
+        GET product-templates/reference-data'
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: The reference data was successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkuReferenceDataResponse'
+      security:
+      - Bearer token: []
+      operationId: getCrClientApiV1ProductTemplatesReferenceData
+      x-operation-id-source: derived
+  /cr/client-api/v1/product-templates/gs1-reference-data:
+    get:
+      tags:
+      - ProductTemplates
+      summary: Download GS1 reference data CSV
+      description: '### Download GS1 reference data CSV ###
+
+
+        Sample request:
+
+
+        GET product-templates/gs1-reference-data'
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: The reference data was successfully retrieved.
+          content:
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/IActionResult'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IActionResult'
+      security:
+      - Bearer token: []
+      operationId: getCrClientApiV1ProductTemplatesGs1ReferenceData
+      x-operation-id-source: derived
+components:
+  schemas:
+    ValidationError:
+      title: ValidationError
+      type: object
+      properties:
+        code:
+          title: String
+          type:
+          - string
+          - 'null'
+        target:
+          title: String
+          type:
+          - string
+          - 'null'
+        message:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    HarmonizedSystemCode:
+      title: HarmonizedSystemCode
+      type: object
+      properties:
+        id:
+          title: String
+          type:
+          - string
+          - 'null'
+        description:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    SKUClassifications:
+      title: SKUClassifications
+      type: object
+      properties:
+        gpcSegmentCode:
+          title: String
+          type:
+          - string
+          - 'null'
+        gpcSegmentTitle:
+          title: String
+          type:
+          - string
+          - 'null'
+        gpcFamilyCode:
+          title: String
+          type:
+          - string
+          - 'null'
+        gpcFamilyTitle:
+          title: String
+          type:
+          - string
+          - 'null'
+        gpcClassCode:
+          title: String
+          type:
+          - string
+          - 'null'
+        gpcClassTitle:
+          title: String
+          type:
+          - string
+          - 'null'
+        gpcBrickCode:
+          title: String
+          type:
+          - string
+          - 'null'
+        gpcBrickTitle:
+          title: String
+          type:
+          - string
+          - 'null'
+        uniclassCode:
+          title: String
+          type:
+          - string
+          - 'null'
+        uniclassTitle:
+          title: String
+          type:
+          - string
+          - 'null'
+        natspec:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ErrorResponse__ServerFaultErrorDetails:
+      title: ErrorResponse<ServerFaultErrorDetails>
+      type: object
+      properties:
+        error:
+          title: ServerFaultErrorDetails
+          allOf:
+          - $ref: '#/components/schemas/ServerFaultErrorDetails'
+        debugDetail:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    IActionResult:
+      title: IActionResult
+      type: object
+      additionalProperties: false
+    SKU:
+      title: SKU
+      type: object
+      properties:
+        id:
+          title: Guid
+          type: string
+          format: uuid
+        parentId:
+          title: Nullable<Guid>
+          type:
+          - string
+          - 'null'
+          format: uuid
+        parentClientId:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+        children:
+          title: List<SKU>
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/SKU'
+        siblings:
+          title: List<SKU>
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/SKU'
+        organizationId:
+          title: Guid
+          type: string
+          format: uuid
+        organizationName:
+          title: String
+          type:
+          - string
+          - 'null'
+        lastUpdatedByOrganizationName:
+          title: String
+          type:
+          - string
+          - 'null'
+        updatedAtUtc:
+          title: DateTime
+          type: string
+          format: date-time
+        createdAtUtc:
+          title: DateTime
+          type: string
+          format: date-time
+        name:
+          title: String
+          type:
+          - string
+          - 'null'
+        nameLong:
+          title: String
+          type:
+          - string
+          - 'null'
+        description:
+          title: String
+          type:
+          - string
+          - 'null'
+        brandName:
+          title: String
+          type:
+          - string
+          - 'null'
+        measureType:
+          title: MeasureType
+          enum:
+          - Unknown
+          - Fixed
+          - Variable
+          type: string
+        netContent:
+          title: String
+          type:
+          - string
+          - 'null'
+        netContentUOM:
+          title: String
+          type:
+          - string
+          - 'null'
+        packingType:
+          title: String
+          type:
+          - string
+          - 'null'
+        countryCode:
+          title: String
+          type:
+          - string
+          - 'null'
+        productIndustryAttributes:
+          title: KeyValue[]
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/KeyValue'
+        isPublic:
+          title: Boolean
+          type: boolean
+        images:
+          title: IEnumerable<UploadedFile>
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/UploadedFile'
+        clientId:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+        otherIds:
+          title: IEnumerable<ClientId>
+          type:
+          - array
+          - 'null'
+          items:
+            title: ClientId
+            type: string
+        isArchived:
+          title: Boolean
+          type: boolean
+        brandOwnerId:
+          title: Nullable<Guid>
+          type:
+          - string
+          - 'null'
+          format: uuid
+        brandOwnerName:
+          title: String
+          type:
+          - string
+          - 'null'
+        brandOwnerClientIds:
+          title: ClientId[]
+          type:
+          - array
+          - 'null'
+          items:
+            title: ClientId
+            type: string
+        manufacturerId:
+          title: Nullable<Guid>
+          type:
+          - string
+          - 'null'
+          format: uuid
+        manufacturerName:
+          title: String
+          type:
+          - string
+          - 'null'
+        manufacturerClientIds:
+          title: ClientId[]
+          type:
+          - array
+          - 'null'
+          items:
+            title: ClientId
+            type: string
+        subBrandName:
+          title: String
+          type:
+          - string
+          - 'null'
+        productUses:
+          title: String
+          type:
+          - string
+          - 'null'
+        harmonizedSystemCode:
+          title: HarmonizedSystemCode
+          allOf:
+          - $ref: '#/components/schemas/HarmonizedSystemCode'
+        classifications:
+          title: SKUClassifications
+          allOf:
+          - $ref: '#/components/schemas/SKUClassifications'
+        productAttributes:
+          title: SKUProductAttributes
+          allOf:
+          - $ref: '#/components/schemas/SKUProductAttributes'
+        metadataFields:
+          title: List<SKUMetadataField>
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/SKUMetadataField'
+        packagingAndStorage:
+          title: SKUPackagingAndStorage
+          allOf:
+          - $ref: '#/components/schemas/SKUPackagingAndStorage'
+        otherGeneral:
+          title: SKUOtherGeneral
+          allOf:
+          - $ref: '#/components/schemas/SKUOtherGeneral'
+        productDates:
+          title: SKUProductDates
+          allOf:
+          - $ref: '#/components/schemas/SKUProductDates'
+        skuVersion:
+          title: Nullable<Int32>
+          type:
+          - integer
+          - 'null'
+          format: int32
+      additionalProperties: false
+    ServerFaultErrorResponse:
+      title: ServerFaultErrorResponse
+      allOf:
+      - $ref: '#/components/schemas/ErrorResponse__ServerFaultErrorDetails'
+      - type: object
+        additionalProperties: false
+    SKUProductDates:
+      title: SKUProductDates
+      type: object
+      properties:
+        publicationDate:
+          title: Nullable<DateOnly>
+          type:
+          - string
+          - 'null'
+          format: date
+        effectiveDate:
+          title: Nullable<DateOnly>
+          type:
+          - string
+          - 'null'
+          format: date
+        availabilityStartDate:
+          title: Nullable<DateOnly>
+          type:
+          - string
+          - 'null'
+          format: date
+        availabilityEndDate:
+          title: Nullable<DateOnly>
+          type:
+          - string
+          - 'null'
+          format: date
+        lifeSpanFromArrivalDuration:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        lifeSpanFromArrivalDurationUom:
+          title: String
+          type:
+          - string
+          - 'null'
+        lifeSpanFromProductionDuration:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        lifeSpanFromProductionDurationUom:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ErrorResponse__ValidationErrorDetails:
+      title: ErrorResponse<ValidationErrorDetails>
+      type: object
+      properties:
+        error:
+          title: ValidationErrorDetails
+          allOf:
+          - $ref: '#/components/schemas/ValidationErrorDetails'
+        debugDetail:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ValidationErrorDetails:
+      title: ValidationErrorDetails
+      allOf:
+      - $ref: '#/components/schemas/ErrorDetails'
+      - type: object
+        properties:
+          details:
+            title: IEnumerable<ValidationError>
+            type:
+            - array
+            - 'null'
+            items:
+              $ref: '#/components/schemas/ValidationError'
+        additionalProperties: false
+    SKUMetadataField:
+      title: SKUMetadataField
+      type: object
+      properties:
+        id:
+          title: Nullable<Guid>
+          type:
+          - string
+          - 'null'
+          format: uuid
+        name:
+          title: String
+          type:
+          - string
+          - 'null'
+        value:
+          title: String
+          type:
+          - string
+          - 'null'
+        type:
+          title: MetadataType
+          enum:
+          - Unknown
+          - Description
+          - Classifications
+          - ProductAttributes
+          - PackagingAndStorage
+          - OtherGeneral
+          - ProductDates
+          type: string
+        numberValue:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        dateValue:
+          title: Nullable<DateTime>
+          type:
+          - string
+          - 'null'
+          format: date-time
+        uom:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    KeyValue:
+      title: KeyValue
+      type: object
+      properties:
+        key:
+          title: String
+          type:
+          - string
+          - 'null'
+        value:
+          title: Object
+      additionalProperties: false
+    SKUPackagingAndStorage:
+      title: SKUPackagingAndStorage
+      type: object
+      properties:
+        minimumTemperature:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        maximumTemperature:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        temperatureUom:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    SkuReferenceDataResponse:
+      title: SkuReferenceDataResponse
+      type: object
+      properties:
+        packagingTypes:
+          title: IEnumerable<PackagingType>
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/PackagingType'
+        unitsOfMeasurements:
+          title: IEnumerable<UnitsOfMeasurement>
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/UnitsOfMeasurement'
+        uniclassSystems:
+          title: IEnumerable<UniclassSystem>
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/UniclassSystem'
+      additionalProperties: false
+    PackagingType:
+      title: PackagingType
+      type: object
+      properties:
+        name:
+          title: String
+          type:
+          - string
+          - 'null'
+        description:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    SKUProductAttributes:
+      title: SKUProductAttributes
+      type: object
+      properties:
+        width:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        depth:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        height:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        dimensionUom:
+          title: String
+          type:
+          - string
+          - 'null'
+        netWeight:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        grossWeight:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        drainedWeight:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        weightUom:
+          title: String
+          type:
+          - string
+          - 'null'
+        grossVolume:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        volumeUom:
+          title: String
+          type:
+          - string
+          - 'null'
+        density:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        densityUom:
+          title: String
+          type:
+          - string
+          - 'null'
+        minimumThickness:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        maximumThickness:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        thicknessUom:
+          title: String
+          type:
+          - string
+          - 'null'
+        area:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        areaUom:
+          title: String
+          type:
+          - string
+          - 'null'
+        compressionStrength:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        compressionStrengthUom:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    SKUOtherGeneral:
+      title: SKUOtherGeneral
+      type: object
+      properties:
+        warrantyDescription:
+          title: String
+          type:
+          - string
+          - 'null'
+        warrantyDuration:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+        warrantyDurationUom:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    PagedCollectionResponse__ProductTemplateListItem:
+      title: PagedCollection<ProductTemplateListItem>
+      type: object
+      properties:
+        total:
+          title: Int32
+          type: integer
+          format: int32
+        items:
+          title: ProductTemplateListItem[]
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ProductTemplateListItem'
+      additionalProperties: false
+    ServerFaultErrorDetails:
+      title: ServerFaultErrorDetails
+      allOf:
+      - $ref: '#/components/schemas/ErrorDetails'
+      - type: object
+        additionalProperties: false
+    CreateProductTemplateRequest:
+      title: CreateProductTemplateRequest
+      type: object
+      properties:
+        id:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+          example: SKU.0001
+        otherIds:
+          title: IEnumerable<ClientId>
+          type:
+          - array
+          - 'null'
+          items:
+            title: ClientId
+            type: string
+          example: '["SKU.00012", "SKU.000234"]'
+        parentId:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+          example: SKU.0002
+        name:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Waste Material A
+        nameLong:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: (not in use)
+        description:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Description of the product template
+        brandName:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Brand of the product template
+        measureType:
+          title: MeasureType
+          enum:
+          - Unknown
+          - Fixed
+          - Variable
+          type: string
+          example: Fixed or Variable
+        packingType:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: ml
+        countryCode:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: AUS
+        productIndustryAttributes:
+          title: IEnumerable<KeyValue>
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/KeyValue'
+        isPublic:
+          title: Boolean
+          type: boolean
+        brandOwnerId:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+          example: ABN.12345678
+        manufacturerId:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+          example: ABN.12345678
+        subBrandName:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Brand A
+        productUses:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Product usage
+        harmonizedSystemCodeId:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: '010121'
+        classifications:
+          title: SKUClassifications
+          allOf:
+          - $ref: '#/components/schemas/SKUClassifications'
+          example: '{ "GpcSegmentCode": "94000000", "GpcSegmentTitle": "Crops", "GpcFamilyCode" : "94020000", "GpcFamilyTitle": "Crops for food production","GpcClassCode" : "94022000","GpcClassTitle": " Sugar crops", "GpcBrickCode" : "10007307", "GpcBrickTitle" : "Sugar Caneplants (Saccharum Officinarum)",} '
+        productAttributes:
+          title: SKUProductAttributes
+          allOf:
+          - $ref: '#/components/schemas/SKUProductAttributes'
+        packagingAndStorage:
+          title: SKUPackagingAndStorage
+          allOf:
+          - $ref: '#/components/schemas/SKUPackagingAndStorage'
+        otherGeneral:
+          title: SKUOtherGeneral
+          allOf:
+          - $ref: '#/components/schemas/SKUOtherGeneral'
+        productDates:
+          title: SKUProductDates
+          allOf:
+          - $ref: '#/components/schemas/SKUProductDates'
+        metadataFields:
+          title: List<SKUMetadataField>
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/SKUMetadataField'
+      additionalProperties: false
+    ErrorDetails:
+      title: ErrorDetails
+      type: object
+      properties:
+        code:
+          title: String
+          type:
+          - string
+          - 'null'
+        message:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ProductTemplateListItem:
+      title: ProductTemplateListItem
+      allOf:
+      - $ref: '#/components/schemas/GetProductTemplateByIdResponse'
+      - type: object
+        properties:
+          children:
+            title: RelatedProductTemplate[]
+            type:
+            - array
+            - 'null'
+            items:
+              $ref: '#/components/schemas/RelatedProductTemplate'
+          siblings:
+            title: RelatedProductTemplate[]
+            type:
+            - array
+            - 'null'
+            items:
+              $ref: '#/components/schemas/RelatedProductTemplate'
+        additionalProperties: false
+    UploadedFile:
+      title: UploadedFile
+      type: object
+      properties:
+        id:
+          title: Guid
+          type: string
+          format: uuid
+        url:
+          title: String
+          type:
+          - string
+          - 'null'
+        mimeType:
+          title: String
+          type:
+          - string
+          - 'null'
+        fileName:
+          title: String
+          type:
+          - string
+          - 'null'
+        updatedAtUtc:
+          title: DateTime
+          type: string
+          format: date-time
+      additionalProperties: false
+    RelatedProductTemplate:
+      title: RelatedProductTemplate
+      type: object
+      properties:
+        id:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+        name:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    GetProductTemplateByIdResponse:
+      title: GetProductTemplateByIdResponse
+      type: object
+      properties:
+        id:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+        otherIds:
+          title: IEnumerable<ClientId>
+          type:
+          - array
+          - 'null'
+          items:
+            title: ClientId
+            type: string
+        parentId:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+        children:
+          title: List<SKU>
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/SKU'
+        siblings:
+          title: List<SKU>
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/SKU'
+        organizationId:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+        organizationName:
+          title: String
+          type:
+          - string
+          - 'null'
+        lastUpdatedByOrganizationName:
+          title: String
+          type:
+          - string
+          - 'null'
+        createdAtUtc:
+          title: DateTime
+          type: string
+          format: date-time
+        updatedAtUtc:
+          title: DateTime
+          type: string
+          format: date-time
+        name:
+          title: String
+          type:
+          - string
+          - 'null'
+        nameLong:
+          title: String
+          type:
+          - string
+          - 'null'
+        description:
+          title: String
+          type:
+          - string
+          - 'null'
+        brandName:
+          title: String
+          type:
+          - string
+          - 'null'
+        measureType:
+          title: MeasureType
+          enum:
+          - Unknown
+          - Fixed
+          - Variable
+          type: string
+        packingType:
+          title: String
+          type:
+          - string
+          - 'null'
+        countryCode:
+          title: String
+          type:
+          - string
+          - 'null'
+        productIndustryAttributes:
+          title: KeyValue[]
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/KeyValue'
+        images:
+          title: IEnumerable<UploadedFile>
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/UploadedFile'
+        isArchived:
+          title: Boolean
+          type: boolean
+        isPublic:
+          title: Boolean
+          type: boolean
+        brandOwnerId:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+        brandOwnerName:
+          title: String
+          type:
+          - string
+          - 'null'
+        manufacturerId:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+        manufacturerName:
+          title: String
+          type:
+          - string
+          - 'null'
+        subBrandName:
+          title: String
+          type:
+          - string
+          - 'null'
+        productUses:
+          title: String
+          type:
+          - string
+          - 'null'
+        harmonizedSystemCode:
+          title: HarmonizedSystemCode
+          allOf:
+          - $ref: '#/components/schemas/HarmonizedSystemCode'
+        classifications:
+          title: SKUClassifications
+          allOf:
+          - $ref: '#/components/schemas/SKUClassifications'
+        productAttributes:
+          title: SKUProductAttributes
+          allOf:
+          - $ref: '#/components/schemas/SKUProductAttributes'
+        metadataFields:
+          title: List<SKUMetadataField>
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/SKUMetadataField'
+        packagingAndStorage:
+          title: SKUPackagingAndStorage
+          allOf:
+          - $ref: '#/components/schemas/SKUPackagingAndStorage'
+        otherGeneral:
+          title: SKUOtherGeneral
+          allOf:
+          - $ref: '#/components/schemas/SKUOtherGeneral'
+        productDates:
+          title: SKUProductDates
+          allOf:
+          - $ref: '#/components/schemas/SKUProductDates'
+      additionalProperties: false
+    UniclassSystem:
+      title: UniclassSystem
+      type: object
+      properties:
+        code:
+          title: String
+          type:
+          - string
+          - 'null'
+        element:
+          title: String
+          type:
+          - string
+          - 'null'
+        system:
+          title: String
+          type:
+          - string
+          - 'null'
+        component:
+          title: String
+          type:
+          - string
+          - 'null'
+        type:
+          title: String
+          type:
+          - string
+          - 'null'
+        title:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    UnitsOfMeasurement:
+      title: UnitsOfMeasurement
+      type: object
+      properties:
+        unit:
+          title: String
+          type:
+          - string
+          - 'null'
+        name:
+          title: String
+          type:
+          - string
+          - 'null'
+        type:
+          title: MeasurementType
+          enum:
+          - Length
+          - Capacity
+          - Weight
+          - Temperature
+          - Density
+          - Compression
+          - Area
+          - Duration
+          type: string
+      additionalProperties: false
+    ValidationErrorResponse:
+      title: ValidationErrorResponse
+      allOf:
+      - $ref: '#/components/schemas/ErrorResponse__ValidationErrorDetails'
+      - type: object
+        additionalProperties: false
+  securitySchemes:
+    Bearer_token:
+      type: apiKey
+      description: 'Please enter: "Bearer YOUTOKEN"'
+      name: Authorization
+      in: header

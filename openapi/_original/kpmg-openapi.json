@@ -1,0 +1,4300 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "KPMG Origins API",
+    "description": "\n\n- <a href=\"#authentication\">How to authenticate</a>\n- <a href=\"#main-endpoints\">Definitions of Key API Endpoints</a>\n- <a href=\"#other-information\">Other Information</a>\n\nKPMG Origins provides customers with access to their data, and data shared with them, through APIs. The APIs allow customers with the ability to create, update and extract available data.\n\n<div id=\"authentication\"></div>\n\n## How to authenticate\n1) Create API credentials via KPMG Origins UI (NB: only users with the Administrator role can manage API credentials):\n    - Login to KPMG Origins\n    - Go to Settings page, then API Credentials tab\n    - Create API credentials\n    - Copy the Client Id and Secret (NB: you will not be able to recover the secret value if lost, however, you can generate a new one)\n2) Exchange API Credentials for a short-lived _access token_\n    - Make a POST request to **https://&lt;KPMG Origins hostname&gt;/cr/client-api/v1/token**\n       ```\n       {\n        \"clientId\": \"<Client Id>\",\n        \"secret\": \"<Secret>\"\n       }\n      ```\n3) Make authenticated requests to KPMG Origins API:\n    - Use the access token value form the token API response as a Bearer token to make requests to the API i.e. set Authorization header like this: `Authorization: Bearer <access token>`\n       ```\n       NB: access token is only valid for a short time, if requests start failing with 401 status code, repeat steps 2) and 3)\n       ```\n\n<div id=\"main-endpoints\"></div>\n\n## Definitions of Key API Endpoints\n\nThis section explains key definitions of key data entities and API endpoints\n\n* **Organisation**: the organisation can either be an organisation or an individual.\n    - An *organisation* is a participant which usually holds an ABN or ACN, usually an entity participating in commercial activities.\n    - An *individual* is a participant who has no ABN or ACN. For example, in Movement, a generator who is a private individual (e.g. residential asbestos pick-up).\n\n  This distinction is necessary as it relates to a validation in the ``post organisation`` API.\n* **Location**: locations represent geographical sites which are operated by organisations. Each location possesses a unique location ID to distinguish it from other locations in the system, as well as an organisation / client ID that specifies which organisation operates it.\n\n\nPlease see the details on each individual API to learn more about the specific criteria needed for a successful payload.\n\n<div id=\"other-information\"></div>\n\n## Other Information\n- The format for Client Id mentioned in the APIs is ``IDType.IDValue``\n- By default, the collection of items returned can include up to 10,000 items, but this can be changed via the ``Limit`` and ``Skip`` parameters.\n\n<br/>\n",
+    "version": "1.0"
+  },
+  "paths": {
+    "/cr/client-api/v1/locations": {
+      "post": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Create a New Location",
+        "description": "### Creates a New Location ###\r\n            \r\nThis API allows users to create a new location in the KPMG Origins platform. The User must specify the organisation that is the owner or custodian of the location.\r\nField Name | Description | Mandatory | Data Type / Format | Example\r\n---|---|---|---|---\r\nid | The internal identifier of the location that was created by the client. If one is not provided, one will be auto-generated for that location. |  | <span id=\"no-wrap\">[ID_Type].[ID_Value]</span> | LOC.123456789\r\norganisationId | The **Organisation / Client ID** of the organisation. The User can provide their own Organisation / Cient ID. In addition, they can creating a location on behalf of another organisation. | Mandatory | <span id=\"no-wrap\">[ID_Type].[ID_Value]</span> | ABN.12345678910\r\nname | The name of the location. | Mandatory | String | Sample Co Sydney Processing Plant\r\ncountryCode | The three digit country code of the location. | Mandatory | String | AUS\r\ncity | The city where the location is situated. | Mandatory | String | Sydney\r\naddress | The address where the location is situated (excluding city, state, and postcode). | Mandatory | String | Unit 5, 78 Avalon Avenue\r\npostcode | The postcode where the location is situated. | Mandatory | String | 2000\r\nstate | The State where the location is situated. | Mandatory | String | NSW\r\nlongitude | The longitude where the location is situated. | Mandatory | number | -33.865144\r\nlatitude | The latitude where the location is situated. | Mandatory | number | 151.202132\r\ntimezone | The timezone where the location is situated. | Mandatory | String | UTC+10:00: Sydney\r\notherIds | Any other alternative internal identifiers of the location. | | <span id=\"no-wrap\">[ID_Type].[ID_Value]</span> | SAMPLELOC.123456789\r\ngooglePlaceId | The google place ID of the location. | | String | ChIJgUbEo8cfqokR5lP9_Wh_DaM\r\ngeoData | The geo json data of the location. | | JObject | {\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"Producer Name\":\"Producer 2\",\"Producer Country\":\"US\",\"Production Place Name\":\"place 4\"},\"geometry\":{\"coordinates\":[[[-104.5982275585944,40.0864026500478],[-104.71940938616444,39.88138559039132],[-104.51166910773692,39.805173411506104],[-103.91164152130597,39.8356005398515],[-104.03282334887601,39.97464425984117],[-104.32279415056169,40.083693499590936],[-104.5982275585944,40.0864026500478]]],\"type\":\"Polygon\"},\"id\":0}]}",
+        "requestBody": {
+          "description": "Request to Create a New Location Associated with an Organisation.",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "title": "CreateLocationRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateLocationRequest"
+                  }
+                ]
+              }
+            },
+            "application/json": {
+              "schema": {
+                "title": "CreateLocationRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateLocationRequest"
+                  }
+                ]
+              }
+            },
+            "text/json": {
+              "schema": {
+                "title": "CreateLocationRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateLocationRequest"
+                  }
+                ]
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "title": "CreateLocationRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateLocationRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "New Location Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetLocationByIdResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Retrieve Locations Based on the Specified Filter",
+        "description": "### Retrieve Locations Based on the Specified Filter ###\r\n            \r\nThis API allows users to get a list of all locations based on the specified filters.\r\n            \r\nThe five filters are:\r\nField Name | Description | Data Type / Format | Example\r\n---|---|---|---\r\nids | Search sections of the string of the location ID. | <span id=\"no-wrap\">[ID_Type].[ID_Value]</span> | LOC.12\r\nsearch | Specifies the string that must appear in the location name in the response. Note that a minimum of 4 characters is required. The API searches through: \n**Name**, **City**, **Country Name** and **Address**</br> | String | Sample Co Sydney\r\narchived | Specifies whether or not the location has been archived. | String | Unarchived\r\nlimit | Specifies the maximum number of items or records that should be included in the response. | Integer(number) | 10\r\nskip | specifies the offset or starting point from where the API should begin returning the results. It specifies the number of items or records that should be skipped or ignored before returning the requested data, and is useful for navigating to different pages or datasets in the result. | Integer(number) | 0\r\nuseFuzzyMatching | (Optional) use fuzzy matching on Address field, could extended to the fields in future. | Boolean | True/False\r\nTherefore, a sample request specifying for:\r\n* 10000 entries in the response, AND\r\n* with zero skipped entries, AND\r\n* where the Location ID is \"gln.5149730576176\", AND\r\n* where the location is **unarchived**, AND\r\n* the search term is **sample**\r\n            \r\nSample request:\r\n            \r\n    GET locations/query?search=Australia&ids=gln.5149730576176&limit=10000&skip=0;search=sample;archived=UnArchived",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "Filter by Location IDs",
+            "schema": {
+              "title": "ClientId[]",
+              "type": "array",
+              "items": {
+                "title": "ClientId",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "The specific string to detect in the location name.",
+            "schema": {
+              "title": "String",
+              "type": "string"
+            }
+          },
+          {
+            "name": "archived",
+            "in": "query",
+            "description": "Whether or not this location is archived.",
+            "schema": {
+              "title": "ArchivedFilter",
+              "enum": [
+                "All",
+                "UnArchived",
+                "Archived"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of entries permitted in the response.",
+            "schema": {
+              "title": "Int32",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "description": "The number of entries to skip in the response.",
+            "schema": {
+              "title": "Int32",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "useFuzzyMatching",
+            "in": "query",
+            "description": "(Optional) Use fuzzy matching on Address field (could be extended to other fields in future).",
+            "schema": {
+              "title": "Boolean",
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "Extra data to include in the response.",
+            "schema": {
+              "title": "ExtraLocationDataToInclude[]",
+              "type": "array",
+              "items": {
+                "title": "ExtraLocationDataToInclude",
+                "enum": [
+                  "GeoData"
+                ],
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Returns the list of locations based on the provided filter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedCollectionResponse__GetLocationByIdResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/locations/{clientId}": {
+      "patch": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Update a Location",
+        "description": " ### Updates an Existing Location ###\r\n\r\n This API allows users to update an existing location in the KPMG Origins platform. The user must specify the client id of the location.\r\n The user can update locations of organisation they are associated with.\r\n Field Name | Description | Data Type / Format | Example\r\n ---|---|---|---\r\n Name | The name of the location. | String | Sample Co Sydney Processing Plant\r\n CountryCode | The three digit country code of the location. | String | AUS\r\n City | The city where the location is situated. | String | Sydney\r\n Address | The address where the location is situated (excluding city, state, and postcode). | String | Unit 5, 78 Avalon Avenue\r\n Postcode | The postcode where the location is situated. | String | 2000\r\n State | The State where the location is situated. | String | NSW\r\n Longitude | The longitude where the location is situated. | number | -33.865144\r\n Latitude | The latitude where the location is situated. | number | 151.202132\r\n TimeZone | The timezone where the location is situated. | String | UTC+10:00: Sydney\r\n OtherIds | Any other alternative internal identifiers of the location. | <span id=\"no-wrap\">[ID_Type].[ID_Value]</span> | SAMPLELOC.123456789\r\n GooglePlaceId | The google place ID of the location. | String | ChIJgUbEo8cfqokR5lP9_Wh_DaM\r\n Email | The email linked to the location. | String | location@test.kpmgorigins.com\r\n\r\n\r\n The sample request will be drafted as:\r\n```\r\n [\r\n     {\r\n         \"path\": \"/State\",\r\n          \"op\": \"replace\",\r\n         \"from\": \"NSW\",\r\n         \"value\": \"QLD\"\r\n     },\r\n     {\r\n         \"path\": \"/Email\",\r\n         \"op\": \"replace\",\r\n         \"from\": \"location@test.kpmgorigins.com\",\r\n         \"value\": \"location-2@test.kpmgorigins.com\"\r\n     }\r\n ]\r\n```",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "description": "Client id of the location to update",
+            "required": true,
+            "schema": {
+              "title": "String",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Patch request to update an existing location",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "title": "Operation[]",
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "example": [{"value":"Location2","path":"/Name","op":"replace"},{"value":"15 James Street","path":"/Address","op":"replace"},{"value":"Perth","path":"/City","op":"replace"},{"value":"6000","path":"/Postcode","op":"replace"},{"value":"WA","path":"/State","op":"replace"},{"value":"115.857048","path":"/Longitude","op":"replace"},{"value":"-31.953512","path":"/Latitude","op":"replace"},{"value":["SAMPLELOC.123456789"],"path":"/OtherIds","op":"replace"},{"value":"Australia/Perth","path":"/TimeZone","op":"replace"},{"value":"location2@test.kpmgorigins.com","path":"/Email","op":"replace"},{"value":"location2@test.kpmgorigins.com","path":"/Email","op":"replace"},{"value":{"key":"value"},"path":"/GeoData","op":"replace"},{"value":"ChIJd8BlQ2n0KysRJdKvz2YxhZQ","path":"/GooglePlaceId","op":"replace"},{"value":"AU","path":"/CountryCode","op":"replace"}]
+            },
+            "application/json": {
+              "schema": {
+                "title": "Operation[]",
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "example": [{"value":"Location2","path":"/Name","op":"replace"},{"value":"15 James Street","path":"/Address","op":"replace"},{"value":"Perth","path":"/City","op":"replace"},{"value":"6000","path":"/Postcode","op":"replace"},{"value":"WA","path":"/State","op":"replace"},{"value":"115.857048","path":"/Longitude","op":"replace"},{"value":"-31.953512","path":"/Latitude","op":"replace"},{"value":["SAMPLELOC.123456789"],"path":"/OtherIds","op":"replace"},{"value":"Australia/Perth","path":"/TimeZone","op":"replace"},{"value":"location2@test.kpmgorigins.com","path":"/Email","op":"replace"},{"value":"location2@test.kpmgorigins.com","path":"/Email","op":"replace"},{"value":{"key":"value"},"path":"/GeoData","op":"replace"},{"value":"ChIJd8BlQ2n0KysRJdKvz2YxhZQ","path":"/GooglePlaceId","op":"replace"},{"value":"AU","path":"/CountryCode","op":"replace"}]
+            },
+            "text/json": {
+              "schema": {
+                "title": "Operation[]",
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "example": [{"value":"Location2","path":"/Name","op":"replace"},{"value":"15 James Street","path":"/Address","op":"replace"},{"value":"Perth","path":"/City","op":"replace"},{"value":"6000","path":"/Postcode","op":"replace"},{"value":"WA","path":"/State","op":"replace"},{"value":"115.857048","path":"/Longitude","op":"replace"},{"value":"-31.953512","path":"/Latitude","op":"replace"},{"value":["SAMPLELOC.123456789"],"path":"/OtherIds","op":"replace"},{"value":"Australia/Perth","path":"/TimeZone","op":"replace"},{"value":"location2@test.kpmgorigins.com","path":"/Email","op":"replace"},{"value":"location2@test.kpmgorigins.com","path":"/Email","op":"replace"},{"value":{"key":"value"},"path":"/GeoData","op":"replace"},{"value":"ChIJd8BlQ2n0KysRJdKvz2YxhZQ","path":"/GooglePlaceId","op":"replace"},{"value":"AU","path":"/CountryCode","op":"replace"}]
+            },
+            "application/*+json": {
+              "schema": {
+                "title": "Operation[]",
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "example": [{"value":"Location2","path":"/Name","op":"replace"},{"value":"15 James Street","path":"/Address","op":"replace"},{"value":"Perth","path":"/City","op":"replace"},{"value":"6000","path":"/Postcode","op":"replace"},{"value":"WA","path":"/State","op":"replace"},{"value":"115.857048","path":"/Longitude","op":"replace"},{"value":"-31.953512","path":"/Latitude","op":"replace"},{"value":["SAMPLELOC.123456789"],"path":"/OtherIds","op":"replace"},{"value":"Australia/Perth","path":"/TimeZone","op":"replace"},{"value":"location2@test.kpmgorigins.com","path":"/Email","op":"replace"},{"value":"location2@test.kpmgorigins.com","path":"/Email","op":"replace"},{"value":{"key":"value"},"path":"/GeoData","op":"replace"},{"value":"ChIJd8BlQ2n0KysRJdKvz2YxhZQ","path":"/GooglePlaceId","op":"replace"},{"value":"AU","path":"/CountryCode","op":"replace"}]
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Location Updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "String",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/locations/{id}": {
+      "get": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Retrieves a Location by Location ID",
+        "description": "### Retrieves a Location by a Location ID ###\r\nThis API allows users to search for details on a location by providing the location ID.\r\n            \r\nThe format for location ID is:\r\n            \r\n    [ID_Type].[ID_Value]\r\n            \r\nFor example, the location ID listed below would qualify for the required syntax:\r\n            \r\n    LOC.123456789\r\n            \r\nSample request:\r\n            \r\n    GET locations/LOC.123456789",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Location ID.",
+            "required": true,
+            "schema": {
+              "title": "ClientId",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Returns the list of locations based on the provided filter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetLocationByIdResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/locations/{id}/images": {
+      "post": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Upload an image for a location.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Location id.",
+            "required": true,
+            "schema": {
+              "title": "ClientId",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "title": "IEnumerable<IFormFile>",
+                    "type": "array",
+                    "items": {
+                      "title": "IFormFile",
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "files": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/images/locations/{id}/{imageId}": {
+      "get": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Get image of a location",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Location id",
+            "required": true,
+            "schema": {
+              "title": "ClientId",
+              "type": "string"
+            }
+          },
+          {
+            "name": "imageId",
+            "in": "path",
+            "description": "Image id",
+            "required": true,
+            "schema": {
+              "title": "Guid",
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/locations/{id}/images/{imageId}": {
+      "delete": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Delete image of a location",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Location id",
+            "required": true,
+            "schema": {
+              "title": "ClientId",
+              "type": "string"
+            }
+          },
+          {
+            "name": "imageId",
+            "in": "path",
+            "description": "Image id",
+            "required": true,
+            "schema": {
+              "title": "Guid",
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/locations/{id}/archive": {
+      "put": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Archive a location",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Location id",
+            "required": true,
+            "schema": {
+              "title": "ClientId",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/locations/{id}/unarchive": {
+      "put": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Unarchive a location",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Location id",
+            "required": true,
+            "schema": {
+              "title": "ClientId",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/organizations/{id}": {
+      "get": {
+        "tags": [
+          "Organizations"
+        ],
+        "summary": "Retrieve Organisation by Organisation / Client ID",
+        "description": " ### Retrieve organisations based on Organisation / Client ID ###\r\nThis API allows users to search for details of an organisation by providing an organisation ID. This identifier may be referred to as \"organisation ID\" or \"client ID\" in different parts of the documentation; they refer to the same unique identifer for organisations or individuals. For organisations, this is commonly an ABN or an ACN.\r\n The format for organisation ID is:\r\n\r\n     [ID_Type].[ID_Value]\r\n\r\n For example, organisations IDs listed below would qualify for the required syntax:\r\n\r\n     ORGID.012345678, ABN.12345678910\r\n\r\n Therefore, a sample request will appear as follows:\r\n\r\n     GET organization/ABN.12345678910",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Organisation / Client ID.",
+            "required": true,
+            "schema": {
+              "title": "ClientId",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Organization Details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOrganizationByIdResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/organizations": {
+      "get": {
+        "tags": [
+          "Organizations"
+        ],
+        "summary": "Retrieve Organisations Based on the Specified Filter",
+        "description": "### Retrieve Organisations Based on the Specified Filter ###\r\n            \r\nThis API allows Users to get all organisation(s) based on the specific filter. Based on the filter, a list of organisation is returned as a collection.\r\n            \r\nKey details are as follows:\r\nField Name | Description | Data Type / Format | Example\r\n---|---|---|---\r\nLimit | Specifies the maximum number of items or records that should be included in the response. | number | 10\r\nSkip | Specifies the offset or starting point from where the API should begin returning the results. It specifies the number of items or records that should be skipped or ignored before returning the requested data, and is useful for navigating to different pages or chunks of data in a result set. | number | 0\r\nsearchTerm | Specifies the string that must appear in the organisation name in the response. Note that a minimum of 5 characters is required. The API searches through: \n**commonName**, **legalName**, **fullAddress**, **countryName**, **clientID**</br>| number | Sample Co\r\n            \r\nTherefore, a sample request specifying for:\r\n            \r\n* 100 entries in the response, AND\r\n* with zero skipped entries, AND\r\n* where the organisation name is \"organisation name\"\r\n            \r\nwill be written as the following:\r\n            \r\n    GET organizations?limit=100&skip=0&searchTerm=organisation%20name",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of entries permitted in the response.",
+            "schema": {
+              "title": "Int32",
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "description": "The number of entries to skip in the response.",
+            "schema": {
+              "title": "Int32",
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "searchTerm",
+            "in": "query",
+            "description": "The specific string to detect in the organisation name.",
+            "schema": {
+              "title": "String",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Organizations' Details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedCollectionResponse__GetOrganizationByIdResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Organizations"
+        ],
+        "summary": "Create an Organisation",
+        "description": "### Create a new Organisation ###\r\nThis API allows Users to create a new organisation based on User inputs.\r\n            \r\nKey details are as follow:\r\nField Name | Description | Mandatory | Data Type / Format | Example\r\n--- | --- | --- | --- | ---\r\nid <span id=\"footnote\">[1]</span> | The unique ID used to identify the organisation. | Conditional  | <span id=\"no-wrap\">[ID_Type].[ID_Value]</span> | ORGID.123456789 or ABN.12345678910 (depending on whether an ABN is available)\r\notherIds | Other possible ID(s) for this organisation (these accomodate for ID(s) which the organisation may use internally). | | <span id=\"no-wrap\">[ID_Type].[ID_Value]</span> | ORGID.012345678, ABN.10987654321\r\ncommonName | The common name of the organisation. | Mandatory | String | Sample Co\r\nlegalName | The legal and registered name of the organisation - usually the full name that is registered with ASIC. | | String | Sample Co Pty Ltd.\r\nemail | The email address of the organisation. | | String | dummyemail@example.kpmgorigins.com\r\nphoneNumber | The phone number of the organisation. | | String | 0491 570 006\r\nwebsite | The website of the organisation. | | String | example.kpmgorigins.com\r\ncontactName | The name of the contact person for this organisation. | | String | John Smith\r\ncontactEmail | The email address of the contact person for this organisation. | | String | dummyemail@example.kpmgorigins.com\r\ncontactNumber | The phone number of the contact person for this organisation. | | String | 0491 570 006\r\nisIndividual | This choice indicates whether the organisation is an individual or not. | | Boolean | False\r\ndescription | The description for this organisation. | | String | Sample Co processes asbestos waste.\r\naddress | The address where the head office of this organisation is located. | | String | Unit 5, 78 Avalon Avenue\r\ncity | The city where the head office of this organisation is located, excluding city, state, and postcode. | | String | Sydney\r\nstate | The state where the head office of this organisation is located. | | String | NSW\r\npostcode | The postcode where the head office of this organisation is located. | | String | 2000\r\ncountryCode | The 3 letter alphabetic code to represent country where the head office of this organisation is located. | | String | AUS\r\nlongitude | The longitude, or X coordinate, where the head office of this organisation is located. | | number | -33.865144\r\nlatitude | The latitude, or Y coordinate, where the head office of this organisation is located. | | number | 151.202132\r\n<span id=\"footnote\">[1]</span>: If the **isIndividual** flag is set to \"False\", then the **id** field becomes a *mandatory* field",
+        "requestBody": {
+          "description": "Request to create an organisation.",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "title": "CreateOrganizationRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateOrganizationRequest"
+                  }
+                ],
+                "description": "Create organization request"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "title": "CreateOrganizationRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateOrganizationRequest"
+                  }
+                ],
+                "description": "Create organization request"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "title": "CreateOrganizationRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateOrganizationRequest"
+                  }
+                ],
+                "description": "Create organization request"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "title": "CreateOrganizationRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateOrganizationRequest"
+                  }
+                ],
+                "description": "Create organization request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOrganizationByIdResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/organizations/{clientId}": {
+      "patch": {
+        "tags": [
+          "Organizations"
+        ],
+        "summary": "Updates an organization.",
+        "description": " ### Updates an Existing Organization ###\r\n\r\n This API allows users to update an existing organization in the KPMG Origins platform. The user must specify the client id of the organization.\r\n | Field Name | Description | Data Type / Format | Example |\r\n |----------------------|-----------------------------------------------------|-----------------------|-----------------------------------|\r\n | OrganizationType | The type of the organization. | String | Corporate |\r\n | LegalName | The legal name of the organization. | String | Legal Name |\r\n | CommonName | The common name of the organization. | String | Common Name |\r\n | Email | The email address of the organization. | String | organization @test.com |\r\n | PhoneNumber | The phone number of the organization. | String | +401862380 |\r\n | Website | The website URL of the organization. | String | https: //www.organization.com      |\r\n | IsIndividual | Whether the organization is an individual. | Boolean | false |\r\n | Industry | The industry the organization belongs to. | String | Technology |\r\n | CountryCode | The three-letter country code of the organization. | String | AUS |\r\n | Description | A description of the organization. | String | This is a sample organization. |\r\n | City | The city where the organization is located. | String | Sydney |\r\n | Address | The address where the organization is located. | String | 1234 Main Street |\r\n | Postcode | The postcode where the organization is located. | String | 2000 |\r\n | State | The state where the organization is located. | String | NSW |\r\n | Longitude | The longitude where the organization is located. | Number | -33.865144 |\r\n | Latitude | The latitude where the organization is located. | Number | 151.202132 |\r\n | GooglePlaceId | The google place ID of the organization. | String | ChIJgUbEo8cfqokR5lP9_Wh_DaM |\r\n | DescriptionMarkDown | A markdown description of the organization. | String | *Markdown Description* |\r\n | OtherIds | Any other alternative internal identifiers. | [ID_Type].[ID_Value] | SAMPLELOC .123456789 |\r\n\r\n #### Possible values for `OrganizationType` are:\r\n SystemOperator, Processor, Distributor, Certifier, Logistics, Producer\r\n\r\n #### Possible values for `Industry` are:\r\n Agriculture, Beverage, Beverages, Certification, Cosmetics, Dairy, Distributor, Ecommerce, Energy, Fashion, Food, Government, Healthcare, Import, Livestock, Logistics, Manufacturing, Medical, Oleochemicals, Packaging, Pawnshop, Pharmaceutical, Polymer, PortAuthority, PortOperator, Produce, Resources, Retail, Textiles, Transport, Waste\r\n\r\n The sample request will be drafted as:\r\n```\r\n [\r\n     {\r\n         \"path\": \"/State\",\r\n          \"op\": \"replace\",\r\n         \"from\": \"NSW\",\r\n         \"value\": \"QLD\"\r\n     },\r\n     {\r\n         \"path\": \"/Email\",\r\n         \"op\": \"replace\",\r\n         \"from\": \"location@test.kpmgorigins.com\",\r\n         \"value\": \"location-2@test.kpmgorigins.com\"\r\n     }\r\n ]\r\n```",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "description": "Organization id.",
+            "required": true,
+            "schema": {
+              "title": "ClientId",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH payload, only replace operations supported.",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "title": "Operation[]",
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "example": [{"value":"Corporate","path":"/OrganizationType","op":"replace"},{"value":"Updated Legal Name","path":"/LegalName","op":"replace"},{"value":"Updated Common Name","path":"/CommonName","op":"replace"},{"value":"updatedemail@test.com","path":"/Email","op":"replace"},{"value":"401862370","path":"/PhoneNumber","op":"replace"},{"value":"https://www.updated-organization.com","path":"/Website","op":"replace"},{"value":false,"path":"/IsIndividual","op":"replace"},{"value":"Updated Industry","path":"/Industry","op":"replace"},{"value":"AUS","path":"/CountryCode","op":"replace"},{"value":"This is an updated description of the organization.","path":"/Description","op":"replace"},{"value":"Updated City","path":"/City","op":"replace"},{"value":"Updated Address, 1234 Updated Street","path":"/Address","op":"replace"},{"value":"2000","path":"/Postcode","op":"replace"},{"value":"NSW","path":"/State","op":"replace"},{"value":-33.865144,"path":"/Longitude","op":"replace"},{"value":151.202132,"path":"/Latitude","op":"replace"},{"value":"ChIJgUbEo8cfqokR5lP9_Wh_DaM","path":"/GooglePlaceId","op":"replace"},{"value":"*Updated Markdown Description*","path":"/DescriptionMarkDown","op":"replace"},{"value":["SAMPLELOC.123456789"],"path":"/OtherIds","op":"replace"}]
+            },
+            "application/json": {
+              "schema": {
+                "title": "Operation[]",
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "example": [{"value":"Corporate","path":"/OrganizationType","op":"replace"},{"value":"Updated Legal Name","path":"/LegalName","op":"replace"},{"value":"Updated Common Name","path":"/CommonName","op":"replace"},{"value":"updatedemail@test.com","path":"/Email","op":"replace"},{"value":"401862370","path":"/PhoneNumber","op":"replace"},{"value":"https://www.updated-organization.com","path":"/Website","op":"replace"},{"value":false,"path":"/IsIndividual","op":"replace"},{"value":"Updated Industry","path":"/Industry","op":"replace"},{"value":"AUS","path":"/CountryCode","op":"replace"},{"value":"This is an updated description of the organization.","path":"/Description","op":"replace"},{"value":"Updated City","path":"/City","op":"replace"},{"value":"Updated Address, 1234 Updated Street","path":"/Address","op":"replace"},{"value":"2000","path":"/Postcode","op":"replace"},{"value":"NSW","path":"/State","op":"replace"},{"value":-33.865144,"path":"/Longitude","op":"replace"},{"value":151.202132,"path":"/Latitude","op":"replace"},{"value":"ChIJgUbEo8cfqokR5lP9_Wh_DaM","path":"/GooglePlaceId","op":"replace"},{"value":"*Updated Markdown Description*","path":"/DescriptionMarkDown","op":"replace"},{"value":["SAMPLELOC.123456789"],"path":"/OtherIds","op":"replace"}]
+            },
+            "text/json": {
+              "schema": {
+                "title": "Operation[]",
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "example": [{"value":"Corporate","path":"/OrganizationType","op":"replace"},{"value":"Updated Legal Name","path":"/LegalName","op":"replace"},{"value":"Updated Common Name","path":"/CommonName","op":"replace"},{"value":"updatedemail@test.com","path":"/Email","op":"replace"},{"value":"401862370","path":"/PhoneNumber","op":"replace"},{"value":"https://www.updated-organization.com","path":"/Website","op":"replace"},{"value":false,"path":"/IsIndividual","op":"replace"},{"value":"Updated Industry","path":"/Industry","op":"replace"},{"value":"AUS","path":"/CountryCode","op":"replace"},{"value":"This is an updated description of the organization.","path":"/Description","op":"replace"},{"value":"Updated City","path":"/City","op":"replace"},{"value":"Updated Address, 1234 Updated Street","path":"/Address","op":"replace"},{"value":"2000","path":"/Postcode","op":"replace"},{"value":"NSW","path":"/State","op":"replace"},{"value":-33.865144,"path":"/Longitude","op":"replace"},{"value":151.202132,"path":"/Latitude","op":"replace"},{"value":"ChIJgUbEo8cfqokR5lP9_Wh_DaM","path":"/GooglePlaceId","op":"replace"},{"value":"*Updated Markdown Description*","path":"/DescriptionMarkDown","op":"replace"},{"value":["SAMPLELOC.123456789"],"path":"/OtherIds","op":"replace"}]
+            },
+            "application/*+json": {
+              "schema": {
+                "title": "Operation[]",
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "example": [{"value":"Corporate","path":"/OrganizationType","op":"replace"},{"value":"Updated Legal Name","path":"/LegalName","op":"replace"},{"value":"Updated Common Name","path":"/CommonName","op":"replace"},{"value":"updatedemail@test.com","path":"/Email","op":"replace"},{"value":"401862370","path":"/PhoneNumber","op":"replace"},{"value":"https://www.updated-organization.com","path":"/Website","op":"replace"},{"value":false,"path":"/IsIndividual","op":"replace"},{"value":"Updated Industry","path":"/Industry","op":"replace"},{"value":"AUS","path":"/CountryCode","op":"replace"},{"value":"This is an updated description of the organization.","path":"/Description","op":"replace"},{"value":"Updated City","path":"/City","op":"replace"},{"value":"Updated Address, 1234 Updated Street","path":"/Address","op":"replace"},{"value":"2000","path":"/Postcode","op":"replace"},{"value":"NSW","path":"/State","op":"replace"},{"value":-33.865144,"path":"/Longitude","op":"replace"},{"value":151.202132,"path":"/Latitude","op":"replace"},{"value":"ChIJgUbEo8cfqokR5lP9_Wh_DaM","path":"/GooglePlaceId","op":"replace"},{"value":"*Updated Markdown Description*","path":"/DescriptionMarkDown","op":"replace"},{"value":["SAMPLELOC.123456789"],"path":"/OtherIds","op":"replace"}]
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "String",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/organizations/{clientId}/images": {
+      "put": {
+        "tags": [
+          "Organizations"
+        ],
+        "summary": "Update organization ecosystem image.",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "description": "Organization id.",
+            "required": true,
+            "schema": {
+              "title": "ClientId",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "organizationEcosystemImage": {
+                    "title": "IFormFile",
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "organizationEcosystemImage": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "String",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/organizations/images/{imageId}": {
+      "get": {
+        "tags": [
+          "Organizations"
+        ],
+        "parameters": [
+          {
+            "name": "imageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Guid",
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/product-templates": {
+      "post": {
+        "tags": [
+          "ProductTemplates"
+        ],
+        "summary": "Creates a Product Template / SKU / Material.",
+        "description": "### Creates a Product Template / SKU / Material ###\r\n            \r\nThis API allows creating a new product template.\r\n            \r\nKey details are:\r\n            \r\nField Name | Description | Mandatory | Data Type / Format | Example\r\n---|---|---|---|---\r\nId | The main unique identifier of the product template | Mandatory | <span id=\"no-wrap\">[ID_Type].[ID_Value]</span> | SKU.123456789\r\nOtherIds | Other secondary ID's |  Optional | Array of [ID_Type].[ID_Value] | [ WWCO.12312312, ABC.129929292 ]\r\nParentId | The parent product template of this product template. | Optional | <span id=\"no-wrap\">[ID_Type].[ID_Value]</span> | SKU.123456789\r\nName | The name that describes the product or the function of the product. | Mandatory | String | Water Bottle 200ml\r\nNameLong | Long name of the product (not in use). | Optional | String | Eco-Friendly Water Bottle 200 ml\r\nDescription | The detailed description of the product. | Optional | String | A reusable, eco-friendly water bottle made from BPA-free materials\r\nBrandName | The name of the brand of the product. | Optional | String | EcoGoods\r\nMeasureType | The product template measure type (Fixed or Variable) | Mandatory | Integer | 1 - Fixed  2 - Variable\r\nCountryCode | The three digit country code of the origin location | Mandatory | String | AUS\r\nIsPublic | Specify the visibility of the product template | Mandatory | Boolean | True/False\r\nBrandOwnerId | The unique ID of the brand owner of the product. | Optional | String | ABN.123456789\r\nManufacturerId | The unique ID of the manufacturer of the product. | Optional | String | ABN.123456789\r\nSubBrandName | The subsidiary of the brand name of the product or the sub-brand name. | Optional | String | Company ABC Black Steak\r\nProductUses | The description of how the product is or can be used. | Optional | String | Ideal for outdoor activities, gym workouts, and daily hydration\r\nGS1 Classification | The common classification for grouping products. <ul><li>Segment: An industry Segmentation or Vertical.</li><li>Family: A broad division of a segment.</li><li>Class: A group of like categories.</li><li>Brick: Categories of like products.</li></ul> | Optional | Object |Example values:<ul><li>Segment: Food/Beverage/Tobacco</li><li>Family: Beverages</li><li>Class: Non Alcoholic Beverages - Ready to Drink</li><li>Brick: Packaged Water</li></ul>\r\nProductAttributes | The detailed attributes of the product (fixed/variable, width, net weight, height, dimension, UoM, etc) | Optional | Object | 15 mm, 15 millimetre, 1L, 1 Litre\r\nMetadataFields | Additional metadata fields for the product template | Optional | Array |Array of custom metadata fields\r\nPackagingAndStorage | The product template specifications for packaging and storage (packaging type, temperature) | Optional | Object | Packaging type: Box  Temperature: 20 Celsius\r\nOtherGeneral | The additional general product attributes - warranty description, warranty duration, warranty dates | Optional | Object | 3 years, 7 months, 30 days\r\nProductDates | The product dates information (publication date, product lifespan from production time) | Optional | Object | PublicationDate: 01/01/2024",
+        "requestBody": {
+          "description": "Request to create a sku.",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "title": "CreateProductTemplateRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateProductTemplateRequest"
+                  }
+                ]
+              }
+            },
+            "application/json": {
+              "schema": {
+                "title": "CreateProductTemplateRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateProductTemplateRequest"
+                  }
+                ]
+              }
+            },
+            "text/json": {
+              "schema": {
+                "title": "CreateProductTemplateRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateProductTemplateRequest"
+                  }
+                ]
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "title": "CreateProductTemplateRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateProductTemplateRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "GetProductTemplateByIdResponse",
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/GetProductTemplateByIdResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ProductTemplateListItem"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "ProductTemplates"
+        ],
+        "summary": "Retrieve Product Templates/Materials Based on the Specified Filter",
+        "description": "### Retrieve Product Templates / Material / SKUs Based on the Specified Filter ###\r\n            \r\nThis API allows users to get a list of all product templates, also known as materials, based on the specified filters.\r\n            \r\nThe three filters are:\r\nField Name | Description | Data Type / Format | Example\r\n---|---|---|---\r\narchived | Specifies whether the product templates are archived or not. | String | Unarchived\r\nvisibility | Specifies whether the product templates are visible or not. | String | Public\r\ngetMyProductTemplates | Specifies whether to retrieve only the user's product templates or all the product templates. | Boolean | True\r\nsearch | Specifies the string that must appear in the product template/material name in the response. | String | Tyres\r\nlimit | Specifies the maximum number of items or records that should be included in the response. | Integer(number) | 10\r\nskip | specifies the offset or starting point from where the API should begin returning the results. It specifies the number of items or records that should be skipped or ignored before returning the requested data, and is useful for navigating to different pages or datasets in the result. | Integer(number) | 0\r\nTherefore, a sample request specifying for:\r\n* 10 entries in the response, AND\r\n* with zero skipped entries, AND\r\n* the search term is **Tyres**\r\n            \r\nwill be written as the following:\r\n            \r\n    GET product-templates?search=Tyres&limit=10&skip=0;",
+        "parameters": [
+          {
+            "name": "archived",
+            "in": "query",
+            "description": "Whether the product templates are archived or not.",
+            "schema": {
+              "title": "ArchivedFilter",
+              "enum": [
+                "All",
+                "UnArchived",
+                "Archived"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "visibility",
+            "in": "query",
+            "description": "Whether the product templates are visible or not.",
+            "schema": {
+              "title": "VisibilityFilter",
+              "enum": [
+                "All",
+                "Public",
+                "Private"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "getMyProductTemplates",
+            "in": "query",
+            "description": "Whether to retrieve only the user's product templates or all the product templates.",
+            "schema": {
+              "title": "Boolean",
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "searchTerm",
+            "in": "query",
+            "description": "The specific string to detect in the Product Template/Material name.",
+            "schema": {
+              "title": "String",
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of entries permitted in the response.",
+            "schema": {
+              "title": "Int32",
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "description": "The number of entries to skip in the response.",
+            "schema": {
+              "title": "Int32",
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "title": "String",
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "schema": {
+              "title": "String",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Returns the list of product templates/materials based on the provided filter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedCollectionResponse__ProductTemplateListItem"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/product-templates/{clientId}": {
+      "patch": {
+        "tags": [
+          "ProductTemplates"
+        ],
+        "summary": "Update a Product Template using PATCH operation",
+        "description": "### Update a Product Template / SKU / Material ###\r\n            \r\nThis API allows update product template using JSON PATCH. Few things to note:\r\n- Only replace operations supported\r\n- Except the main ID, all properties listed in the **Create** endpoint can be updated.\r\n- Refer to **Create** endpoint request to see the list of properties.\r\n- The **MetadataFields** is a list of custom fields. It only supports replace the whole list, not update individual item.\r\n    - The _Type_ should be one of the categories: Description, Classifications, ProductAttributes, PackagingAndStorage, OtherGeneral, ProductDates\r\n- Dates need to be in format \"yyyy-MM-dd\"\r\n            \r\nA sample request will be drafted as:\r\n```\r\n[\r\n    {\r\n        \"path\": \"/Name\",\r\n        \"op\": \"replace\",\r\n        \"value\": \"New Product Template Name\"\r\n    },\r\n    {\r\n        \"path\": \"/OtherGeneral/WarrantyDescription\",\r\n        \"op\": \"replace\",\r\n        \"value\": \"sample warranty text\"\r\n    },\r\n    {\r\n        \"value\": \"2024-01-01\",\r\n        \"path\": \"/ProductDates/AvailabilityStartDate\",\r\n        \"op\": \"replace\"\r\n    },\r\n    {\r\n        \"path\": \"/MetadataFields\",\r\n        \"op\": \"replace\",\r\n        \"value\": [\r\n            {\r\n                type: \"Description\",\r\n                name: \"Custom Field 1\",\r\n                value: \"text value\"\r\n            },\r\n            {\r\n                type: \"ProductAttributes\",\r\n                name: \"Custom Field 2\",\r\n                NumberValue: 123.50\r\n            },\r\n        ]\r\n            \r\n    }\r\n]\r\n```",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "description": "Product Template ID",
+            "required": true,
+            "schema": {
+              "title": "String",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH payload, only replace operations supported",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "title": "Operation[]",
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "example": [{"value":"New name","path":"/Name","op":"replace"},{"value":"new description","path":"/OtherGeneral/WarrantyDescription","op":"replace"},{"value":"2024-01-01","path":"/ProductDates/AvailabilityStartDate","op":"replace"},{"value":[{"id":null,"name":"Custom Field 1","value":"text value","type":"Description","numberValue":null,"dateValue":null,"uom":null},{"id":null,"name":"Custom Field 2","value":null,"type":"ProductAttributes","numberValue":123.5,"dateValue":null,"uom":null}],"path":"/MetadataFields","op":"replace"}]
+            },
+            "application/json": {
+              "schema": {
+                "title": "Operation[]",
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "example": [{"value":"New name","path":"/Name","op":"replace"},{"value":"new description","path":"/OtherGeneral/WarrantyDescription","op":"replace"},{"value":"2024-01-01","path":"/ProductDates/AvailabilityStartDate","op":"replace"},{"value":[{"id":null,"name":"Custom Field 1","value":"text value","type":"Description","numberValue":null,"dateValue":null,"uom":null},{"id":null,"name":"Custom Field 2","value":null,"type":"ProductAttributes","numberValue":123.5,"dateValue":null,"uom":null}],"path":"/MetadataFields","op":"replace"}]
+            },
+            "text/json": {
+              "schema": {
+                "title": "Operation[]",
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "example": [{"value":"New name","path":"/Name","op":"replace"},{"value":"new description","path":"/OtherGeneral/WarrantyDescription","op":"replace"},{"value":"2024-01-01","path":"/ProductDates/AvailabilityStartDate","op":"replace"},{"value":[{"id":null,"name":"Custom Field 1","value":"text value","type":"Description","numberValue":null,"dateValue":null,"uom":null},{"id":null,"name":"Custom Field 2","value":null,"type":"ProductAttributes","numberValue":123.5,"dateValue":null,"uom":null}],"path":"/MetadataFields","op":"replace"}]
+            },
+            "application/*+json": {
+              "schema": {
+                "title": "Operation[]",
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "example": [{"value":"New name","path":"/Name","op":"replace"},{"value":"new description","path":"/OtherGeneral/WarrantyDescription","op":"replace"},{"value":"2024-01-01","path":"/ProductDates/AvailabilityStartDate","op":"replace"},{"value":[{"id":null,"name":"Custom Field 1","value":"text value","type":"Description","numberValue":null,"dateValue":null,"uom":null},{"id":null,"name":"Custom Field 2","value":null,"type":"ProductAttributes","numberValue":123.5,"dateValue":null,"uom":null}],"path":"/MetadataFields","op":"replace"}]
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "String",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "ProductTemplates"
+        ],
+        "summary": "Returns a Product Template by ID.",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "description": "Product Template id.",
+            "required": true,
+            "schema": {
+              "title": "String",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "The Product Template was successfully retrieved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "GetProductTemplateByIdResponse",
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/GetProductTemplateByIdResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ProductTemplateListItem"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/product-templates/{id}/images": {
+      "post": {
+        "tags": [
+          "ProductTemplates"
+        ],
+        "summary": "Upload an image for a product template",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Product Template ID",
+            "required": true,
+            "schema": {
+              "title": "ClientId",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "title": "IEnumerable<IFormFile>",
+                    "type": "array",
+                    "items": {
+                      "title": "IFormFile",
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "files": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "ProductTemplates"
+        ],
+        "summary": "Update image for a product template.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Product Template ID",
+            "required": true,
+            "schema": {
+              "title": "ClientId",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "title": "IEnumerable<IFormFile>",
+                    "type": "array",
+                    "items": {
+                      "title": "IFormFile",
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "files": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/product-templates/{id}/images/{imageId}": {
+      "get": {
+        "tags": [
+          "ProductTemplates"
+        ],
+        "summary": "Get image for a Product Template",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Product template ID",
+            "required": true,
+            "schema": {
+              "title": "ClientId",
+              "type": "string"
+            }
+          },
+          {
+            "name": "imageId",
+            "in": "path",
+            "description": "Image ID (GUID)",
+            "required": true,
+            "schema": {
+              "title": "Guid",
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "ProductTemplates"
+        ],
+        "summary": "Delete an image for a Product Template",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Product template ID",
+            "required": true,
+            "schema": {
+              "title": "ClientId",
+              "type": "string"
+            }
+          },
+          {
+            "name": "imageId",
+            "in": "path",
+            "description": "Image ID (GUID)",
+            "required": true,
+            "schema": {
+              "title": "Guid",
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/product-templates/{id}/archive": {
+      "put": {
+        "tags": [
+          "ProductTemplates"
+        ],
+        "summary": "Archive a product template.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Product Template Id",
+            "required": true,
+            "schema": {
+              "title": "String",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/product-templates/{id}/unarchive": {
+      "put": {
+        "tags": [
+          "ProductTemplates"
+        ],
+        "summary": "Unarchive a product template.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Product Template Id",
+            "required": true,
+            "schema": {
+              "title": "String",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/product-templates/reference-data": {
+      "get": {
+        "tags": [
+          "ProductTemplates"
+        ],
+        "summary": "Returns PackagingType, UnitsOfMeasurement and UniclassSystems reference data for creating product template",
+        "description": "### Returns reference data for creating product template ###\r\n- PackagingType\r\n- UnitsOfMeasurement\r\n- UniclassSystems\r\n            \r\nSample request:\r\n            \r\n    GET product-templates/reference-data",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "The reference data was successfully retrieved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SkuReferenceDataResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/product-templates/gs1-reference-data": {
+      "get": {
+        "tags": [
+          "ProductTemplates"
+        ],
+        "summary": "Download GS1 reference data CSV",
+        "description": "### Download GS1 reference data CSV ###\r\n            \r\nSample request:\r\n            \r\n    GET product-templates/gs1-reference-data",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "The reference data was successfully retrieved.",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "$ref": "#/components/schemas/IActionResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IActionResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer token": [ ]
+          }
+        ]
+      }
+    },
+    "/cr/client-api/v1/token": {
+      "post": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Retrieve Access Token",
+        "description": "### Get access token\r\nExchange Client ID and Secret for an access token (NB: Client ID and Secret can be created by a tenant Administrator via KPMG Origins UI)",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "title": "IssueTokenRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/IssueTokenRequest"
+                  }
+                ]
+              }
+            },
+            "application/json": {
+              "schema": {
+                "title": "IssueTokenRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/IssueTokenRequest"
+                  }
+                ]
+              }
+            },
+            "text/json": {
+              "schema": {
+                "title": "IssueTokenRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/IssueTokenRequest"
+                  }
+                ]
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "title": "IssueTokenRequest",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/IssueTokenRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerFaultErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Access Token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IssueTokenResponse"
+                }
+              }
+            }
+          },
+          "423": {
+            "description": "Locked",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LockedErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AntiforgeryErrorDetails": {
+        "title": "AntiforgeryErrorDetails",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorDetails"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "CreateLocationRequest": {
+        "title": "CreateLocationRequest",
+        "type": "object",
+        "properties": {
+          "organizationId": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "countryCode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "postcode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "longitude": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "latitude": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "id": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true
+          },
+          "otherIds": {
+            "title": "IEnumerable<ClientId>",
+            "type": "array",
+            "items": {
+              "title": "ClientId",
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "timeZone": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "googlePlaceId": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "geoData": {
+            "title": "JObject",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateOrganizationRequest": {
+        "title": "CreateOrganizationRequest",
+        "required": [
+          "commonName"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true,
+            "example": "ABN.12345678910"
+          },
+          "otherIds": {
+            "title": "IEnumerable<ClientId>",
+            "type": "array",
+            "items": {
+              "title": "ClientId",
+              "type": "string"
+            },
+            "nullable": true,
+            "example": "[\"ORGID.012345678\", \"ABN.10987654321\"]"
+          },
+          "commonName": {
+            "title": "String",
+            "minLength": 1,
+            "type": "string",
+            "example": "Sample Co"
+          },
+          "legalName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Sample Co Pty Ltd."
+          },
+          "email": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "dummyemail@example.kpmgorigins.com"
+          },
+          "phoneNumber": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "0491 570 006"
+          },
+          "website": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "example.kpmgorigins.com"
+          },
+          "contactName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "John Smith"
+          },
+          "contactEmail": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "dummyemail@example.kpmgorigins.com"
+          },
+          "contactNumber": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "0491 570 006"
+          },
+          "isIndividual": {
+            "title": "Boolean",
+            "type": "boolean",
+            "default": false
+          },
+          "description": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Sample Co processes asbestos waste."
+          },
+          "address": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Unit 5, 78 Avalon Avenue"
+          },
+          "city": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Sydney"
+          },
+          "state": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "NSW"
+          },
+          "countryCode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "AUS"
+          },
+          "postcode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "2000"
+          },
+          "longitude": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true,
+            "example": -33.865143
+          },
+          "latitude": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true,
+            "example": 151.20213
+          }
+        },
+        "additionalProperties": false,
+        "description": "Create organization request"
+      },
+      "CreateProductTemplateRequest": {
+        "title": "CreateProductTemplateRequest",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true,
+            "example": "SKU.0001"
+          },
+          "otherIds": {
+            "title": "IEnumerable<ClientId>",
+            "type": "array",
+            "items": {
+              "title": "ClientId",
+              "type": "string"
+            },
+            "nullable": true,
+            "example": "[\"SKU.00012\", \"SKU.000234\"]"
+          },
+          "parentId": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true,
+            "example": "SKU.0002"
+          },
+          "name": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Waste Material A"
+          },
+          "nameLong": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "(not in use)"
+          },
+          "description": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Description of the product template"
+          },
+          "brandName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Brand of the product template"
+          },
+          "measureType": {
+            "title": "MeasureType",
+            "enum": [
+              "Unknown",
+              "Fixed",
+              "Variable"
+            ],
+            "type": "string",
+            "example": "Fixed or Variable"
+          },
+          "packingType": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "ml"
+          },
+          "countryCode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "AUS"
+          },
+          "productIndustryAttributes": {
+            "title": "IEnumerable<KeyValue>",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValue"
+            },
+            "nullable": true
+          },
+          "isPublic": {
+            "title": "Boolean",
+            "type": "boolean"
+          },
+          "brandOwnerId": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true,
+            "example": "ABN.12345678"
+          },
+          "manufacturerId": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true,
+            "example": "ABN.12345678"
+          },
+          "subBrandName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Brand A"
+          },
+          "productUses": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Product usage"
+          },
+          "harmonizedSystemCodeId": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "010121"
+          },
+          "classifications": {
+            "title": "SKUClassifications",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SKUClassifications"
+              }
+            ],
+            "nullable": true,
+            "example": "{ \"GpcSegmentCode\": \"94000000\", \"GpcSegmentTitle\": \"Crops\", \"GpcFamilyCode\" : \"94020000\", \"GpcFamilyTitle\": \"Crops for food production\",\"GpcClassCode\" : \"94022000\",\"GpcClassTitle\": \" Sugar crops\", \"GpcBrickCode\" : \"10007307\", \"GpcBrickTitle\" : \"Sugar Caneplants (Saccharum Officinarum)\",} "
+          },
+          "productAttributes": {
+            "title": "SKUProductAttributes",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SKUProductAttributes"
+              }
+            ],
+            "nullable": true
+          },
+          "packagingAndStorage": {
+            "title": "SKUPackagingAndStorage",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SKUPackagingAndStorage"
+              }
+            ],
+            "nullable": true
+          },
+          "otherGeneral": {
+            "title": "SKUOtherGeneral",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SKUOtherGeneral"
+              }
+            ],
+            "nullable": true
+          },
+          "productDates": {
+            "title": "SKUProductDates",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SKUProductDates"
+              }
+            ],
+            "nullable": true
+          },
+          "metadataFields": {
+            "title": "List<SKUMetadataField>",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SKUMetadataField"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DbConcurrencyErrorDetails": {
+        "title": "DbConcurrencyErrorDetails",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorDetails"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "ErrorDetails": {
+        "title": "ErrorDetails",
+        "type": "object",
+        "properties": {
+          "code": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ErrorResponse__LockedErrorDetails": {
+        "title": "ErrorResponse<LockedErrorDetails>",
+        "type": "object",
+        "properties": {
+          "error": {
+            "title": "LockedErrorDetails",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LockedErrorDetails"
+              }
+            ],
+            "nullable": true
+          },
+          "debugDetail": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ErrorResponse__NotFoundErrorDetails": {
+        "title": "ErrorResponse<NotFoundErrorDetails>",
+        "type": "object",
+        "properties": {
+          "error": {
+            "title": "NotFoundErrorDetails",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NotFoundErrorDetails"
+              }
+            ],
+            "nullable": true
+          },
+          "debugDetail": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ErrorResponse__ServerFaultErrorDetails": {
+        "title": "ErrorResponse<ServerFaultErrorDetails>",
+        "type": "object",
+        "properties": {
+          "error": {
+            "title": "ServerFaultErrorDetails",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ServerFaultErrorDetails"
+              }
+            ],
+            "nullable": true
+          },
+          "debugDetail": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ErrorResponse__ValidationErrorDetails": {
+        "title": "ErrorResponse<ValidationErrorDetails>",
+        "type": "object",
+        "properties": {
+          "error": {
+            "title": "ValidationErrorDetails",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ValidationErrorDetails"
+              }
+            ],
+            "nullable": true
+          },
+          "debugDetail": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ForbiddenErrorDetails": {
+        "title": "ForbiddenErrorDetails",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorDetails"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "GenericErrorDetails": {
+        "title": "GenericErrorDetails",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorDetails"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "title": {
+                "title": "String",
+                "type": "string",
+                "nullable": true
+              },
+              "target": {
+                "title": "String",
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      },
+      "GetLocationByIdResponse": {
+        "title": "GetLocationByIdResponse",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true,
+            "example": "LOC.123456789"
+          },
+          "latestVersionId": {
+            "title": "Guid",
+            "type": "string",
+            "format": "uuid",
+            "example": "2cc142fb-ffca-4e87-8196-4f2bb9e24e14"
+          },
+          "organizationId": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true,
+            "example": "ABN.12345678910"
+          },
+          "organizationName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Sample Co"
+          },
+          "name": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Sample Co Sydney Processing Plant"
+          },
+          "countryCode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "AUS"
+          },
+          "city": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Sydney"
+          },
+          "address": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Unit 5, 78 Avalon Avenue"
+          },
+          "postcode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "2000"
+          },
+          "state": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "NSW"
+          },
+          "longitude": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true,
+            "example": -33.865143
+          },
+          "latitude": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true,
+            "example": 151.20213
+          },
+          "otherIds": {
+            "title": "IEnumerable<ClientId>",
+            "type": "array",
+            "items": {
+              "title": "ClientId",
+              "type": "string"
+            },
+            "nullable": true,
+            "example": "[\"SAMPLELOC.123456789\"]"
+          },
+          "images": {
+            "title": "IEnumerable<UploadedFile>",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadedFile"
+            },
+            "nullable": true
+          },
+          "isArchived": {
+            "title": "Boolean",
+            "type": "boolean",
+            "example": false
+          },
+          "timeZone": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "UTC+10:00: Sydney"
+          },
+          "email": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "createdByOrganizationId": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true
+          },
+          "organizationClientIds": {
+            "title": "ClientId[]",
+            "type": "array",
+            "items": {
+              "title": "ClientId",
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "googlePlaceId": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Unique PlaceId from Google (optional)"
+          },
+          "geoDataId": {
+            "title": "Permissioned<Nullable<Guid>>",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Permissioned__Nullable__Guid"
+              }
+            ],
+            "nullable": true
+          },
+          "geoData": {
+            "title": "Permissioned<JObject>",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Permissioned__JObject"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOrganizationByIdResponse": {
+        "title": "GetOrganizationByIdResponse",
+        "required": [
+          "commonName"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true,
+            "example": "ABN.12345678910"
+          },
+          "otherIds": {
+            "title": "IEnumerable<ClientId>",
+            "type": "array",
+            "items": {
+              "title": "ClientId",
+              "type": "string"
+            },
+            "nullable": true,
+            "example": "[\"ORGID.012345678\", \"ABN.10987654321\"]"
+          },
+          "guid": {
+            "title": "Guid",
+            "type": "string",
+            "format": "uuid"
+          },
+          "commonName": {
+            "title": "String",
+            "minLength": 1,
+            "type": "string",
+            "example": "Sample Co"
+          },
+          "legalName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Sample Co Pty Ltd."
+          },
+          "email": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "dummyemail@example.kpmgorigins.com"
+          },
+          "phoneNumber": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "0491 570 006"
+          },
+          "website": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "example.kpmgorigins.com"
+          },
+          "contactName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "John Smith"
+          },
+          "contactEmail": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "dummyemail@example.kpmgorigins.com"
+          },
+          "contactNumber": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "0491 570 006"
+          },
+          "isIndividual": {
+            "title": "Boolean",
+            "type": "boolean",
+            "default": false
+          },
+          "description": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Sample Co processes asbestos waste."
+          },
+          "address": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Unit 5, 78 Avalon Avenue"
+          },
+          "city": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "Sydney"
+          },
+          "state": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "NSW"
+          },
+          "countryCode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "AUS"
+          },
+          "postcode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true,
+            "example": "2000"
+          },
+          "longitude": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true,
+            "example": -33.865143
+          },
+          "latitude": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true,
+            "example": 151.20213
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetProductTemplateByIdResponse": {
+        "title": "GetProductTemplateByIdResponse",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true
+          },
+          "otherIds": {
+            "title": "IEnumerable<ClientId>",
+            "type": "array",
+            "items": {
+              "title": "ClientId",
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "parentId": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true
+          },
+          "children": {
+            "title": "List<SKU>",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SKU"
+            },
+            "nullable": true
+          },
+          "siblings": {
+            "title": "List<SKU>",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SKU"
+            },
+            "nullable": true
+          },
+          "organizationId": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true
+          },
+          "organizationName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "lastUpdatedByOrganizationName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "createdAtUtc": {
+            "title": "DateTime",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAtUtc": {
+            "title": "DateTime",
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "nameLong": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "brandName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "measureType": {
+            "title": "MeasureType",
+            "enum": [
+              "Unknown",
+              "Fixed",
+              "Variable"
+            ],
+            "type": "string"
+          },
+          "packingType": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "countryCode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "productIndustryAttributes": {
+            "title": "KeyValue[]",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValue"
+            },
+            "nullable": true
+          },
+          "images": {
+            "title": "IEnumerable<UploadedFile>",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadedFile"
+            },
+            "nullable": true
+          },
+          "isArchived": {
+            "title": "Boolean",
+            "type": "boolean"
+          },
+          "isPublic": {
+            "title": "Boolean",
+            "type": "boolean"
+          },
+          "brandOwnerId": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true
+          },
+          "brandOwnerName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "manufacturerId": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true
+          },
+          "manufacturerName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "subBrandName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "productUses": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "harmonizedSystemCode": {
+            "title": "HarmonizedSystemCode",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HarmonizedSystemCode"
+              }
+            ],
+            "nullable": true
+          },
+          "classifications": {
+            "title": "SKUClassifications",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SKUClassifications"
+              }
+            ],
+            "nullable": true
+          },
+          "productAttributes": {
+            "title": "SKUProductAttributes",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SKUProductAttributes"
+              }
+            ],
+            "nullable": true
+          },
+          "metadataFields": {
+            "title": "List<SKUMetadataField>",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SKUMetadataField"
+            },
+            "nullable": true
+          },
+          "packagingAndStorage": {
+            "title": "SKUPackagingAndStorage",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SKUPackagingAndStorage"
+              }
+            ],
+            "nullable": true
+          },
+          "otherGeneral": {
+            "title": "SKUOtherGeneral",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SKUOtherGeneral"
+              }
+            ],
+            "nullable": true
+          },
+          "productDates": {
+            "title": "SKUProductDates",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SKUProductDates"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HarmonizedSystemCode": {
+        "title": "HarmonizedSystemCode",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IActionResult": {
+        "title": "IActionResult",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "IssueTokenRequest": {
+        "title": "IssueTokenRequest",
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "secret": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IssueTokenResponse": {
+        "title": "IssueTokenResponse",
+        "type": "object",
+        "properties": {
+          "access_Token": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "KeyValue": {
+        "title": "KeyValue",
+        "type": "object",
+        "properties": {
+          "key": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "title": "Object",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockedErrorDetails": {
+        "title": "LockedErrorDetails",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorDetails"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "LockedErrorResponse": {
+        "title": "LockedErrorResponse",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorResponse__LockedErrorDetails"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "NotAuthorizedErrorDetails": {
+        "title": "NotAuthorizedErrorDetails",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorDetails"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "NotFoundErrorDetails": {
+        "title": "NotFoundErrorDetails",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorDetails"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "NotFoundErrorResponse": {
+        "title": "NotFoundErrorResponse",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorResponse__NotFoundErrorDetails"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "PackagingType": {
+        "title": "PackagingType",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PagedCollectionResponse__GetLocationByIdResponse": {
+        "title": "PagedCollection<GetLocationByIdResponse>",
+        "type": "object",
+        "properties": {
+          "total": {
+            "title": "Int32",
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "title": "GetLocationByIdResponse[]",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetLocationByIdResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PagedCollectionResponse__GetOrganizationByIdResponse": {
+        "title": "PagedCollection<GetOrganizationByIdResponse>",
+        "type": "object",
+        "properties": {
+          "total": {
+            "title": "Int32",
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "title": "GetOrganizationByIdResponse[]",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetOrganizationByIdResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PagedCollectionResponse__ProductTemplateListItem": {
+        "title": "PagedCollection<ProductTemplateListItem>",
+        "type": "object",
+        "properties": {
+          "total": {
+            "title": "Int32",
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "title": "ProductTemplateListItem[]",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductTemplateListItem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Permissioned__JObject": {
+        "title": "Permissioned<JObject>",
+        "type": "object",
+        "properties": {
+          "hasAccess": {
+            "title": "Boolean",
+            "type": "boolean",
+            "readOnly": true
+          },
+          "value": {
+            "title": "JObject",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Permissioned__Nullable__Guid": {
+        "title": "Permissioned<Nullable<Guid>>",
+        "type": "object",
+        "properties": {
+          "hasAccess": {
+            "title": "Boolean",
+            "type": "boolean",
+            "readOnly": true
+          },
+          "value": {
+            "title": "Nullable<Guid>",
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductTemplateListItem": {
+        "title": "ProductTemplateListItem",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/GetProductTemplateByIdResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "children": {
+                "title": "RelatedProductTemplate[]",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RelatedProductTemplate"
+                },
+                "nullable": true
+              },
+              "siblings": {
+                "title": "RelatedProductTemplate[]",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RelatedProductTemplate"
+                },
+                "nullable": true
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      },
+      "RelatedProductTemplate": {
+        "title": "RelatedProductTemplate",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SKU": {
+        "title": "SKU",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Guid",
+            "type": "string",
+            "format": "uuid"
+          },
+          "parentId": {
+            "title": "Nullable<Guid>",
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "parentClientId": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true
+          },
+          "children": {
+            "title": "List<SKU>",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SKU"
+            },
+            "nullable": true
+          },
+          "siblings": {
+            "title": "List<SKU>",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SKU"
+            },
+            "nullable": true
+          },
+          "organizationId": {
+            "title": "Guid",
+            "type": "string",
+            "format": "uuid"
+          },
+          "organizationName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "lastUpdatedByOrganizationName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAtUtc": {
+            "title": "DateTime",
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAtUtc": {
+            "title": "DateTime",
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "nameLong": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "brandName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "measureType": {
+            "title": "MeasureType",
+            "enum": [
+              "Unknown",
+              "Fixed",
+              "Variable"
+            ],
+            "type": "string"
+          },
+          "netContent": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "netContentUOM": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "packingType": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "countryCode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "productIndustryAttributes": {
+            "title": "KeyValue[]",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValue"
+            },
+            "nullable": true
+          },
+          "isPublic": {
+            "title": "Boolean",
+            "type": "boolean"
+          },
+          "images": {
+            "title": "IEnumerable<UploadedFile>",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadedFile"
+            },
+            "nullable": true
+          },
+          "clientId": {
+            "title": "ClientId",
+            "type": "string",
+            "nullable": true
+          },
+          "otherIds": {
+            "title": "IEnumerable<ClientId>",
+            "type": "array",
+            "items": {
+              "title": "ClientId",
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "isArchived": {
+            "title": "Boolean",
+            "type": "boolean"
+          },
+          "brandOwnerId": {
+            "title": "Nullable<Guid>",
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "brandOwnerName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "brandOwnerClientIds": {
+            "title": "ClientId[]",
+            "type": "array",
+            "items": {
+              "title": "ClientId",
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "manufacturerId": {
+            "title": "Nullable<Guid>",
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "manufacturerName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "manufacturerClientIds": {
+            "title": "ClientId[]",
+            "type": "array",
+            "items": {
+              "title": "ClientId",
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "subBrandName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "productUses": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "harmonizedSystemCode": {
+            "title": "HarmonizedSystemCode",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HarmonizedSystemCode"
+              }
+            ],
+            "nullable": true
+          },
+          "classifications": {
+            "title": "SKUClassifications",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SKUClassifications"
+              }
+            ],
+            "nullable": true
+          },
+          "productAttributes": {
+            "title": "SKUProductAttributes",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SKUProductAttributes"
+              }
+            ],
+            "nullable": true
+          },
+          "metadataFields": {
+            "title": "List<SKUMetadataField>",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SKUMetadataField"
+            },
+            "nullable": true
+          },
+          "packagingAndStorage": {
+            "title": "SKUPackagingAndStorage",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SKUPackagingAndStorage"
+              }
+            ],
+            "nullable": true
+          },
+          "otherGeneral": {
+            "title": "SKUOtherGeneral",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SKUOtherGeneral"
+              }
+            ],
+            "nullable": true
+          },
+          "productDates": {
+            "title": "SKUProductDates",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SKUProductDates"
+              }
+            ],
+            "nullable": true
+          },
+          "skuVersion": {
+            "title": "Nullable<Int32>",
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SKUClassifications": {
+        "title": "SKUClassifications",
+        "type": "object",
+        "properties": {
+          "gpcSegmentCode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "gpcSegmentTitle": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "gpcFamilyCode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "gpcFamilyTitle": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "gpcClassCode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "gpcClassTitle": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "gpcBrickCode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "gpcBrickTitle": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "uniclassCode": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "uniclassTitle": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "natspec": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SKUMetadataField": {
+        "title": "SKUMetadataField",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Nullable<Guid>",
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "name": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "title": "MetadataType",
+            "enum": [
+              "Unknown",
+              "Description",
+              "Classifications",
+              "ProductAttributes",
+              "PackagingAndStorage",
+              "OtherGeneral",
+              "ProductDates"
+            ],
+            "type": "string"
+          },
+          "numberValue": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "dateValue": {
+            "title": "Nullable<DateTime>",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "uom": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SKUOtherGeneral": {
+        "title": "SKUOtherGeneral",
+        "type": "object",
+        "properties": {
+          "warrantyDescription": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "warrantyDuration": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "warrantyDurationUom": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SKUPackagingAndStorage": {
+        "title": "SKUPackagingAndStorage",
+        "type": "object",
+        "properties": {
+          "minimumTemperature": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "maximumTemperature": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "temperatureUom": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SKUProductAttributes": {
+        "title": "SKUProductAttributes",
+        "type": "object",
+        "properties": {
+          "width": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "depth": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "height": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "dimensionUom": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "netWeight": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "grossWeight": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "drainedWeight": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "weightUom": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "grossVolume": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "volumeUom": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "density": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "densityUom": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "minimumThickness": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "maximumThickness": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "thicknessUom": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "area": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "areaUom": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "compressionStrength": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "compressionStrengthUom": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SKUProductDates": {
+        "title": "SKUProductDates",
+        "type": "object",
+        "properties": {
+          "publicationDate": {
+            "title": "Nullable<DateOnly>",
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "effectiveDate": {
+            "title": "Nullable<DateOnly>",
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "availabilityStartDate": {
+            "title": "Nullable<DateOnly>",
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "availabilityEndDate": {
+            "title": "Nullable<DateOnly>",
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "lifeSpanFromArrivalDuration": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "lifeSpanFromArrivalDurationUom": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "lifeSpanFromProductionDuration": {
+            "title": "Nullable<Double>",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "lifeSpanFromProductionDurationUom": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ServerFaultErrorDetails": {
+        "title": "ServerFaultErrorDetails",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorDetails"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "ServerFaultErrorResponse": {
+        "title": "ServerFaultErrorResponse",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorResponse__ServerFaultErrorDetails"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "SkuReferenceDataResponse": {
+        "title": "SkuReferenceDataResponse",
+        "type": "object",
+        "properties": {
+          "packagingTypes": {
+            "title": "IEnumerable<PackagingType>",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PackagingType"
+            },
+            "nullable": true
+          },
+          "unitsOfMeasurements": {
+            "title": "IEnumerable<UnitsOfMeasurement>",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnitsOfMeasurement"
+            },
+            "nullable": true
+          },
+          "uniclassSystems": {
+            "title": "IEnumerable<UniclassSystem>",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UniclassSystem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UniclassSystem": {
+        "title": "UniclassSystem",
+        "type": "object",
+        "properties": {
+          "code": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "element": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "system": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "component": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UnitsOfMeasurement": {
+        "title": "UnitsOfMeasurement",
+        "type": "object",
+        "properties": {
+          "unit": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "title": "MeasurementType",
+            "enum": [
+              "Length",
+              "Capacity",
+              "Weight",
+              "Temperature",
+              "Density",
+              "Compression",
+              "Area",
+              "Duration"
+            ],
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UploadedFile": {
+        "title": "UploadedFile",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Guid",
+            "type": "string",
+            "format": "uuid"
+          },
+          "url": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "mimeType": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "fileName": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAtUtc": {
+            "title": "DateTime",
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "type": "object",
+        "properties": {
+          "code": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "target": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "title": "String",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ValidationErrorDetails": {
+        "title": "ValidationErrorDetails",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorDetails"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "details": {
+                "title": "IEnumerable<ValidationError>",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ValidationError"
+                },
+                "nullable": true
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      },
+      "ValidationErrorResponse": {
+        "title": "ValidationErrorResponse",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorResponse__ValidationErrorDetails"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Bearer token": {
+        "type": "apiKey",
+        "description": "Please enter: \"Bearer YOUTOKEN\"",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Token",
+      "description": "APIs for Access Token"
+    },
+    {
+      "name": "ProductTemplates",
+      "description": "APIs for Product Catalogue/Product Templates/Materials"
+    },
+    {
+      "name": "Organizations",
+      "description": "APIs to query Organizations"
+    },
+    {
+      "name": "Locations",
+      "description": "APIs for Locations"
+    }
+  ]
+}

@@ -1,0 +1,1205 @@
+openapi: 3.2.0
+info:
+  title: KPMG Origins Organizations API
+  description: '- How to authenticate
+
+    - Definitions of Key API Endpoints
+
+    - Other Information
+
+
+    KPMG Origins provides customers with access to their data, and data shared with them, through APIs. The APIs allow customers with the ability to create, update and extract available data.
+
+
+    ## How to authenticate
+
+    1) Create API credentials via KPMG Origins UI (NB: only users with the Administrator role can manage API credentials):
+
+    - Login to KPMG Origins
+
+    - Go to Settings page, then API Credentials tab
+
+    - Create API credentials
+
+    - Copy the Client Id and Secret (NB: you will not be able to recover the secret value if lost, however, you can generate a new one)
+
+    2) Exchange API Credentials for a short-lived _access token_
+
+    - Make a POST request to **https://<KPMG Origins hostname>/cr/client-api/v1/token**
+
+    ```
+
+    {
+
+    "clientId": "",
+
+    "secret": ""
+
+    }
+
+    ```
+
+    3) Make authenticated requests to KPMG Origins API:
+
+    - Use the access token value form the token API response as a Bearer token to make requests to the API i.e. set Authorization header like this: `Authorization: Bearer `
+
+    ```
+
+    NB: access token is only valid for a short time, if requests start failing with 401 status code, repeat steps 2) and 3)
+
+    ```
+
+
+    ## Definitions of Key API Endpoints
+
+
+    This section explains key definitions of key data entities and API endpoints
+
+
+    * **Organisation**: the organisation can either be an organisation or an individual.
+
+    - An *organisation* is a participant which usually holds an ABN or ACN, usually an entity participating in commercial activities.
+
+    - An *individual* is a participant who has no ABN or ACN. For example, in Movement, a generator who is a private individual (e.g. residential asbestos pick-up).
+
+
+    This distinction is necessary as it relates to a validation in the ``post organisation`` API.
+
+    * **Location**: locations represent geographical sites which are operated by organisations. Each location possesses a unique location ID to distinguish it from other locations in the system, as well as an organisation / client ID that specifies which organisation operates it.
+
+
+    Please see the details on each individual API to learn more about the specific criteria needed for a successful payload.
+
+
+    ## Other Information
+
+    - The format for Client Id mentioned in the APIs is ``IDType.IDValue``
+
+    - By default, the collection of items returned can include up to 10,000 items, but this can be changed via the ``Limit`` and ``Skip`` parameters.'
+  version: '1.0'
+tags:
+- name: Organizations
+  description: APIs to query Organizations
+paths:
+  /cr/client-api/v1/organizations/{id}:
+    get:
+      tags:
+      - Organizations
+      summary: Retrieve Organisation by Organisation / Client ID
+      description: '### Retrieve organisations based on Organisation / Client ID ###
+
+        This API allows users to search for details of an organisation by providing an organisation ID. This identifier may be referred to as "organisation ID" or "client ID" in different parts of the documentation; they refer to the same unique identifer for organisations or individuals. For organisations, this is commonly an ABN or an ACN.
+
+        The format for organisation ID is:
+
+
+        [ID_Type].[ID_Value]
+
+
+        For example, organisations IDs listed below would qualify for the required syntax:
+
+
+        ORGID.012345678, ABN.12345678910
+
+
+        Therefore, a sample request will appear as follows:
+
+
+        GET organization/ABN.12345678910'
+      parameters:
+      - name: id
+        in: path
+        description: Organisation / Client ID.
+        required: true
+        schema:
+          title: ClientId
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: Organization Details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationByIdResponse'
+      security:
+      - Bearer token: []
+      operationId: getCrClientApiV1OrganizationsById
+      x-operation-id-source: derived
+  /cr/client-api/v1/organizations:
+    get:
+      tags:
+      - Organizations
+      summary: Retrieve Organisations Based on the Specified Filter
+      description: '### Retrieve Organisations Based on the Specified Filter ###
+
+
+        This API allows Users to get all organisation(s) based on the specific filter. Based on the filter, a list of organisation is returned as a collection.
+
+
+        Key details are as follows:
+
+        Field Name | Description | Data Type / Format | Example
+
+        ---|---|---|---
+
+        Limit | Specifies the maximum number of items or records that should be included in the response. | number | 10
+
+        Skip | Specifies the offset or starting point from where the API should begin returning the results. It specifies the number of items or records that should be skipped or ignored before returning the requested data, and is useful for navigating to different pages or chunks of data in a result set. | number | 0
+
+        searchTerm | Specifies the string that must appear in the organisation name in the response. Note that a minimum of 5 characters is required. The API searches through:
+
+        **commonName**, **legalName**, **fullAddress**, **countryName**, **clientID**
+
+        | number | Sample Co
+
+
+        Therefore, a sample request specifying for:
+
+
+        * 100 entries in the response, AND
+
+        * with zero skipped entries, AND
+
+        * where the organisation name is "organisation name"
+
+
+        will be written as the following:
+
+
+        GET organizations?limit=100&skip=0&searchTerm=organisation%20name'
+      parameters:
+      - name: limit
+        in: query
+        description: The number of entries permitted in the response.
+        schema:
+          title: Int32
+          type: integer
+          format: int32
+          default: 100
+      - name: skip
+        in: query
+        description: The number of entries to skip in the response.
+        schema:
+          title: Int32
+          type: integer
+          format: int32
+          default: 0
+      - name: searchTerm
+        in: query
+        description: The specific string to detect in the organisation name.
+        schema:
+          title: String
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: Organizations' Details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedCollectionResponse__GetOrganizationByIdResponse'
+      security:
+      - Bearer token: []
+      operationId: getCrClientApiV1Organizations
+      x-operation-id-source: derived
+    post:
+      tags:
+      - Organizations
+      summary: Create an Organisation
+      description: '### Create a new Organisation ###
+
+        This API allows Users to create a new organisation based on User inputs.
+
+
+        Key details are as follow:
+
+        Field Name | Description | Mandatory | Data Type / Format | Example
+
+        --- | --- | --- | --- | ---
+
+        id [1] | The unique ID used to identify the organisation. | Conditional | [ID_Type].[ID_Value] | ORGID.123456789 or ABN.12345678910 (depending on whether an ABN is available)
+
+        otherIds | Other possible ID(s) for this organisation (these accomodate for ID(s) which the organisation may use internally). | | [ID_Type].[ID_Value] | ORGID.012345678, ABN.10987654321
+
+        commonName | The common name of the organisation. | Mandatory | String | Sample Co
+
+        legalName | The legal and registered name of the organisation - usually the full name that is registered with ASIC. | | String | Sample Co Pty Ltd.
+
+        email | The email address of the organisation. | | String | dummyemail@example.kpmgorigins.com
+
+        phoneNumber | The phone number of the organisation. | | String | 0491 570 006
+
+        website | The website of the organisation. | | String | example.kpmgorigins.com
+
+        contactName | The name of the contact person for this organisation. | | String | John Smith
+
+        contactEmail | The email address of the contact person for this organisation. | | String | dummyemail@example.kpmgorigins.com
+
+        contactNumber | The phone number of the contact person for this organisation. | | String | 0491 570 006
+
+        isIndividual | This choice indicates whether the organisation is an individual or not. | | Boolean | False
+
+        description | The description for this organisation. | | String | Sample Co processes asbestos waste.
+
+        address | The address where the head office of this organisation is located. | | String | Unit 5, 78 Avalon Avenue
+
+        city | The city where the head office of this organisation is located, excluding city, state, and postcode. | | String | Sydney
+
+        state | The state where the head office of this organisation is located. | | String | NSW
+
+        postcode | The postcode where the head office of this organisation is located. | | String | 2000
+
+        countryCode | The 3 letter alphabetic code to represent country where the head office of this organisation is located. | | String | AUS
+
+        longitude | The longitude, or X coordinate, where the head office of this organisation is located. | | number | -33.865144
+
+        latitude | The latitude, or Y coordinate, where the head office of this organisation is located. | | number | 151.202132
+
+        [1]: If the **isIndividual** flag is set to "False", then the **id** field becomes a *mandatory* field'
+      requestBody:
+        description: Request to create an organisation.
+        content:
+          application/json-patch+json:
+            schema:
+              title: CreateOrganizationRequest
+              allOf:
+              - $ref: '#/components/schemas/CreateOrganizationRequest'
+              description: Create organization request
+          application/json:
+            schema:
+              title: CreateOrganizationRequest
+              allOf:
+              - $ref: '#/components/schemas/CreateOrganizationRequest'
+              description: Create organization request
+          text/json:
+            schema:
+              title: CreateOrganizationRequest
+              allOf:
+              - $ref: '#/components/schemas/CreateOrganizationRequest'
+              description: Create organization request
+          application/*+json:
+            schema:
+              title: CreateOrganizationRequest
+              allOf:
+              - $ref: '#/components/schemas/CreateOrganizationRequest'
+              description: Create organization request
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationByIdResponse'
+      security:
+      - Bearer token: []
+      operationId: postCrClientApiV1Organizations
+      x-operation-id-source: derived
+  /cr/client-api/v1/organizations/{clientId}:
+    patch:
+      tags:
+      - Organizations
+      summary: Updates an organization
+      description: '### Updates an Existing Organization ###
+
+
+        This API allows users to update an existing organization in the KPMG Origins platform. The user must specify the client id of the organization.
+
+        | Field Name | Description | Data Type / Format | Example |
+
+        |----------------------|-----------------------------------------------------|-----------------------|-----------------------------------|
+
+        | OrganizationType | The type of the organization. | String | Corporate |
+
+        | LegalName | The legal name of the organization. | String | Legal Name |
+
+        | CommonName | The common name of the organization. | String | Common Name |
+
+        | Email | The email address of the organization. | String | organization @test.com |
+
+        | PhoneNumber | The phone number of the organization. | String | +401862380 |
+
+        | Website | The website URL of the organization. | String | https: //www.organization.com |
+
+        | IsIndividual | Whether the organization is an individual. | Boolean | false |
+
+        | Industry | The industry the organization belongs to. | String | Technology |
+
+        | CountryCode | The three-letter country code of the organization. | String | AUS |
+
+        | Description | A description of the organization. | String | This is a sample organization. |
+
+        | City | The city where the organization is located. | String | Sydney |
+
+        | Address | The address where the organization is located. | String | 1234 Main Street |
+
+        | Postcode | The postcode where the organization is located. | String | 2000 |
+
+        | State | The state where the organization is located. | String | NSW |
+
+        | Longitude | The longitude where the organization is located. | Number | -33.865144 |
+
+        | Latitude | The latitude where the organization is located. | Number | 151.202132 |
+
+        | GooglePlaceId | The google place ID of the organization. | String | ChIJgUbEo8cfqokR5lP9_Wh_DaM |
+
+        | DescriptionMarkDown | A markdown description of the organization. | String | *Markdown Description* |
+
+        | OtherIds | Any other alternative internal identifiers. | [ID_Type].[ID_Value] | SAMPLELOC .123456789 |
+
+
+        #### Possible values for `OrganizationType` are:
+
+        SystemOperator, Processor, Distributor, Certifier, Logistics, Producer
+
+
+        #### Possible values for `Industry` are:
+
+        Agriculture, Beverage, Beverages, Certification, Cosmetics, Dairy, Distributor, Ecommerce, Energy, Fashion, Food, Government, Healthcare, Import, Livestock, Logistics, Manufacturing, Medical, Oleochemicals, Packaging, Pawnshop, Pharmaceutical, Polymer, PortAuthority, PortOperator, Produce, Resources, Retail, Textiles, Transport, Waste
+
+
+        The sample request will be drafted as:
+
+        ```
+
+        [
+
+        {
+
+        "path": "/State",
+
+        "op": "replace",
+
+        "from": "NSW",
+
+        "value": "QLD"
+
+        },
+
+        {
+
+        "path": "/Email",
+
+        "op": "replace",
+
+        "from": "location@test.kpmgorigins.com",
+
+        "value": "location-2@test.kpmgorigins.com"
+
+        }
+
+        ]
+
+        ```'
+      parameters:
+      - name: clientId
+        in: path
+        description: Organization id.
+        required: true
+        schema:
+          title: ClientId
+          type: string
+      requestBody:
+        description: PATCH payload, only replace operations supported.
+        content:
+          application/json-patch+json:
+            schema:
+              title: Operation[]
+              type: array
+              items:
+                type: object
+            example:
+            - value: Corporate
+              path: /OrganizationType
+              op: replace
+            - value: Updated Legal Name
+              path: /LegalName
+              op: replace
+            - value: Updated Common Name
+              path: /CommonName
+              op: replace
+            - value: updatedemail@test.com
+              path: /Email
+              op: replace
+            - value: '401862370'
+              path: /PhoneNumber
+              op: replace
+            - value: https://www.updated-organization.com
+              path: /Website
+              op: replace
+            - value: false
+              path: /IsIndividual
+              op: replace
+            - value: Updated Industry
+              path: /Industry
+              op: replace
+            - value: AUS
+              path: /CountryCode
+              op: replace
+            - value: This is an updated description of the organization.
+              path: /Description
+              op: replace
+            - value: Updated City
+              path: /City
+              op: replace
+            - value: Updated Address, 1234 Updated Street
+              path: /Address
+              op: replace
+            - value: '2000'
+              path: /Postcode
+              op: replace
+            - value: NSW
+              path: /State
+              op: replace
+            - value: -33.865144
+              path: /Longitude
+              op: replace
+            - value: 151.202132
+              path: /Latitude
+              op: replace
+            - value: ChIJgUbEo8cfqokR5lP9_Wh_DaM
+              path: /GooglePlaceId
+              op: replace
+            - value: '*Updated Markdown Description*'
+              path: /DescriptionMarkDown
+              op: replace
+            - value:
+              - SAMPLELOC.123456789
+              path: /OtherIds
+              op: replace
+          application/json:
+            schema:
+              title: Operation[]
+              type: array
+              items:
+                type: object
+            example:
+            - value: Corporate
+              path: /OrganizationType
+              op: replace
+            - value: Updated Legal Name
+              path: /LegalName
+              op: replace
+            - value: Updated Common Name
+              path: /CommonName
+              op: replace
+            - value: updatedemail@test.com
+              path: /Email
+              op: replace
+            - value: '401862370'
+              path: /PhoneNumber
+              op: replace
+            - value: https://www.updated-organization.com
+              path: /Website
+              op: replace
+            - value: false
+              path: /IsIndividual
+              op: replace
+            - value: Updated Industry
+              path: /Industry
+              op: replace
+            - value: AUS
+              path: /CountryCode
+              op: replace
+            - value: This is an updated description of the organization.
+              path: /Description
+              op: replace
+            - value: Updated City
+              path: /City
+              op: replace
+            - value: Updated Address, 1234 Updated Street
+              path: /Address
+              op: replace
+            - value: '2000'
+              path: /Postcode
+              op: replace
+            - value: NSW
+              path: /State
+              op: replace
+            - value: -33.865144
+              path: /Longitude
+              op: replace
+            - value: 151.202132
+              path: /Latitude
+              op: replace
+            - value: ChIJgUbEo8cfqokR5lP9_Wh_DaM
+              path: /GooglePlaceId
+              op: replace
+            - value: '*Updated Markdown Description*'
+              path: /DescriptionMarkDown
+              op: replace
+            - value:
+              - SAMPLELOC.123456789
+              path: /OtherIds
+              op: replace
+          text/json:
+            schema:
+              title: Operation[]
+              type: array
+              items:
+                type: object
+            example:
+            - value: Corporate
+              path: /OrganizationType
+              op: replace
+            - value: Updated Legal Name
+              path: /LegalName
+              op: replace
+            - value: Updated Common Name
+              path: /CommonName
+              op: replace
+            - value: updatedemail@test.com
+              path: /Email
+              op: replace
+            - value: '401862370'
+              path: /PhoneNumber
+              op: replace
+            - value: https://www.updated-organization.com
+              path: /Website
+              op: replace
+            - value: false
+              path: /IsIndividual
+              op: replace
+            - value: Updated Industry
+              path: /Industry
+              op: replace
+            - value: AUS
+              path: /CountryCode
+              op: replace
+            - value: This is an updated description of the organization.
+              path: /Description
+              op: replace
+            - value: Updated City
+              path: /City
+              op: replace
+            - value: Updated Address, 1234 Updated Street
+              path: /Address
+              op: replace
+            - value: '2000'
+              path: /Postcode
+              op: replace
+            - value: NSW
+              path: /State
+              op: replace
+            - value: -33.865144
+              path: /Longitude
+              op: replace
+            - value: 151.202132
+              path: /Latitude
+              op: replace
+            - value: ChIJgUbEo8cfqokR5lP9_Wh_DaM
+              path: /GooglePlaceId
+              op: replace
+            - value: '*Updated Markdown Description*'
+              path: /DescriptionMarkDown
+              op: replace
+            - value:
+              - SAMPLELOC.123456789
+              path: /OtherIds
+              op: replace
+          application/*+json:
+            schema:
+              title: Operation[]
+              type: array
+              items:
+                type: object
+            example:
+            - value: Corporate
+              path: /OrganizationType
+              op: replace
+            - value: Updated Legal Name
+              path: /LegalName
+              op: replace
+            - value: Updated Common Name
+              path: /CommonName
+              op: replace
+            - value: updatedemail@test.com
+              path: /Email
+              op: replace
+            - value: '401862370'
+              path: /PhoneNumber
+              op: replace
+            - value: https://www.updated-organization.com
+              path: /Website
+              op: replace
+            - value: false
+              path: /IsIndividual
+              op: replace
+            - value: Updated Industry
+              path: /Industry
+              op: replace
+            - value: AUS
+              path: /CountryCode
+              op: replace
+            - value: This is an updated description of the organization.
+              path: /Description
+              op: replace
+            - value: Updated City
+              path: /City
+              op: replace
+            - value: Updated Address, 1234 Updated Street
+              path: /Address
+              op: replace
+            - value: '2000'
+              path: /Postcode
+              op: replace
+            - value: NSW
+              path: /State
+              op: replace
+            - value: -33.865144
+              path: /Longitude
+              op: replace
+            - value: 151.202132
+              path: /Latitude
+              op: replace
+            - value: ChIJgUbEo8cfqokR5lP9_Wh_DaM
+              path: /GooglePlaceId
+              op: replace
+            - value: '*Updated Markdown Description*'
+              path: /DescriptionMarkDown
+              op: replace
+            - value:
+              - SAMPLELOC.123456789
+              path: /OtherIds
+              op: replace
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: String
+                type: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponse'
+      security:
+      - Bearer token: []
+      operationId: patchCrClientApiV1OrganizationsByClientId
+      x-operation-id-source: derived
+  /cr/client-api/v1/organizations/{clientId}/images:
+    put:
+      tags:
+      - Organizations
+      summary: Update organization ecosystem image
+      parameters:
+      - name: clientId
+        in: path
+        description: Organization id.
+        required: true
+        schema:
+          title: ClientId
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                organizationEcosystemImage:
+                  title: IFormFile
+                  type: string
+                  format: binary
+            encoding:
+              organizationEcosystemImage:
+                style: form
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: String
+                type: string
+      security:
+      - Bearer token: []
+      operationId: putCrClientApiV1OrganizationsByClientIdImages
+      x-operation-id-source: derived
+  /cr/client-api/v1/organizations/images/{imageId}:
+    get:
+      tags:
+      - Organizations
+      parameters:
+      - name: imageId
+        in: path
+        required: true
+        schema:
+          title: Guid
+          type: string
+          format: uuid
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerFaultErrorResponse'
+      security:
+      - Bearer token: []
+      summary: Get cr client api organizations images by image id
+      x-summary-source: derived
+      operationId: getCrClientApiV1OrganizationsImagesByImageId
+      x-operation-id-source: derived
+components:
+  schemas:
+    ValidationError:
+      title: ValidationError
+      type: object
+      properties:
+        code:
+          title: String
+          type:
+          - string
+          - 'null'
+        target:
+          title: String
+          type:
+          - string
+          - 'null'
+        message:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ServerFaultErrorResponse:
+      title: ServerFaultErrorResponse
+      allOf:
+      - $ref: '#/components/schemas/ErrorResponse__ServerFaultErrorDetails'
+      - type: object
+        additionalProperties: false
+    ErrorResponse__NotFoundErrorDetails:
+      title: ErrorResponse<NotFoundErrorDetails>
+      type: object
+      properties:
+        error:
+          title: NotFoundErrorDetails
+          allOf:
+          - $ref: '#/components/schemas/NotFoundErrorDetails'
+        debugDetail:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ErrorDetails:
+      title: ErrorDetails
+      type: object
+      properties:
+        code:
+          title: String
+          type:
+          - string
+          - 'null'
+        message:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ServerFaultErrorDetails:
+      title: ServerFaultErrorDetails
+      allOf:
+      - $ref: '#/components/schemas/ErrorDetails'
+      - type: object
+        additionalProperties: false
+    ErrorResponse__ValidationErrorDetails:
+      title: ErrorResponse<ValidationErrorDetails>
+      type: object
+      properties:
+        error:
+          title: ValidationErrorDetails
+          allOf:
+          - $ref: '#/components/schemas/ValidationErrorDetails'
+        debugDetail:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    CreateOrganizationRequest:
+      title: CreateOrganizationRequest
+      required:
+      - commonName
+      type: object
+      properties:
+        id:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+          example: ABN.12345678910
+        otherIds:
+          title: IEnumerable<ClientId>
+          type:
+          - array
+          - 'null'
+          items:
+            title: ClientId
+            type: string
+          example: '["ORGID.012345678", "ABN.10987654321"]'
+        commonName:
+          title: String
+          minLength: 1
+          type: string
+          example: Sample Co
+        legalName:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Sample Co Pty Ltd.
+        email:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: dummyemail@example.kpmgorigins.com
+        phoneNumber:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: 0491 570 006
+        website:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: example.kpmgorigins.com
+        contactName:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: John Smith
+        contactEmail:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: dummyemail@example.kpmgorigins.com
+        contactNumber:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: 0491 570 006
+        isIndividual:
+          title: Boolean
+          type: boolean
+          default: false
+        description:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Sample Co processes asbestos waste.
+        address:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Unit 5, 78 Avalon Avenue
+        city:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Sydney
+        state:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: NSW
+        countryCode:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: AUS
+        postcode:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: '2000'
+        longitude:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+          example: -33.865143
+        latitude:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+          example: 151.20213
+      additionalProperties: false
+      description: Create organization request
+    ErrorResponse__ServerFaultErrorDetails:
+      title: ErrorResponse<ServerFaultErrorDetails>
+      type: object
+      properties:
+        error:
+          title: ServerFaultErrorDetails
+          allOf:
+          - $ref: '#/components/schemas/ServerFaultErrorDetails'
+        debugDetail:
+          title: String
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    GetOrganizationByIdResponse:
+      title: GetOrganizationByIdResponse
+      required:
+      - commonName
+      type: object
+      properties:
+        id:
+          title: ClientId
+          type:
+          - string
+          - 'null'
+          example: ABN.12345678910
+        otherIds:
+          title: IEnumerable<ClientId>
+          type:
+          - array
+          - 'null'
+          items:
+            title: ClientId
+            type: string
+          example: '["ORGID.012345678", "ABN.10987654321"]'
+        guid:
+          title: Guid
+          type: string
+          format: uuid
+        commonName:
+          title: String
+          minLength: 1
+          type: string
+          example: Sample Co
+        legalName:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Sample Co Pty Ltd.
+        email:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: dummyemail@example.kpmgorigins.com
+        phoneNumber:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: 0491 570 006
+        website:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: example.kpmgorigins.com
+        contactName:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: John Smith
+        contactEmail:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: dummyemail@example.kpmgorigins.com
+        contactNumber:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: 0491 570 006
+        isIndividual:
+          title: Boolean
+          type: boolean
+          default: false
+        description:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Sample Co processes asbestos waste.
+        address:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Unit 5, 78 Avalon Avenue
+        city:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: Sydney
+        state:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: NSW
+        countryCode:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: AUS
+        postcode:
+          title: String
+          type:
+          - string
+          - 'null'
+          example: '2000'
+        longitude:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+          example: -33.865143
+        latitude:
+          title: Nullable<Double>
+          type:
+          - number
+          - 'null'
+          format: double
+          example: 151.20213
+      additionalProperties: false
+    ValidationErrorDetails:
+      title: ValidationErrorDetails
+      allOf:
+      - $ref: '#/components/schemas/ErrorDetails'
+      - type: object
+        properties:
+          details:
+            title: IEnumerable<ValidationError>
+            type:
+            - array
+            - 'null'
+            items:
+              $ref: '#/components/schemas/ValidationError'
+        additionalProperties: false
+    PagedCollectionResponse__GetOrganizationByIdResponse:
+      title: PagedCollection<GetOrganizationByIdResponse>
+      type: object
+      properties:
+        total:
+          title: Int32
+          type: integer
+          format: int32
+        items:
+          title: GetOrganizationByIdResponse[]
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/GetOrganizationByIdResponse'
+      additionalProperties: false
+    NotFoundErrorResponse:
+      title: NotFoundErrorResponse
+      allOf:
+      - $ref: '#/components/schemas/ErrorResponse__NotFoundErrorDetails'
+      - type: object
+        additionalProperties: false
+    NotFoundErrorDetails:
+      title: NotFoundErrorDetails
+      allOf:
+      - $ref: '#/components/schemas/ErrorDetails'
+      - type: object
+        additionalProperties: false
+    ValidationErrorResponse:
+      title: ValidationErrorResponse
+      allOf:
+      - $ref: '#/components/schemas/ErrorResponse__ValidationErrorDetails'
+      - type: object
+        additionalProperties: false
+  securitySchemes:
+    Bearer_token:
+      type: apiKey
+      description: 'Please enter: "Bearer YOUTOKEN"'
+      name: Authorization
+      in: header
